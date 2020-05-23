@@ -1,0 +1,82 @@
+<!--<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Home - MyGrades</title>
+    <meta name="description" content="We help .....">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css?h=a0f68fa2f6467c6e2773d60bd761834e">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/styles.min.css?h=d75bce1d3b449fd2fc5625795177e5b8">
+</head>
+-->
+{% extends 'base.html' %}
+{% block title %} {{ title }} Post Assignment {% endblock %}
+{% block content %}
+{% load static %}
+<body>
+    <section class="call-to-action text-white text-center" style="background:url('{% static 'images/WorkPlace-2.jpg'%}') no-repeat center center;background-size:cover;height:300px">
+    <div class="overlay"></div>
+</section>
+    <!-- Start: 2 Rows 1+2 Columns --><div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 d-lg-flex justify-content-lg-center">
+                <div class="btn-toolbar">
+                    <div role="group" class="btn-group"><button class="btn btn-secondary border rounded" type="button">Post Assignment</button><button class="btn btn-light border rounded" type="button">Start Earning</button></div>
+                    <div role="group" class="btn-group"></div>
+                </div>
+                <ul class="nav nav-pills text-capitalize text-center">
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                </ul>
+            </div>
+        </div>
+        <div class="progress">
+            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;">80%</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="Push-20" style="height: 28.8px;"></div>
+                <h4 class="text-left">Assignment Field</h4>
+                <div class="dropdown"><button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Select </button>
+                    <div role="menu" class="dropdown-menu dropdown-menu-left"><a role="presentation" class="dropdown-item" href="#">Literature</a><a role="presentation" class="dropdown-item" href="#">Social Sciences</a><a role="presentation" class="dropdown-item" href="#">History</a><a role="presentation" class="dropdown-item"
+                            href="#">Nature Sciences</a><a role="presentation" class="dropdown-item" href="#">Biology</a><a role="presentation" class="dropdown-item" href="#">Chemistry</a><a role="presentation" class="dropdown-item" href="#">Mathematics</a>
+                        <a
+                            role="presentation" class="dropdown-item" href="#">Physics</a><a role="presentation" class="dropdown-item" href="#">Engineering</a><a role="presentation" class="dropdown-item" href="#">Computer Sciences</a></div>
+                </div><small class="form-text text-muted" style="margin: 0px;">Write assignment title</small><textarea style="width: 450px;height: 57.6px;" placeholder="Type..."></textarea>
+                <div class="Push-20" style="height: 64.8px;"></div>
+                <h4 class="text-left">Assignment Description</h4><small class="form-text text-muted" style="margin: 0px;">Describe in detail your assignment, include requirements, complexity, format and related topics</small><textarea style="width: 450px;height: 115.2px;"
+                    placeholder="Type..."></textarea>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-md-6">
+                <div class="Push-20" style="height: 14.5px;"></div>
+                <h4 class="text-left">Dead Line</h4><input type="date" />
+                <div class="Push-20" style="height: 70px;"></div>
+                <h4 class="text-left">Related Documents</h4><small class="form-text text-muted">Upload any assignment related documents (rubrics, forms, questionnaires, documents to be filld and any main format documents)</small>
+                <div class="form-group files color"><input type="file" multiple name="files" /></div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- End: 2 Rows 1+2 Columns -->
+    <!-- Start: 1 Row 1 Column --><div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"><button class="btn btn-primary d-lg-flex ml-auto justify-content-lg-end" type="button" style="width: 72;" onclick="location.href='{% url 'post_assignment_2' %}'">Next</button></div>
+        </div>
+    </div>
+</div>
+    <!-- End: 1 Row 1 Column -->
+    <!-- Start: Juvi - Push Empty Space 20px --><div class="Push-20" style="height: 14.4px;"></div>
+    <!-- End: Juvi - Push Empty Space 20px --><section class="showcase"></section>
+    <section class="call-to-action text-white text-center" style="background:url({% static 'images/Desk-1.jpg' %}) no-repeat center center;background-size:cover;height:300px">
+        <div class="overlay"></div>
+    </section>
+
+</body>
+{% endblock %}
+<!--</html>-->
