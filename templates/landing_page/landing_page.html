@@ -1,41 +1,8 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Home - MyGrades</title>
-    <meta name="description" content="We help .....">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic">
-    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
-    <link rel="stylesheet" href="assets/css/Bootstrap-Calendar.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-    <link rel="stylesheet" href="assets/css/Navigation-with-Search.css">
-</head>
-
-<body>
-    <nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
-        <div class="container"><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-                    <div class="container"><a class="navbar-brand" href="#">MyGrades</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                        <div class="collapse navbar-collapse"
-                            id="navcol-1">
-                            <ul class="nav navbar-nav">
-                                <li class="nav-item" role="presentation"></li>
-                                <li class="nav-item" role="presentation"></li>
-                                <li class="nav-item" role="presentation"></li>
-                            </ul>
-                            <form class="form-inline mr-auto" target="_self">
-                                <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" id="search-field" name="search"></div>
-                            </form><a class="btn btn-light action-button" role="button" href="#">Search</a></div>
-                    </div>
-                </nav><a class="btn btn-primary ml-auto" role="button" href="#">Sign In</a></div>
-        </div>
-    </nav>
-    <header class="masthead text-white text-center" style="background:url('assets/img/WorkPlace-2.jpg')no-repeat center center;background-size:cover;">
+{% extends 'base.html' %}
+{% block title %} {{ title }} Post Assignment {% endblock %}
+{% block content %}
+{% load static %}
+    <header class="masthead text-white text-center" style="background:url('static/images/WorkPlace-2.jpg')no-repeat center center;background-size:cover;">
         <div class="overlay" style="filter: blur(0px);"></div>
         <div class="container">
             <div class="row">
@@ -81,21 +48,21 @@
     <section class="showcase">
         <div class="container-fluid p-0">
             <div class="row no-gutters">
-                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image:url(&quot;assets/img/HandShake.jpg&quot;);"><span></span></div>
+                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image:url(static/images/HandShake.jpg);"><span></span></div>
                 <div class="col-lg-6 my-auto order-lg-1 showcase-text">
                     <h2>Profitable for students</h2>
                     <p class="lead mb-0">When you use this page, either to post an assignment or fulfill one, you always have the oportunity to learn while doing it and earn some extra cash or work on your goals without woring for your grades</p>
                 </div>
             </div>
             <div class="row no-gutters">
-                <div class="col-lg-6 text-white showcase-img" style="background-image:url(&quot;assets/img/bg-showcase-2.jpg&quot;);"><span></span></div>
+                <div class="col-lg-6 text-white showcase-img" style="background-image:url(static/images/bg-showcase-2.jpg);"><span></span></div>
                 <div class="col-lg-6 my-auto order-lg-1 showcase-text">
                     <h2><strong>Perfect for busy students!</strong><br></h2>
                     <p class="lead mb-0">As a creative, active and hard-working student your are always up to something, MyGrades allows you to foccus on your goals without risking your GPA</p>
                 </div>
             </div>
             <div class="row no-gutters">
-                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image:url(&quot;assets/img/ClockMoney.jpg&quot;);"><span></span></div>
+                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image:url(static/images/ClockMoney.jpg);"><span></span></div>
                 <div class="col-lg-6 my-auto order-lg-1 showcase-text">
                     <h2>Appealing proposal for everyone</h2>
                     <p class="lead mb-0">Extra cass is always handy and, for those who have some extra free time, it's a&nbsp;magnificent idea to invest it here</p>
@@ -105,7 +72,7 @@
         </div>
     </section>
     <section class="testimonials text-center bg-light" style="height: 2.8px;padding: 0px;"></section>
-    <section class="testimonials text-center bg-light" style="background: url(&quot;assets/img/Font.jpg&quot;) no-repeat center center;background-size: cover;height: 256px;padding-top: 66px;padding-bottom: 66px;">
+    <section class="testimonials text-center bg-light" style="background: url(static/images/Font.jpg) no-repeat center center;background-size: cover;height: 256px;padding-top: 66px;padding-bottom: 66px;">
         <div class="container">
             <h2 class="mb-5" style="color: rgb(170,170,170);">Not convinved yet?</h2>
             <h2 class="mb-5" style="color: rgb(170,170,170);">Hear what people are saying...</h2>
@@ -116,19 +83,19 @@
         <div class="container">
             <div class="row">
                 <div class="col d-lg-flex">
-                    <div class="mx-auto testimonial-item mb-5 mb-lg-0"><img class="rounded-circle img-fluid mb-3" src="assets/img/testimonials-1.jpg">
+                    <div class="mx-auto testimonial-item mb-5 mb-lg-0"><img class="rounded-circle img-fluid mb-3" src="static/images/testimonials-1.jpg">
                         <h5>Margaret E.</h5>
                         <p class="font-weight-light mb-0">"This is fantastic! Thanks so much guys!"</p>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="mx-auto testimonial-item mb-5 mb-lg-0"><img class="rounded-circle img-fluid mb-3" src="assets/img/testimonials-2.jpg">
+                    <div class="mx-auto testimonial-item mb-5 mb-lg-0"><img class="rounded-circle img-fluid mb-3" src="static/images/testimonials-2.jpg">
                         <h5>Fred S.</h5>
                         <p class="font-weight-light mb-0">"Bootstrap is amazing. I've been using it to create lots of super nice landing pages."</p>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="mx-auto testimonial-item mb-5 mb-lg-0"><img class="rounded-circle img-fluid mb-3" src="assets/img/testimonials-3.jpg">
+                    <div class="mx-auto testimonial-item mb-5 mb-lg-0"><img class="rounded-circle img-fluid mb-3" src="static/images/testimonials-3.jpg">
                         <h5>Sarah W.</h5>
                         <p class="font-weight-light mb-0">"Thanks so much for making these free resources available to us!"</p>
                     </div>
@@ -137,7 +104,7 @@
         </div>
     </div>
     <section class="testimonials text-center bg-light" style="height: 22.4px;padding: 0px;"></section>
-    <section class="call-to-action text-white text-center" style="background:url(&quot;assets/img/Desk-1.jpg&quot;) no-repeat center center;background-size:cover;">
+    <section class="call-to-action text-white text-center" style="background:url(static/images/Desk-1.jpg) no-repeat center center;background-size:cover;">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
@@ -155,34 +122,4 @@
             </div>
         </div>
     </section>
-    <footer class="footer bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 my-auto h-100 text-center text-lg-left">
-                    <ul class="list-inline mb-2">
-                        <li class="list-inline-item"><a href="#">About</a></li>
-                        <li class="list-inline-item"><span>⋅</span></li>
-                        <li class="list-inline-item"><a href="#">Contact</a></li>
-                        <li class="list-inline-item"><span>⋅</span></li>
-                        <li class="list-inline-item"><a href="#">Terms of &nbsp;Use</a></li>
-                        <li class="list-inline-item"><span>⋅</span></li>
-                        <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
-                    </ul>
-                    <p class="text-muted small mb-4 mb-lg-0">© MyGrades 2020. All Rights Reserved.</p>
-                </div>
-                <div class="col-lg-6 my-auto h-100 text-center text-lg-right">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item"><a href="#"><i class="fa fa-facebook fa-2x fa-fw"></i></a></li>
-                        <li class="list-inline-item"><a href="#"><i class="fa fa-twitter fa-2x fa-fw"></i></a></li>
-                        <li class="list-inline-item"><a href="#"><i class="fa fa-instagram fa-2x fa-fw"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
-</body>
-
-</html>
+{% endblock %}
