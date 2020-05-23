@@ -14,4 +14,4 @@ class ArchivoForm(ModelForm):
 class TrabajoForm(ModelForm):
     class Meta:
         model = Trabajo
-        fields = '__all__'
+        fields = ['titulo', 'area', 'fecha_expiracion', 'descripcion', 'archivos',]
