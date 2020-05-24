@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from django.contrib import messages
 
 from .forms import *
@@ -23,21 +24,55 @@ def post_assigment(request):
 #    return render(request, 'post/post_assignment_2.html', {})
 
 def register(request):
+
     try:
-        contexto = {'email': request.GET['email']}
+        context = {'email': request.GET['email']}
     except:
-        contexto = {}
+        context = {}
+
     if request.method == 'POST':
-        if request.POST['password'] != request.POST['password-repeat']:
-            print('---------------Password Error--------------------')
-            return redirect('register')
-        form = UsuarioForm(request.POST)
-        if form.is_valid():
-            #usuario = form.save()
-            return render(request, 'home/register_verification.html', {})
+        email = request.POST['mail']
+        username = request.POST['username']
+        password = request.POST['password']
+        password_verify = request.POST['password-repeat']
+        if password == password_verify:
+            usuario = UsuarioForm(request.POST)
+            if usuario.is_valid():
+                usuario.save()
+                user = User.objects.create_user(username, email, password)
+                if user is None:
+                    messages.error(request, 'Error al registrar usuario')
+                    return redirect('register')
+                return redirect('register_verification')
         else:
-            print(form.errors)
-    return render(request, 'home/register.html', contexto)
+            messages.error(request, 'Las contraseñas no coinciden')
+    return render(request, 'home/register.html', context)
+
+def register_verification(request):
+    if request.method == 'POST':
+        pass
+    else:
+        import random
+        import smtplib
+        from email.message import EmailMessage
+
+        sender = 'udla20202020@gmail.com'
+        code = random.randint(100000, 999999)
+
+        msg = EmailMessage()
+        msg['Subject'] = "MyGrades Account Verification Code"
+        msg['From'] = sender
+        msg['To'] = 'www.jrdnbrj@gmail.com'
+        msg.set_content(code)
+
+        with smtplib.SMTP_SSL(server, port) as smtp:
+            smtp.login(sender, "Anonimo2019")
+            smtp.send_message(msg)
+            print('Sent', code)
+
+        return render(request, 'home/register_verification.html', {'code': code})
+
+
 
 def signin(request):
     if request.method == 'POST':
@@ -55,20 +90,3 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('landing_page')
-
-def registrar_usuario(request):
-    if request.method == 'POST':
-        email = request.POST['mail']
-        username = request.POST['username']
-        password = request.POST['password']
-        password_verify = request.POST['password_verify']
-        if password == password_verify:
-            user = User.objects.create_user(username, email, password)
-            if user is None:
-                messages.error(request, 'Error al registrar usuario')
-            usuario = UsuarioForm(request.POST)
-            if usuario.is_valid():
-                usuario.save()
-        else:
-            messages.error(request, 'Las contraseñas no coinciden')
-    return redirect('landingPage')

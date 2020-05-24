@@ -7,6 +7,10 @@ class Usuario(models.Model):
     mail = models.EmailField(max_length=50)
     password = models.CharField(max_length=32)
     celular = models.CharField(max_length=15, null=True)
+    is_active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.username + ' -> ' + self.mail
 
 class Archivo(models.Model):
     nombre = models.CharField(max_length=50)
