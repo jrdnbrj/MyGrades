@@ -6,7 +6,7 @@ class Usuario(models.Model):
     username = models.CharField(max_length=10)
     mail = models.EmailField(max_length=50)
     password = models.CharField(max_length=32)
-    celular = models.CharField(max_length=15)
+    celular = models.CharField(max_length=15, null=True)
 
 class Archivo(models.Model):
     nombre = models.CharField(max_length=50)
