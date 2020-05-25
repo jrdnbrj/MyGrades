@@ -49,13 +49,9 @@ def register(request):
                 request.session['celular'] = celular
                 request.method = 'GET'
                 print(request.method, 'method')
-                #usuario.save()
-                #user = User.objects.create_user(username, email, password)
-                #if user is None:
-                #    messages.error(request, 'Error al registrar usuario')
-                #    return redirect('register')
-                #return render(request, 'home/register_verification.html', {})
                 return register_verification(request)
+            else:
+                print(usuario.errors)
         else:
             messages.error(request, 'Las contraseñas no coinciden')
             print('---------Password Error---------------')
@@ -85,31 +81,32 @@ def register_verification(request):
             print('Codigo incorrecto')
         return redirect('landing_page')
     else:
-        #try:
-        import random
-        import smtplib
-        from email.message import EmailMessage
+        try:
+            import random
+            import smtplib
+            from email.message import EmailMessage
 
-        sender = 'udla20202020@gmail.com'
-        code = random.randint(100000, 999999)
-        print('code: ', code)
+            sender = 'contact.mygrades@gmail.com'
+            code = random.randint(100000, 999999)
+            print('code: ', code)
 
-        msg = EmailMessage()
-        msg['Subject'] = "MyGrades Account Verification Code"
-        msg['From'] = sender
-        msg['To'] = request.session['email']
-        print('Before content')
-        msg.set_content('Code: ' + str(code))
-        print('After content')
+            msg = EmailMessage()
+            msg['Subject'] = "MyGrades Account Verification Code"
+            msg['From'] = sender
+            msg['To'] = request.session['email']
+            print('Before content')
+            msg.set_content('Code: ' + str(code))
+            print('After content')
 
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-            smtp.login(sender, "Anonimo2019")
-            print('login')
-            smtp.send_message(msg)
-            request.session['code'] = code
-            print('Sent', code, 'hola')
-        #except:
-        #    print('---------------Email Error------------')
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+                smtp.login(sender, "mygrades123")
+                print('login')
+                smtp.send_message(msg)
+                request.session['code'] = code
+                print('Sent', code)
+        except:
+            print('---------------Email Error------------')
+            return redirect('register')
         return render(request, 'home/register_verification.html', {})
 
 
