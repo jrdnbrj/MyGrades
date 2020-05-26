@@ -6,12 +6,7 @@ class UsuarioForm(ModelForm):
         model = Usuario
         fields = '__all__'
 
-class ArchivoForm(ModelForm):
-    class Meta:
-        model = Archivo
-        fields = '__all__'
-
 class TrabajoForm(ModelForm):
     class Meta:
         model = Trabajo
-        fields = ['titulo', 'area', 'fecha_expiracion', 'descripcion', 'archivos',]
+        fields = ['titulo', 'area', 'fecha_expiracion', 'descripcion', 'archivos', 'precio',]

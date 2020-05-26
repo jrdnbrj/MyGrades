@@ -32,7 +32,7 @@
                 <div class="Push-20" style="height: 28.8px;"></div>
                 <h4 class="text-left">Assignment Field</h4>
                 <div class="dropdown">
-                    <select class="form-control col-5" name="area">
+                    <select class="form-control col-5" name="area" required>
                         <option value="">Select...</option>
                         <option value="Literature">Literature</option>
                         <option value="Social Sciences">Social Sciences</option>
@@ -46,18 +46,22 @@
                         <option value="Computer Sciences">Computer Sciences</option>
                     </select>
                 </div>
-                <small class="form-text text-muted" style="margin: 0px;">Write assignment title</small><textarea class="form-control" name="titulo" style="width: 450px;height: 57.6px;" placeholder="Type..."></textarea>
-                <div class="Push-20" style="height: 64.8px;"></div>
+                <small class="form-text text-muted" style="margin: 0px;">Write assignment title</small><textarea class="form-control" name="titulo" style="width: 450px;height: 57.6px;" placeholder="Type..." required></textarea>
+                <br>
                 <h4 class="text-left">Assignment Description</h4><small class="form-text text-muted" style="margin: 0px;">Describe in detail your assignment, include requirements, complexity, format and related topics</small><textarea class="form-control" name="descripcion" style="width: 450px;height: 115.2px;"
-                    placeholder="Type..."></textarea>
+                    placeholder="Type..." required></textarea>
                 <div class="clearfix"></div>
             </div>
             <div class="col-md-6">
                 <div class="Push-20" style="height: 14.5px;"></div>
-                <h4 class="text-left">Dead Line</h4><input class="form-control" name="fecha_expiracion" type="date"/>
-                <div class="Push-20" style="height: 70px;"></div>
+                <h4 class="text-left">Dead Line</h4><input class="form-control" name="fecha_expiracion" type="date" required/>
+                <br>
                 <h4 class="text-left">Related Documents</h4><small class="form-text text-muted">Upload any assignment related documents (rubrics, forms, questionnaires, documents to be filld and any main format documents)</small>
                 <div class="form-group files color"><input type="file" name="archivos"></div>
+                <div class="form-group row">
+                    <label class="col-sm-4">Price to pay: </label>
+                    <input type="text" class="form-control col-sm-3" name="precio" required>
+                </div>
             </div>
         </div>
     </div>

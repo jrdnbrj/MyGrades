@@ -4,24 +4,12 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 
 from .forms import *
+from .models import *
 
 # Create your views here.
 
 def landing_page(request):
     return render(request, 'home/landing_page.html', {})
-
-def post_assigment(request):
-    if request.method == 'POST':
-        form = TrabajoForm(request.POST, request.FILES)
-        if form.is_valid():
-            trabajo = form.save()
-            return render(request, 'post/post_assignment_2.html', {'trabajo': trabajo})
-        else:
-            print(form.errors)
-    return render(request, 'post/post_assignment.html', {})
-
-#def post_assigment_2(request):
-#    return render(request, 'post/post_assignment_2.html', {})
 
 def register(request):
 
@@ -109,8 +97,6 @@ def register_verification(request):
             return redirect('register')
         return render(request, 'home/register_verification.html', {})
 
-
-
 def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -127,3 +113,34 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('landing_page')
+
+def post_assigment(request):
+    if request.method == 'POST':
+        form = TrabajoForm(request.POST, request.FILES)
+        if form.is_valid():
+            trabajo = form.save()
+            trabajo.publicador = Usuario.objects.get(username = request.user)
+            trabajo.save()
+            return render(request, 'post/post_assignment_2.html', {'trabajo': trabajo})
+            #request.method = 'GET'
+            #return post_assignment_2(request)
+        else:
+            print(form.errors)
+    return render(request, 'post/post_assignment.html', {})
+
+def post_assignment_2(request):
+    if request.method == 'POST':
+        print(request.session['archivos'])
+    else:
+        context = {
+            'area': request.POST['area'],
+            'titulo': request.POST['titulo'],
+            'fecha': request.POST['fecha_expiracion'],
+            'descripcion': request.POST['descripcion'],
+            'archivos': request.FILES['archivos'],
+        }
+        request.session['archivos'] = request.FILES['archivos']
+        return render(request, 'post/post_assignment_2.html', context)
+
+def work_place(request):
+    return render(request, 'work_place/work_place.html', {})

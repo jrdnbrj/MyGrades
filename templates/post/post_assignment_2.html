@@ -35,11 +35,17 @@
                     <div class="Push-20" style="height: 28.8px;"></div>
                     <!-- End: Juvi - Push Empty Space 20px -->
                     <h4 class="text-left" style="width: 450px;">Assignment Description</h4><p class="form-control-plaintext">{{ trabajo.descripcion }}</p>
-                    <!-- Start: Juvi - Push Empty Space 20px -->
-                    <div class="Push-20" style="height: 28.8px;"></div>
-                    <!-- End: Juvi - Push Empty Space 20px -->
-                    <h5 class="text-left" style="width: 450px;">Related Documents List</h5>
-                    <!-- Start: List item --><span>{{ trabajo.archivos }}</span>
+                    {% if trabajo.archivos %}
+                        <!-- Start: Juvi - Push Empty Space 20px -->
+                        <div class="Push-20" style="height: 28.8px;"></div>
+                        <!-- End: Juvi - Push Empty Space 20px -->
+                        <h5 class="text-left" style="width: 450px;">Related Documents List</h5>
+                        <!-- Start: List item --><span>+ &nbsp {{ trabajo.archivos }}</span>
+                        <div class="Push-20" style="height: 13.8px;"></div>
+                    {% endif %}
+                    <br>
+                    <h5 class="text-left" style="width: 450px;">Price to pay</h5>
+                    <!-- Start: List item --><span>{{ trabajo.precio }}</span>
                     <!-- End: List item -->
                     <!-- Start: Juvi - Push Empty Space 20px -->
                     <div class="Push-20" style="height: 30px;"></div>
