@@ -146,8 +146,17 @@ def post_assignment_2(request):
         request.session['archivos'] = request.FILES['archivos']
         return render(request, 'post/post_assignment_2.html', context)
 
+def post_assigment_3(request):
+    return render(request, 'post/post_assignment_3.html', context)
+
+def pa_ajax(request):
+    if request.is_ajax:
+        pass
+    return JsonResponse(data={}, safe=False)
+
 def work_place(request):
-    return render(request, 'work_place/work_place.html', {})
+    trabajos = Trabajo.objects.filter(estado = 'publicado').order_by('fecha_expiracion')
+    return render(request, 'work_place/work_place.html', {'trabajos': trabajos})
 
 def requestAjax(request):
     data = {
@@ -167,17 +176,16 @@ def wp_ajax(request):
         date_from = request.POST['date_from']
         date_to = request.POST['date_to']
 
-        trabajos = Trabajo.objects.all()
+        trabajos = Trabajo.objects.filter(estado = 'publicado').order_by('fecha_expiracion')
         if title:
-            trabajos = trabajos.filter(titulo__contains = title)
+            trabajos = trabajos.filter(titulo__icontains = title)
         if area:
             trabajos = trabajos.filter(area = area)
         if date_from:
-            pass
-            #trabajos = trabajos.filter()
+            trabajos = trabajos.exclude(fecha_expiracion__lt=date_from)
         if date_to:
-            pass
+            trabajos = trabajos.exclude(fecha_publicacion__gt=date_to)
         print(len(trabajos), trabajos)
+        long = len(trabajos)
         trabajos = serializers.serialize('json', trabajos)
-    #print(area)
-    return JsonResponse(data={'trabajos': trabajos}, safe=False)
+    return JsonResponse(data={'trabajos': trabajos, 'len': long}, safe=False)

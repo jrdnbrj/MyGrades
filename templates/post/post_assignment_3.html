@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Post Assignment {% endblock %}
+{% block content %}
+{% load static %}
+<section class="call-to-action text-white text-center" style="background:url(static/images/WorkPlace-2.jpg) no-repeat center center;background-size:cover;">
+    <div class="overlay"></div>
+</section>
+<div class="Push-20" style="height: 14.4px;"></div>
+<div></div>
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-lg-3"></div>
+            <div class="col-md-4 col-lg-6">
+                <form method="post">
+                    <h2 class="text-center">Assignment price and payment</h2>
+                    <div class="form-group"><input class="form-control" type="text" name="price" placeholder="Price ($--.--)"></div>
+                    <div class="form-group"><input class="form-control" type="text" name="paypal" placeholder="PayPal"></div>
+                    <div class="form-group"><input class="form-control" type="password" name="paypalpassword" placeholder="PayPal Password"></div>
+                    <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Submit</button></div>
+                </form>
+            </div>
+            <div class="col-md-4 col-lg-3"></div>
+        </div>
+    </div>
+</div>
+<div></div>
+<div class="Push-20" style="height: 14.4px;"></div>
+<section class="showcase"></section>
+<section class="call-to-action text-white text-center" style="background:url(static/images/Desk-1.jpg) no-repeat center center;background-size:cover;">
+    <div class="overlay"></div>
+</section>
+{% endblock %}

@@ -9,4 +9,4 @@ class UsuarioForm(ModelForm):
 class TrabajoForm(ModelForm):
     class Meta:
         model = Trabajo
-        fields = ['titulo', 'area', 'fecha_expiracion', 'descripcion', 'archivos', 'precio',]
+        fields = ['titulo', 'area', 'fecha_expiracion', 'descripcion', 'archivos',]

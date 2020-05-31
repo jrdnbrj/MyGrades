@@ -29,7 +29,7 @@
     <form>
         <input placeholder="e.g Chemical Reactions Essay" name="words" id="title"></input><br>
         <select name="area" id="area">
-             <option>Area</option>
+             <option selected value>Select an area...</option>
              <option value="Literature">Literature</option>
              <option value="Social Sciences">Social Sciences</option>
              <option value="History">History</option>
@@ -56,8 +56,15 @@
             <div class="row">
                 <div class="col-md-4 col-lg-3"></div>
                 <div class="col-md-4 col-lg-6">
-                    <div class="Push-20" style="height: 10px;"></div><small class="form-text text-muted" style="margin: 0px;">Choose any assignment from the list below&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Make an offer!<br></small>
+                    <div class="Push-20" style="height: 10px;"></div><small class="form-text text-muted" style="margin: 0px;">Choose any assignment from the list below<span class="float-right" id="len_list">{{ trabajos | length }} results</span></small>
                     <ul class="list-group" id="list">
+                        {% for trabajo in trabajos %}
+                            <li class='list-group-item'>
+                                <span><a href=""> {{ trabajo.titulo }}</a></span>
+                                <span style='float: right' class='badge badge-secondary'>$ {{ trabajo.precio }}</span>
+                                <small class='form-text text-muted' style='margin: 0px;'>{{ trabajo.descripcion | slice:":245" }}...<br></small>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="col-md-4 col-lg-3"></div>
@@ -112,11 +119,12 @@
                 success: function(data){
                     var trabajos = JSON.parse(data.trabajos);
                     $('#list').html("");
+                    $('#len_list').html(data.len + " results");
                     for(var i = 0; i < trabajos.length; i++)
                         $('#list').append(
                         `
                         <li class='list-group-item'>
-                            <span>` + trabajos[i]['fields'].titulo + `</span>
+                            <span><a href="">` + trabajos[i]['fields'].titulo + `</a></span>
                             <span style='float: right' class='badge badge-secondary'>$ ` + trabajos[i]['fields'].precio + `</span>
                             <small class='form-text text-muted' style='margin: 0px;'>` + trabajos[i]['fields'].descripcion.substring(0, 245) + `...` + `<br></small>
                         </li>
@@ -130,8 +138,3 @@
     </script>
 
 {% endblock js %}
-<li class="list-group-item">
-    <span>Hola Perra</span>
-    <span style="margin-right: 5px;">Price</span>
-    <small class="form-text text-muted" style="margin: 0px;">Description<br></small>
-</li>
