@@ -27,9 +27,9 @@
             <div class="row">
                 <div class="col-md-12"><div class="filter">
     <form>
-        <input placeholder="e.g Chemical Reactions Essay" name="words"></input><br>
+        <input placeholder="e.g Chemical Reactions Essay" name="words" id="title"></input><br>
         <select name="area" id="area">
-             <option placeholder="Area">Area</option>
+             <option>Area</option>
              <option value="Literature">Literature</option>
              <option value="Social Sciences">Social Sciences</option>
              <option value="History">History</option>
@@ -42,9 +42,9 @@
              <option value="Computer Sciences">Computer Sciences</option>
         </select><br>
              <label for="start">From:</label>
-                <input type="date" name="date_from"/><br>
+                <input type="date" name="date_from" id="date_from"/><br>
              <label for="start">To:</label>
-                <input type="date" name="date_to"/>
+                <input type="date" name="date_to" id="date_to"/>
     </form>
 </div></div>
             </div>
@@ -83,25 +83,36 @@
 
     <script>
 
+        $('#title').on('change', inicio);
         $('#area').on('change', inicio);
+        $('#date_from').on('change', inicio);
+        $('#date_to').on('change', inicio);
 
         function inicio(){
-            var area = $(this).val();
+            var title = $('#title').val();
+            var area = $('#area').val();
+            var date_from = $('#date_from').val();
+            var date_to = $('#date_to').val();
+            console.log(title);
             console.log(area);
+            console.log(date_from);
+            console.log(date_to);
 
             var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
 
             $.ajax({
                 data: {'csrfmiddlewaretoken': csrfToken,
-                       'area': area},
+                       'title': title,
+                       'area': area,
+                       'date_from': date_from,
+                       'date_to': date_to
+                       },
                 url: "{% url 'wp_ajax' %}",
                 type: 'post',
                 success: function(data){
                     var trabajos = JSON.parse(data.trabajos);
-                    //console.log(trabajos[1]['fields'].titulo)
                     $('#list').html("");
                     for(var i = 0; i < trabajos.length; i++)
-                        //console.log(trabajo.titulo)
                         $('#list').append(
                         `
                         <li class='list-group-item'>

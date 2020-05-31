@@ -161,9 +161,23 @@ def requestAjax(request):
 
 def wp_ajax(request):
     if request.is_ajax and request.method == "POST":
-        print('----------------AJAX-------------------')
-        trabajos = Trabajo.objects.filter(area = request.POST['area'])
+        print(request.POST['title'], request.POST['area'], request.POST['date_from'], request.POST['date_to'])
+        title = request.POST['title']
+        area = request.POST['area']
+        date_from = request.POST['date_from']
+        date_to = request.POST['date_to']
+
+        trabajos = Trabajo.objects.all()
+        if title:
+            trabajos = trabajos.filter(titulo__contains = title)
+        if area:
+            trabajos = trabajos.filter(area = area)
+        if date_from:
+            pass
+            #trabajos = trabajos.filter()
+        if date_to:
+            pass
+        print(len(trabajos), trabajos)
         trabajos = serializers.serialize('json', trabajos)
-        print(trabajos)
     #print(area)
     return JsonResponse(data={'trabajos': trabajos}, safe=False)
