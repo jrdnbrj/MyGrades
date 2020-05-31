@@ -10,4 +10,5 @@ urlpatterns = [
     path('post', post_assigment, name='post_assignment'),
     #path('post2', post_assignment_2, name = 'post_assignment_2'),
     path('work_place', work_place, name='work_place'),
+    path('wp_ajax', wp_ajax, name='wp_ajax'),
 ]

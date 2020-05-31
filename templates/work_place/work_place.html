@@ -28,7 +28,7 @@
                 <div class="col-md-12"><div class="filter">
     <form>
         <input placeholder="e.g Chemical Reactions Essay" name="words"></input><br>
-        <select name="area">
+        <select name="area" id="area">
              <option placeholder="Area">Area</option>
              <option value="Literature">Literature</option>
              <option value="Social Sciences">Social Sciences</option>
@@ -52,17 +52,13 @@
     </div>
     <div>
         <div class="container">
+            {% csrf_token %}
             <div class="row">
                 <div class="col-md-4 col-lg-3"></div>
                 <div class="col-md-4 col-lg-6">
                     <div class="Push-20" style="height: 10px;"></div><small class="form-text text-muted" style="margin: 0px;">Choose any assignment from the list below&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Make an offer!<br></small>
-                    <ul
-                        class="list-group">
-                        <li class="list-group-item"><span>Assignment Title (Assignment Field)</span><span style="margin-right: 5px;">[$--]</span><small class="form-text text-muted" style="margin: 0px;">Assignment description<br></small></li>
-                        <li class="list-group-item"><span>Assignment Title (Assignment Field)</span><span style="margin-right: 5px;">[$--]</span><small class="form-text text-muted" style="margin: 0px;">Assignment description<br></small></li>
-                        <li class="list-group-item"><span>Assignment Title (Assignment Field)</span><span style="margin-right: 5px;">[$--]</span><small class="form-text text-muted" style="margin: 0px;">Assignment description<br></small></li>
-                        <li class="list-group-item"><span>...</span><span style="margin-right: 5px;">[$--]</span><small class="form-text text-muted" style="margin: 0px;">...<br></small></li>
-                        </ul>
+                    <ul class="list-group" id="list">
+                    </ul>
                 </div>
                 <div class="col-md-4 col-lg-3"></div>
             </div>
@@ -82,3 +78,49 @@
         <div class="overlay"></div>
     </section>
 {% endblock %}
+
+{% block js %}
+
+    <script>
+
+        $('#area').on('change', inicio);
+
+        function inicio(){
+            var area = $(this).val();
+            console.log(area);
+
+            var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+            $.ajax({
+                data: {'csrfmiddlewaretoken': csrfToken,
+                       'area': area},
+                url: "{% url 'wp_ajax' %}",
+                type: 'post',
+                success: function(data){
+                    var trabajos = JSON.parse(data.trabajos);
+                    //console.log(trabajos[1]['fields'].titulo)
+                    $('#list').html("");
+                    for(var i = 0; i < trabajos.length; i++)
+                        //console.log(trabajo.titulo)
+                        $('#list').append(
+                        `
+                        <li class='list-group-item'>
+                            <span>` + trabajos[i]['fields'].titulo + `</span>
+                            <span style='float: right' class='badge badge-secondary'>$ ` + trabajos[i]['fields'].precio + `</span>
+                            <small class='form-text text-muted' style='margin: 0px;'>` + trabajos[i]['fields'].descripcion.substring(0, 245) + `...` + `<br></small>
+                        </li>
+                        `);
+                }
+            }).fail(function (data){
+                alert("fail");
+            })
+        }
+
+    </script>
+
+{% endblock js %}
+<li class="list-group-item">
+    <span>Hola Perra</span>
+    <span style="margin-right: 5px;">Price</span>
+    <small class="form-text text-muted" style="margin: 0px;">Description<br></small>
+</li>

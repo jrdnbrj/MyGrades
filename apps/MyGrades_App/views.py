@@ -2,6 +2,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.core import serializers
+from django.http import HttpResponse
+from django.http import JsonResponse
+import json
 
 from .forms import *
 from .models import *
@@ -144,3 +148,22 @@ def post_assignment_2(request):
 
 def work_place(request):
     return render(request, 'work_place/work_place.html', {})
+
+def requestAjax(request):
+    data = {
+        'is_valid': False,}
+    if request.is_ajax():
+        message = request.POST.get('message')
+        if message == 'I want an AJAX response':
+            data.update(is_valid=True)
+            data.update(response= 'This is the response you wanted')
+    return JsonResponse(data)
+
+def wp_ajax(request):
+    if request.is_ajax and request.method == "POST":
+        print('----------------AJAX-------------------')
+        trabajos = Trabajo.objects.filter(area = request.POST['area'])
+        trabajos = serializers.serialize('json', trabajos)
+        print(trabajos)
+    #print(area)
+    return JsonResponse(data={'trabajos': trabajos}, safe=False)
