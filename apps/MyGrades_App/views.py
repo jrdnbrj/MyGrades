@@ -3,9 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core import serializers
-from django.http import HttpResponse
-from django.http import JsonResponse
-import json
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 from .forms import *
 from .models import *
@@ -28,11 +26,7 @@ def register(request):
         celular = request.POST['celular']
         password = request.POST['password']
         password_verify = request.POST['password-repeat']
-        print(email, username, password, password_verify)
         if password == password_verify:
-            print('-----------------REQUEST-----------------')
-            print(request.POST)
-            print('-----------------REQUEST-----------------')
             usuario = UsuarioForm(request.POST)
             if usuario.is_valid():
                 request.session['email'] = email
@@ -40,7 +34,6 @@ def register(request):
                 request.session['password'] = password
                 request.session['celular'] = celular
                 request.method = 'GET'
-                print(request.method, 'method')
                 return register_verification(request)
             else:
                 print(usuario.errors)
@@ -118,55 +111,41 @@ def signout(request):
     logout(request)
     return redirect('landing_page')
 
+#___________________________POST ASSIGNMENT_____________________________
+
 def post_assigment(request):
     if request.method == 'POST':
         form = TrabajoForm(request.POST, request.FILES)
         if form.is_valid():
-            trabajo = form.save()
+            trabajo = form.save(commit=False)
             trabajo.publicador = Usuario.objects.get(username = request.user)
             trabajo.save()
-            return render(request, 'post/post_assignment_2.html', {'trabajo': trabajo})
-            #request.method = 'GET'
-            #return post_assignment_2(request)
-        else:
-            print(form.errors)
+            request.session['id'] = trabajo.id
+            return redirect('post_assignment_3')
     return render(request, 'post/post_assignment.html', {})
 
 def post_assignment_2(request):
+    pass
+
+def post_assignment_3(request):
     if request.method == 'POST':
-        print(request.session['archivos'])
-    else:
-        context = {
-            'area': request.POST['area'],
-            'titulo': request.POST['titulo'],
-            'fecha': request.POST['fecha_expiracion'],
-            'descripcion': request.POST['descripcion'],
-            'archivos': request.FILES['archivos'],
-        }
-        request.session['archivos'] = request.FILES['archivos']
-        return render(request, 'post/post_assignment_2.html', context)
+        print(request.session['id'], request.POST['price'])
+        trabajo = Trabajo.objects.get(id = request.session.pop('id'))
+        trabajo.precio = request.POST['price']
+        trabajo.save()
+        return redirect('work_place')
+    return render(request, 'post/post_assignment_3.html', {})
 
-def post_assigment_3(request):
-    return render(request, 'post/post_assignment_3.html', context)
-
-def pa_ajax(request):
-    if request.is_ajax:
-        pass
-    return JsonResponse(data={}, safe=False)
+#___________________________WORK PLACE_____________________________
 
 def work_place(request):
     trabajos = Trabajo.objects.filter(estado = 'publicado').order_by('fecha_expiracion')
     return render(request, 'work_place/work_place.html', {'trabajos': trabajos})
 
-def requestAjax(request):
-    data = {
-        'is_valid': False,}
-    if request.is_ajax():
-        message = request.POST.get('message')
-        if message == 'I want an AJAX response':
-            data.update(is_valid=True)
-            data.update(response= 'This is the response you wanted')
-    return JsonResponse(data)
+def work_place_2(request, id):
+    #trabajo = Trabajo.objects.get(id = id)
+    trabajo = 1
+    return render(request, 'work_place/work_place_2.html', {'trabajo': trabajo})
 
 def wp_ajax(request):
     if request.is_ajax and request.method == "POST":
@@ -176,16 +155,21 @@ def wp_ajax(request):
         date_from = request.POST['date_from']
         date_to = request.POST['date_to']
 
-        trabajos = Trabajo.objects.filter(estado = 'publicado').order_by('fecha_expiracion')
-        if title:
-            trabajos = trabajos.filter(titulo__icontains = title)
+        trabajos = Trabajo.objects.filter(estado='publicado')
+
         if area:
-            trabajos = trabajos.filter(area = area)
+            trabajos = trabajos.filter(area=area)
         if date_from:
             trabajos = trabajos.exclude(fecha_expiracion__lt=date_from)
         if date_to:
             trabajos = trabajos.exclude(fecha_publicacion__gt=date_to)
-        print(len(trabajos), trabajos)
+        if title:
+            trabajos_title = trabajos.filter(titulo__icontains=title)
+            trabajos_description = trabajos.filter(descripcion__icontains=title)
+            trabajos = trabajos_title.union(trabajos_description)
+
+        trabajos = trabajos.order_by('fecha_expiracion')
+
         long = len(trabajos)
         trabajos = serializers.serialize('json', trabajos)
     return JsonResponse(data={'trabajos': trabajos, 'len': long}, safe=False)

@@ -8,23 +8,10 @@
     </section>
     <!-- Start: 2 Rows 1+2 Columns --><div>
     <div class="container">
-        <div class="row">
-            <div class="col-md-12 d-lg-flex justify-content-lg-center">
-                <div class="btn-toolbar">
-                    <div role="group" class="btn-group"><button class="btn btn-secondary border rounded" type="button">Post Assignment</button><button class="btn btn-light border rounded" type="button">Start Earning</button></div>
-                    <div role="group" class="btn-group"></div>
-                </div>
-                <ul class="nav nav-pills text-capitalize text-center">
-                    <li class="nav-item"></li>
-                    <li class="nav-item"></li>
-                    <li class="nav-item"></li>
-                </ul>
-            </div>
-        </div>
 
         <form action="{% url 'post_assignment' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="progress">
+        <div class="progress mt-3">
             <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" aria-valuemin="0" aria-valuemax="100" id="progress_bar">0%</div>
         </div>
         <div class="row">
@@ -33,7 +20,7 @@
                 <h4 class="text-left">Assignment Field</h4>
                 <div class="dropdown">
                     <select class="form-control col-5" name="area" id="area" required>
-                        <option selected value>Select...</option>
+                        <option value>Select...</option>
                         <option value="Literature">Literature</option>
                         <option value="Social Sciences">Social Sciences</option>
                         <option value="History">History</option>
@@ -57,29 +44,66 @@
                 <h4 class="text-left">Dead Line</h4><input class="form-control" name="fecha_expiracion" type="date" id="date" required/>
                 <br>
                 <h4 class="text-left">Related Documents</h4><small class="form-text text-muted">Upload any assignment related documents (rubrics, forms, questionnaires, documents to be filld and any main format documents)</small>
-                <div class="form-group files color"><input type="file" name="archivos"></div>
+                <div class="form-group files color"><input type="file" name="archivos" id="archivos"></div>
             </div>
         </div>
     </div>
 </div>
-    <!-- End: 2 Rows 1+2 Columns -->
-    <!-- Start: 1 Row 1 Column --><div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12"><button class="btn btn-primary d-lg-flex ml-auto justify-content-lg-end" type="submit" style="width: 72;">Next</button></div>
+
+<div class="Push-20" style="height: 14.4px;"></div>
+<hr>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-lg-3"></div>
+                <div class="col-md-4 col-lg-6">
+                    <h4 class="text-left" style="width: 450px;" id="title_area"></h4>
+                    <small class="form-text text-muted" style="margin: 0px;" id="date2"><br></small>
+                    <div class="Push-20" style="height: 28.8px;"></div>
+                    <h4 class="text-left" style="width: 450px;" id="description_title">Assignment Description</h4>
+                    <p class="form-control-plaintext" id="description2"></p>
+                    <div class="Push-20" style="height: 28.8px;"></div>
+                    <h5 class="text-left" style="width: 450px;" id="archivos_title">Related Documents List</h5>
+                    <div id="archivos2"></div>
+                    <div class="Push-20" style="height: 13.8px;"></div>
+                    <div class="Push-20" style="height: 30px;"></div>
+                </div>
+                <div class="col-md-4 col-lg-3"></div>
+            </div>
         </div>
     </div>
-</div>
+    <!-- End: 1 Row 3 Columns -->
+    <!-- Start: 1 Row 1 Column -->
+    <div>
+        <div class="container">
+            <!-- Start: Juvi - Push Empty Space 20px -->
+            <div class="Push-20" style="height: 14.4px;"></div>
+            <!-- End: Juvi - Push Empty Space 20px -->
+            <div class="row">
+                <div class="col" style="height: 38px;"></div>
+                <div class="col" style="height: 38px;"></div>
+                <div class="col">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-primary border rounded" type="submit">Submit</button>
+                    </div>
+                </div>
+                <div class="col" style="height: 38px;"></div>
+            </div>
+        </div>
+    </div>
 </form>
     <!-- End: 1 Row 1 Column -->
-    <!-- Start: Juvi - Push Empty Space 20px --><div class="Push-20" style="height: 14.4px;"></div>
-    <!-- End: Juvi - Push Empty Space 20px --><section class="showcase"></section>
-    <section class="call-to-action text-white text-center" style="background:url({% static 'images/Desk-1.jpg' %}) no-repeat center center;background-size:cover;">
-        <div class="overlay"></div>
-    </section>
+    <!-- Start: Juvi - Push Empty Space 20px -->
+    <div class="Push-20" style="height: 14.4px;"></div>
+    <!-- End: Juvi - Push Empty Space 20px -->
+
+<section class="call-to-action text-white text-center" style="background:url({% static 'images/Desk-1.jpg' %}) no-repeat center center;background-size:cover;">
+    <div class="overlay"></div>
+</section>
 
 </body>
 {% endblock %}
+
 {% block js %}
 <script>
     $(document).ready(progress);
@@ -87,23 +111,47 @@
     $('#title').on('change', progress);
     $('#description').on('change', progress);
     $('#date').on('change', progress);
+    $('#archivos').on('change', progress);
+
     function progress(){
-        var area = $('#area').val();
-        var title = $('#title').val();
-        var description = $('#description').val();
-        var date = $('#date').val();
+        var area = $.trim($('#area').val());
+        var title = $.trim($('#title').val());
+        var description = $.trim($('#description').val());
+        var date = $.trim($('#date').val());
+        var archivos = $.trim($('#archivos').val());
 
         var components = [area, title, description, date]
         var cont = 0;
         for(var i=0; i<components.length; i++){
-            if($.trim(components[i]) != ""){
+            if(components[i] != ""){
                 cont = cont + 1;
             }
         }
 
         var percent = (cont / components.length) * 100;
-        $('#progress_bar').css('width', percent + '%')
-        $('#progress_bar').html(percent + '%')
+        $('#progress_bar').css('width', percent + '%');
+        $('#progress_bar').html(percent + '%');
+
+        if(title != "" || area != "" ){
+            $('#title_area').html(title + ' - ' + area);
+        }else{
+             $('#title_area').html("");
+        }
+        $('#date2').html(date);
+        if(description != ""){
+            $('#description_title').show();
+            $('#description2').html(description);
+        }else{
+            $('#description_title').hide();
+            $('#description2').html("");
+        }
+        if(archivos){
+            $('#archivos_title').show();
+            $('#archivos2').html('+ ' + archivos.split('\\')[2]);
+        }else{
+            $('#archivos_title').hide();
+            $('#archivos2').html("")
+        }
     }
 </script>
 {% endblock js %}
