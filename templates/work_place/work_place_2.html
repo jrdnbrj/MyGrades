@@ -1,37 +1,40 @@
 {% extends 'base.html' %}
-{% block title %} {{ title }} Post Assignment {% endblock %}
+{% block title %} {{ title }} WorkPlace {% endblock %}
 {% block content %}
 {% load static %}
 <section class="call-to-action text-white text-center" style="background:url(/static/images/WorkPlace-2.jpg) no-repeat center center;background-size:cover;">
         <div class="overlay"></div>
     </section>
+   <div>
+        <div class="Push-20" style="height: 14.4px;"></div>
+    </div>
     <div>
         <div class="container">
             <div class="row">
-                <div class="col-md-4 col-lg-3"></div>
+                <div class="col-md-4 col-lg-2"></div>
                 <div class="col-md-4 col-lg-6">
-                    <div class="Push-20" style="height: 10px;"></div>
-                    <h4 class="text-left" style="width: 450px;">{{ trabajo.titulo }} - {{ trabajo.area }}</h4><small class="form-text text-muted" style="margin: 0px;">{{ trabajo.fecha_publicacion }} - {{ trabajo.fecha_expiracion }}<br></small>
+                    <h4 class="text-left" style="width: 450px;">{{ trabajo.titulo }}&nbsp;-&nbsp;{{ trabajo.area }}</h4><small class="form-text text-muted" style="margin: 0px;">{{ trabajo.fecha_publicacion }} - {{ trabajo.fecha_expiracion }}<br></small>
                     <div class="Push-20" style="height: 28.8px;"></div>
                     <h4 class="text-left" style="width: 450px;">Assignment Description</h4><p class="form-control-plaintext">{{ trabajo.descripcion }}</p>
                     <div class="Push-20" style="height: 28.8px;"></div>
-                    <h5 class="text-left" style="width: 450px;">Related Documents List</h5>+ {{ trabajo.archivos }}<br>
+                    {% if trabajo.archivos %}
+                    <h5 class="text-left" style="width: 450px;">Related Documents List</h5>+&nbsp{{trabajo.archivos }}<br>
                     <div class="Push-20" style="height: 30px;"></div>
+                    {% endif %}
                 </div>
-                <div class="col-md-4 col-lg-3"></div>
+                <div class="col-md-4 col-lg-2"><button class="btn btn-success border rounded" type="button" disabled>{{ trabajo.precio }}</button></div>
+                <div class="col-md-4 col-lg-2"></div>
             </div>
         </div>
     </div>
-    <div class="col-md-4 col-lg-2">
-        <span class="text-center border rounded border-success" style="color: rgb(170,170,170);height: 38px;width: 70.5626px;">{{ trabajo.price }}</span></div>
-    <div class="col-md-4 col-lg-2"></div>
+    <div></div>
     <div>
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-lg-3"></div>
                 <div class="col-md-4 col-lg-3"></div>
                 <div class="col-md-4 col-lg-3"></div>
-                <div class="col-md-4 col-lg-3"></div>
+                <div class="col-md-4 col-lg-3"><button class="btn btn-primary" type="button" onclick="location.href='{% url 'work_place_3' trabajo.id %}'">Next</button></div>
             </div>
         </div>
     </div>

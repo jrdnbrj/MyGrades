@@ -4,4 +4,5 @@ from .models import *
 # Register your models here.
 
 admin.site.register(Usuario)
+admin.site.register(Cuenta_Bancaria)
 admin.site.register(Trabajo)

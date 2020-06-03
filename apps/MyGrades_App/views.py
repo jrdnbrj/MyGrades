@@ -142,11 +142,6 @@ def work_place(request):
     trabajos = Trabajo.objects.filter(estado = 'publicado').order_by('fecha_expiracion')
     return render(request, 'work_place/work_place.html', {'trabajos': trabajos})
 
-def work_place_2(request, pk):
-    trabajo = Trabajo.objects.get(pk = pk)
-    #trabajo = 1
-    return render(request, 'work_place/work_place_2.html', {'trabajo': trabajo})
-
 def wp_ajax(request):
     if request.is_ajax and request.method == "POST":
         print(request.POST['title'], request.POST['area'], request.POST['date_from'], request.POST['date_to'])
@@ -173,3 +168,27 @@ def wp_ajax(request):
         long = len(trabajos)
         trabajos = serializers.serialize('json', trabajos)
     return JsonResponse(data={'trabajos': trabajos, 'len': long}, safe=False)
+
+def work_place_2(request, pk):
+    trabajo = Trabajo.objects.get(pk = pk)
+    return render(request, 'work_place/work_place_2.html', {'trabajo': trabajo})
+
+def work_place_3(request, id):
+    print(id)
+    trabajo = Trabajo.objects.get(id = id)
+    fecha_expiracion = trabajo.fecha_expiracion
+
+    context = {'fecha_expiracion': fecha_expiracion, 'id': id}
+    return render(request, 'work_place/work_place_3.html', context)
+
+def work_place_4(request, id):
+    trabajo = Trabajo.objects.get(id = id)
+    trabajo.trabajador = Usuario.objects.get(username = request.user.username)
+    trabajo.estado = 'asignado'
+    trabajo.save()
+
+    fecha_expiracion = trabajo.fecha_expiracion
+    titulo = trabajo.titulo
+
+    context = {'fecha_expiracion': fecha_expiracion, 'titulo': titulo}
+    return render(request, 'work_place/work_place_4.html', context)

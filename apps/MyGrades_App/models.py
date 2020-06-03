@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+
 class Usuario(models.Model):
     id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=20)
@@ -10,7 +11,19 @@ class Usuario(models.Model):
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.username + ' -> ' + self.mail
+        return self.username
+
+class Cuenta_Bancaria(models.Model):
+    id = models.AutoField(primary_key=True)
+    usuario = models.ForeignKey(Usuario, null=True, on_delete=models.CASCADE, related_name='usuario')
+    numero_cuenta = models.CharField(max_length=20)
+    nombre_completo = models.CharField(max_length=70)
+    numero_cedula = models.CharField(max_length=15, null=True, blank=True)
+    nombre_banco = models.CharField(max_length=40)
+    tipo_cuenta = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.usuario
 
 class Trabajo(models.Model):
     id = models.AutoField(primary_key=True)

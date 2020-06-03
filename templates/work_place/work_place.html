@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} {{ title }} Post Assignment {% endblock %}
+{% block title %} {{ title }} WorkPlace {% endblock %}
 {% block content %}
 {% load static %}
 <section class="call-to-action text-white text-center" style="background:url(/static/images/WorkPlace-2.jpg) no-repeat center center;background-size:cover;">
@@ -97,8 +97,6 @@
                 type: 'post',
                 success: function(data){
                     var trabajos = JSON.parse(data.trabajos);
-                    //console.log(trabajos)
-                    //console.log('------------')
                     $('#list').html("");
                     $('#len_list').html(data.len + " results");
                     for(var i = 0; i < trabajos.length; i++){
