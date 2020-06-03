@@ -142,9 +142,9 @@ def work_place(request):
     trabajos = Trabajo.objects.filter(estado = 'publicado').order_by('fecha_expiracion')
     return render(request, 'work_place/work_place.html', {'trabajos': trabajos})
 
-def work_place_2(request, id):
-    #trabajo = Trabajo.objects.get(id = id)
-    trabajo = 1
+def work_place_2(request, pk):
+    trabajo = Trabajo.objects.get(pk = pk)
+    #trabajo = 1
     return render(request, 'work_place/work_place_2.html', {'trabajo': trabajo})
 
 def wp_ajax(request):
