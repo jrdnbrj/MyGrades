@@ -181,6 +181,12 @@ def work_place_3(request, id):
     context = {'fecha_expiracion': fecha_expiracion, 'id': id}
     return render(request, 'work_place/work_place_3.html', context)
 
+def download_file(request, path):
+    response = HttpResponse(open('media/' + path, 'rb').read())
+    response['Content-Type'] = 'text/plain'
+    response['Content-Disposition'] = 'attachment; filename='+path
+    return response
+
 def work_place_4(request, id):
     trabajo = Trabajo.objects.get(id = id)
     trabajo.trabajador = Usuario.objects.get(username = request.user.username)

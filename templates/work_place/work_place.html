@@ -25,10 +25,10 @@
              <option value="Engineering">Engineering</option>
              <option value="Computer Sciences">Computer Sciences</option>
         </select><br>
-             <label for="start">From:</label>
-                <input type="date" name="date_from" id="date_from"/><br>
-             <label for="start">To:</label>
-                <input type="date" name="date_to" id="date_to"/>
+            <label for="start">From:</label>
+            <input type="date" name="date_from" id="date_from"/><br>
+            <label for="start">To:</label>
+            <input type="date" name="date_to" id="date_to"/>
     </form>
 </div></div>
             </div>
@@ -38,14 +38,12 @@
         <div class="container">
             {% csrf_token %}
             <div class="row">
-                <div class="col-md-4 col-lg-3"></div>
-                <div class="col-md-4 col-lg-6">
+                <div class="col-xl-8 mx-auto">
                     <div class="Push-20" style="height: 10px;"></div><small class="form-text text-muted" style="margin: 0px;">Choose any assignment from the list below<span class="float-right" id="len_list">{{ trabajos | length }} results</span></small>
                     <ul class="list-group" id="list">
-                        
+
                     </ul>
                 </div>
-                <div class="col-md-4 col-lg-3"></div>
             </div>
         </div>
     </div>
@@ -106,7 +104,7 @@
                         <li class='list-group-item'>` + `
                             <span><a href="/work_place_2/` + pk + `">`+trabajos[i]['fields'].titulo+`</a></span>
                             <span style="float: right" class='badge badge-secondary'>$ ` + trabajos[i]['fields'].precio + `</span>
-                            <small class='form-text text-muted' style='margin: 0px;'>` + trabajos[i]['fields'].descripcion.substring(0, 245) + `...` + `<br></small>
+                            <small class='form-text text-muted' style='margin: 0px;'>` + trabajos[i]['fields'].descripcion.substring(0, 350) + `...` + `<br></small>
                         </li>
                         `);
                     }

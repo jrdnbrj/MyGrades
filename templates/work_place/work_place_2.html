@@ -18,7 +18,7 @@
                     <h4 class="text-left" style="width: 450px;">Assignment Description</h4><p class="form-control-plaintext">{{ trabajo.descripcion }}</p>
                     <div class="Push-20" style="height: 28.8px;"></div>
                     {% if trabajo.archivos %}
-                    <h5 class="text-left" style="width: 450px;">Related Documents List</h5>+&nbsp{{trabajo.archivos }}<br>
+                    <h5 class="text-left" style="width: 450px;">Related Documents List</h5>+&nbsp<a href="{% url 'media/' trabajo.archivos %}">{{ trabajo.archivos }}</a><br>
                     <div class="Push-20" style="height: 30px;"></div>
                     {% endif %}
                 </div>
