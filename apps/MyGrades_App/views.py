@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
+import datetime
 
 from .forms import *
 from .models import *
@@ -201,12 +202,13 @@ def work_place_4(request, id):
     trabajo = Trabajo.objects.get(id = id)
     trabajo.trabajador = Usuario.objects.get(username = request.user.username)
     trabajo.estado = 'taken'
+    trabajo.fecha_asignacion_trabajador = datetime.datetime.now()
     trabajo.save()
 
-    fecha_expiracion = trabajo.fecha_expiracion
-    titulo = trabajo.titulo
-
-    context = {'fecha_expiracion': fecha_expiracion, 'titulo': titulo}
+    context = {
+        'fecha_expiracion': trabajo.fecha_expiracion,
+        'titulo': trabajo.titulo,
+    }
     return render(request, 'work_place/work_place_4.html', context)
 
 #___________________________USER INTERFACE_____________________________
@@ -221,7 +223,6 @@ def user_interface(request):
         'posted_assignments': posted_assignments,
         'taken_assignments': taken_assignments,
     }
-    #print(context)
     return render(request, 'user_interface/user_interface.html', context)
 
 @login_required
