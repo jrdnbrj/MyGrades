@@ -115,6 +115,7 @@ def signout(request):
 
 def post_assigment(request):
     if request.method == 'POST':
+        print(request.POST)
         form = TrabajoForm(request.POST, request.FILES)
         if form.is_valid():
             trabajo = form.save(commit=False)
@@ -122,6 +123,8 @@ def post_assigment(request):
             trabajo.save()
             request.session['id'] = trabajo.id
             return redirect('post_assignment_3')
+        else:
+            print(form.errors)
     return render(request, 'post/post_assignment.html', {})
 
 def post_assignment_2(request):
@@ -150,7 +153,7 @@ def wp_ajax(request):
         date_from = request.POST['date_from']
         date_to = request.POST['date_to']
 
-        trabajos = Trabajo.objects.filter(estado='publicado')
+        trabajos = Trabajo.objects.filter(estado='published')
 
         if area:
             trabajos = trabajos.filter(area=area)
@@ -198,3 +201,23 @@ def work_place_4(request, id):
 
     context = {'fecha_expiracion': fecha_expiracion, 'titulo': titulo}
     return render(request, 'work_place/work_place_4.html', context)
+
+#___________________________USER INTERFACE_____________________________
+
+def user_interface(request):
+    user = Usuario.objects.get(username = request.user.username)
+    posted_assignments = Trabajo.objects.filter(publicador = user.id)
+    taken_assignments = Trabajo.objects.filter(trabajador = user.id)
+
+    context = {
+        'posted_assignments': posted_assignments,
+        'taken_assignments': taken_assignments,
+    }
+    #print(context)
+    return render(request, 'user_interface/user_interface.html', context)
+
+def user_interface_2(request):
+    return render(request, 'user_interface/user_interface_2.html', {})
+
+def user_interface_3(request):
+    return render(request, 'user_interface/user_interface_3.html', {})

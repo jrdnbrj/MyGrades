@@ -14,7 +14,7 @@
             </nav>
         {% if user.is_authenticated %}
         </div>
-            <span>Hi, {{ user.username | title }}</span>
+            <span>Hi, <a href="{% url 'user_interface' %}">{{ user.username | title }}</a></span>
             <a class="btn btn-info ml-3" href="{% url 'signout' %}">Sign Out</a>
         </div>
         {% else %}

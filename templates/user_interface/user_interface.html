@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} User Interface {% endblock %}
+{% block content %}
+{% load static %}
+<body>
+    <section class="call-to-action text-white text-center" style="background:url('{% static 'images/WorkPlace-2.jpg'%}') no-repeat center center;background-size:cover;">
+        <div class="overlay"></div>
+    </section>
+<div></div>
+    <div>
+        <div class="Push-20" style="height: 7.2px;"></div>
+    </div>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="panel panel-default">
+                        <ul class="nav nav-tabs panel-heading">
+                            <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#tab-1">Posted Assignments</a></li>
+                            <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#tab-2">Taken Assigments</a></li>
+                        </ul>
+                        <div class="tab-content panel-body">
+                            <div class="tab-pane" role="tabpanel" id="tab-1">
+                                <div role="tablist" id="accordion-1">
+
+
+                                    {% for trabajo in posted_assignments %}
+
+                                        {% if trabajo %}
+
+                                                <div class="card">
+                                                    <div class="card-header" role="tab">
+                                                        <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false" aria-controls="accordion-1 .item-{{ trabajo.id }}" href="#accordion-1 .item-{{ trabajo.id }}">{{ trabajo.titulo }}</a></h5>
+                                                    </div>
+                                                    <div class="collapse item-{{ trabajo.id }}" role="tabpanel" data-parent="#accordion-1">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-6"><span><br></span></div>
+                                                                <div class="col-sm-6 col-lg-2"><span><strong>Cost</strong></span></div>
+                                                                <div class="col-sm-6 col-lg-2"><span><strong>Status</strong></span></div>
+                                                                <div class="col-sm-6 col-lg-2"><span><br></span></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <p class="card-text">{{ trabajo.descripcion | slice:':120'}}</p>
+                                                                </div>
+                                                                <div class="col-sm-6 col-lg-2"><span>{{ trabajo.precio }}</span></div>
+                                                                <div class="col-sm-6 col-lg-2"><button class="btn btn-success border rounded d-lg-flex" type="button">{{ trabajo.estado }}</button></div>
+                                                                <div class="col-sm-6 col-lg-2"><button class="btn btn-secondary border rounded" type="button">Edit</button></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                        {% else %}
+
+                                                <div class="card">
+                                                    <div class="card-header" role="tab">
+                                                        <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false" aria-controls="accordion-1 .item-{{ trabajo.id }}" href="#accordion-1 .item-{{ trabajo.id }}">{{ trabajo.titulo }}</a></h5>
+                                                    </div>
+                                                    <div class="collapse item-{{ trabajo.id }}" role="tabpanel" data-parent="#accordion-1">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-6"><span><br></span></div>
+                                                                <div class="col-sm-6 col-lg-2"><span><strong>Cost</strong></span></div>
+                                                                <div class="col-sm-6 col-lg-2"><span><strong>Status</strong></span></div>
+                                                                <div class="col-sm-6 col-lg-2"><span><br></span></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <p class="card-text">{{ trabajo.descripcion | slice:':120'}}</p>
+                                                                </div>
+                                                                <div class="col-sm-6 col-lg-2"><span>{{ trabajo.precio }}</span></div>
+                                                                <div class="col-sm-6 col-lg-2"><button class="btn btn-success border rounded d-lg-flex" type="button">{{ trabajo.estado }}</button></div>
+                                                                <div class="col-sm-6 col-lg-2"><button class="btn btn-secondary border rounded" type="button">Edit</button></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                        {% endif %}
+
+                                    {% endfor %}
+
+
+                                </div>
+                            </div>
+                            <div class="tab-pane active" role="tabpanel" id="tab-2">
+                                <div role="tablist" id="accordion-2">
+                                    <div class="card">
+                                        <div class="card-header" role="tab">
+                                            <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false" aria-controls="accordion-2 .item-1" href="#accordion-2 .item-1">Assignment Name</a></h5>
+                                        </div>
+                                        <div class="collapse item-1" role="tabpanel" data-parent="#accordion-2">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-6"><span><br></span></div>
+                                                    <div class="col-sm-6 col-lg-2"><span><strong>Payment</strong></span></div>
+                                                    <div class="col-sm-6 col-lg-2"><span><strong>Status</strong></span></div>
+                                                    <div class="col-sm-6 col-lg-2"><span><br></span></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <p class="card-text">Assignment description</p>
+                                                    </div>
+                                                    <div class="col-sm-6 col-lg-2"><span>$--.--</span></div>
+                                                    <div class="col-sm-6 col-lg-2"><button class="btn btn-success border rounded d-lg-flex" type="button">Sent</button></div>
+                                                    <div class="col-sm-6 col-lg-2"><span>[] days left</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" role="tab">
+                                            <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false" aria-controls="accordion-2 .item-2" href="#accordion-2 .item-2"><strong>Assignment Name</strong><br></a></h5>
+                                        </div>
+                                        <div class="collapse item-2" role="tabpanel" data-parent="#accordion-2">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-6"><span><br></span></div>
+                                                    <div class="col-sm-6 col-lg-2"><span><strong>Payment</strong></span></div>
+                                                    <div class="col-sm-6 col-lg-2"><span><strong>Status</strong></span></div>
+                                                    <div class="col-sm-6 col-lg-2"><span><br></span></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <p class="card-text">Assignment description</p>
+                                                    </div>
+                                                    <div class="col-sm-6 col-lg-2"><span>$--.--</span></div>
+                                                    <div class="col-sm-6 col-lg-2"><button class="btn btn-success border rounded" type="button">Sent</button></div>
+                                                    <div class="col-sm-6 col-lg-2"><span>[] days left</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" role="tab">
+                                            <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="true" aria-controls="accordion-2 .item-3" href="#accordion-2 .item-3"><strong>Assignment Name</strong><br></a></h5>
+                                        </div>
+                                        <div class="collapse show item-3" role="tabpanel" data-parent="#accordion-2">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-6 col-lg-4"><span><br></span></div>
+                                                    <div class="col-sm-6 col-lg-2"><span><strong>Payment</strong></span></div>
+                                                    <div class="col-sm-6 col-lg-4"><span><strong>Status</strong></span></div>
+                                                    <div class="col-sm-6 col-lg-2"><span><br></span></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6 col-lg-4">
+                                                        <p class="card-text">Assignment description</p>
+                                                    </div>
+                                                    <div class="col-sm-6 col-lg-2"><span>$--.--</span></div>
+                                                    <div class="col-sm-6 col-lg-4">
+                                                        <div role="tablist" id="accordion-3">
+                                                            <div class="card">
+                                                                <div class="card-header" role="tab">
+                                                                    <h5 class="mb-0"><a class="text-danger" data-toggle="collapse" aria-expanded="true" aria-controls="accordion-77 .item-77" href="#accordion-77 .item-77">Sends</a></h5>
+                                                                </div>
+                                                                <div class="collapse show item-77" role="tabpanel" data-parent="#accordion-77">
+                                                                    <div class="card-body">
+                                                                        <div class="form-group files color">
+                                                                            <input type="file" class="custom-file-input" name="files">
+                                                                        </div>
+                                                                        <button class="btn btn-primary border rounded d-lg-flex ml-auto" type="button">Send</button></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-lg-2"><span>[] days left</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div class="Push-20" style="height: 14.4px;"></div>
+    <section class="showcase"></section>
+    <section class="call-to-action text-white text-center" style="background:url({% static 'images/Desk-1.jpg' %}) no-repeat center center;background-size:cover;">
+    <div class="overlay"></div>
+</section>
+
+</body>
+{% endblock %}

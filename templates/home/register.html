@@ -8,12 +8,16 @@
         <form method="post">
             {% csrf_token %}
             <h2 class="text-center"><strong>Create</strong> an account</h2>
-            <div class="form-group"><input class="form-control" type="text" name="username" placeholder="User name" required></div>
-            <div class="form-group"><input class="form-control" type="email" name="mail" placeholder="Email" value="{{ email }}" required></div>
+            <div class="form-group"><input class="form-control" type="text" name="username" placeholder="Username" id="username" required></div>
+            <div class="form-group"><input class="form-control" type="email" name="mail" placeholder="Email" id="email" value="{{ email }}" required></div>
             <div class="form-group"><input class="form-control" type="tel" name="celular" placeholder="Phone number (optional)"></div>
-            <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password" required></div>
-            <div class="form-group"><input class="form-control" type="password" name="password-repeat" placeholder="Rewrite Password" required></div>
-            <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Next</button></div><span class="already" href="#">You already have an account? <a class="already" href="{% url 'signin' %}">SignIn here</a></span></form>
+            <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password" id="password" required></div>
+            <div class="form-group">
+                <input class="form-control" type="password" name="password-repeat" placeholder="Rewrite Password" required id="password-repeat">
+                <small style="color: red" id="password-error">hola</small>
+            </div>
+            <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id="next" disabled>Next</button></div>
+            <span class="already" href="#">You already have an account? <a class="already" href="{% url 'signin' %}">SignIn here</a></span></form>
         </form>
     </div>
 </div>
@@ -22,3 +26,47 @@
 <div></div>
 <section class="showcase"></section>
 {% endblock %}
+{% block js %}
+    <script>
+        $('#username').on('keyup', validate);
+        $('#email').on('keyup', validate);
+        $('#password').on('keyup', validate);
+        $('#password-repeat').on('keyup', validate);
+
+        function validate(){
+            var username = $.trim($('#username').val());
+            var email = $.trim($('#email').val());
+            var password = $.trim($('#password').val());
+            var password_repeat = $.trim($('#password-repeat').val());
+
+            var components = [username, email, password, password_repeat]
+            var cont = 0;
+            console.log(components)
+            for(var i=0; i<components.length; i++){
+                if(components[i] != ""){
+                    cont = cont + 1;
+                }
+            }
+            if(cont == 4){
+                $('#next').prop('disabled', false);
+            }else{
+                $('#next').prop('disabled', true);
+            }
+            if(password.length > 7){
+                $('#password-repeat').prop('disabled', false);
+                $('#next').prop('disabled', false);
+            }else{
+                $('#password-repeat').prop('disabled', true);
+                $('#next').prop('disabled', true);
+            }
+            if(password_repeat != password && password != "" && password_repeat != ""){
+                $('#password-error').prop('disabled', true );
+                $('#next').prop('disabled', true);
+            }else{
+                
+                $('#password-error').prop('disabled', true);
+                $('#next').prop('disabled', false);
+            }
+        }
+    </script>
+{% endblock js %}

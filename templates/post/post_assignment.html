@@ -19,7 +19,7 @@
                 <div class="Push-20" style="height: 28.8px;"></div>
                 <h4 class="text-left">Assignment Field</h4>
                 <div class="dropdown">
-                    <select class="form-control col-5" name="area" id="area" required>
+                    <select class="row form-control col-5" name="area" id="area" required>
                         <option value>Select...</option>
                         <option value="Literature">Literature</option>
                         <option value="Social Sciences">Social Sciences</option>
@@ -33,18 +33,22 @@
                         <option value="Computer Sciences">Computer Sciences</option>
                     </select>
                 </div>
-                <small class="form-text text-muted" style="margin: 0px;">Write assignment title</small><textarea class="form-control" name="titulo" style="width: 450px;height: 57.6px;" placeholder="Type..." id="title" required></textarea>
+                <small class="form-text text-muted" style="margin: 0px;">Write assignment title</small>
+                <textarea class="row form-control" name="titulo" placeholder="Type..." id="title" required></textarea>
                 <br>
-                <h4 class="text-left">Assignment Description</h4><small class="form-text text-muted" style="margin: 0px;">Describe in detail your assignment, include requirements, complexity, format and related topics</small>
-                <textarea class="form-control" name="descripcion" style="width: 450px;height: 115.2px;" id="description" placeholder="Type..." required></textarea>
+                <h4 class="text-left">Assignment Description</h4><small class="form-text text-muted">Describe in detail your assignment, include requirements, complexity, format and related topics</small>
+                <textarea class="row form-control" style="height:150px" name="descripcion" id="description" placeholder="Type..." required></textarea>
                 <div class="clearfix"></div>
             </div>
             <div class="col-md-6">
                 <div class="Push-20" style="height: 14.5px;"></div>
-                <h4 class="text-left">Dead Line</h4><input class="form-control" name="fecha_expiracion" type="date" id="date" required/>
-                <br>
+                <h4 class="text-left">Dead Line</h4>
+                <div class="row">
+                    <input class="col form-control" type="datetime-local" id="date" name="fecha_expiracion" required>
+                </div>
+                </br>
                 <h4 class="text-left">Related Documents</h4><small class="form-text text-muted">Upload any assignment related documents (rubrics, forms, questionnaires, documents to be filld and any main format documents)</small>
-                <div class="form-group files color"><input type="file" name="archivos" id="archivos"></div>
+                <div class="form-group files color"><input type="file" onchange="readURL(this);" class="custom-file-input" style="cursor: pointer" name="archivos" id="archivos"></div>
             </div>
         </div>
     </div>
@@ -55,8 +59,8 @@
     <div>
         <div class="container">
             <div class="row">
-                <div class="col-md-4 col-lg-3"></div>
-                <div class="col-md-4 col-lg-6">
+                <div class="col-lg-8 mx-auto">
+                    <h1 class="text-center">PREVIEW</h1><br>
                     <h4 class="text-left" style="width: 450px;" id="title_area"></h4>
                     <small class="form-text text-muted" style="margin: 0px;" id="date2"><br></small>
                     <div class="Push-20" style="height: 28.8px;"></div>
@@ -64,11 +68,13 @@
                     <p class="form-control-plaintext" id="description2"></p>
                     <div class="Push-20" style="height: 28.8px;"></div>
                     <h5 class="text-left" style="width: 450px;" id="archivos_title">Related Documents List</h5>
-                    <div id="archivos2"></div>
+                    <div id="archivos2"></div><span id="file_text" class="text-danger"></span><br>
+                    <div class="embed-responsive embed-responsive-21by9" id="frame">
+                        <iframe src="" id="file_iframe" class="embed-responsive-item"></iframe>
+                    </div>
                     <div class="Push-20" style="height: 13.8px;"></div>
                     <div class="Push-20" style="height: 30px;"></div>
                 </div>
-                <div class="col-md-4 col-lg-3"></div>
             </div>
         </div>
     </div>
@@ -76,8 +82,6 @@
     <!-- Start: 1 Row 1 Column -->
     <div>
         <div class="container">
-            <!-- Start: Juvi - Push Empty Space 20px -->
-            <div class="Push-20" style="height: 14.4px;"></div>
             <!-- End: Juvi - Push Empty Space 20px -->
             <div class="row">
                 <div class="col" style="height: 38px;"></div>
@@ -108,12 +112,14 @@
 <script>
     $(document).ready(progress);
     $('#area').on('change', progress);
-    $('#title').on('change', progress);
-    $('#description').on('change', progress);
+    $('#title').on('keyup', progress);
+    $('#description').on('keyup', progress);
     $('#date').on('change', progress);
     $('#archivos').on('change', progress);
 
     function progress(){
+        console.log('1')
+        //$('#file_iframe').toggle(display);
         var area = $.trim($('#area').val());
         var title = $.trim($('#title').val());
         var description = $.trim($('#description').val());
@@ -122,6 +128,7 @@
 
         var components = [area, title, description, date]
         var cont = 0;
+        console.log(components)
         for(var i=0; i<components.length; i++){
             if(components[i] != ""){
                 cont = cont + 1;
@@ -137,7 +144,9 @@
         }else{
              $('#title_area').html("");
         }
+
         $('#date2').html(date);
+
         if(description != ""){
             $('#description_title').show();
             $('#description2').html(description);
@@ -145,12 +154,34 @@
             $('#description_title').hide();
             $('#description2').html("");
         }
+
         if(archivos){
             $('#archivos_title').show();
-            $('#archivos2').html('+ ' + archivos.split('\\')[2]);
+            var nombre_archivo = archivos.split('\\')[2];
+            $('#archivos2').html('+ ' + nombre_archivo);
         }else{
             $('#archivos_title').hide();
-            $('#archivos2').html("")
+            $('#archivos2').html("");
+            $('#frame').hide();
+        }
+    }
+
+    function readURL(input) {
+        console.log(input.files[0].name)
+        if (input.files && input.files[0] && /\.(jpe?g|png|gif|pdf|md|txt)$/i.test(input.files[0].name) ) {
+            $('#frame').show();
+            $('#file_text').html("");
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#file_iframe').attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }else{
+            console.log('else')
+            $('#frame').hide();
+            $('#file_text').html("Unable to display a file preview");
         }
     }
 </script>
