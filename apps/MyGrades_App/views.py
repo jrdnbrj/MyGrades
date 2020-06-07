@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.contrib.auth.decorators import login_required
 
 from .forms import *
 from .models import *
@@ -113,6 +114,7 @@ def signout(request):
 
 #___________________________POST ASSIGNMENT_____________________________
 
+@login_required
 def post_assigment(request):
     if request.method == 'POST':
         print(request.POST)
@@ -127,9 +129,11 @@ def post_assigment(request):
             print(form.errors)
     return render(request, 'post/post_assignment.html', {})
 
+@login_required
 def post_assignment_2(request):
     pass
 
+@login_required
 def post_assignment_3(request):
     if request.method == 'POST':
         print(request.session['id'], request.POST['price'])
@@ -141,6 +145,7 @@ def post_assignment_3(request):
 
 #___________________________WORK PLACE_____________________________
 
+@login_required
 def work_place(request):
     trabajos = Trabajo.objects.filter(estado = 'publicado').order_by('fecha_expiracion')
     return render(request, 'work_place/work_place.html', {'trabajos': trabajos})
@@ -172,12 +177,13 @@ def wp_ajax(request):
         trabajos = serializers.serialize('json', trabajos)
     return JsonResponse(data={'trabajos': trabajos, 'len': long}, safe=False)
 
+@login_required
 def work_place_2(request, pk):
     trabajo = Trabajo.objects.get(pk = pk)
     return render(request, 'work_place/work_place_2.html', {'trabajo': trabajo})
 
+@login_required
 def work_place_3(request, id):
-    print(id)
     trabajo = Trabajo.objects.get(id = id)
     fecha_expiracion = trabajo.fecha_expiracion
 
@@ -190,10 +196,11 @@ def download_file(request, path):
     response['Content-Disposition'] = 'attachment; filename='+path
     return response
 
+@login_required
 def work_place_4(request, id):
     trabajo = Trabajo.objects.get(id = id)
     trabajo.trabajador = Usuario.objects.get(username = request.user.username)
-    trabajo.estado = 'asignado'
+    trabajo.estado = 'taken'
     trabajo.save()
 
     fecha_expiracion = trabajo.fecha_expiracion
@@ -204,6 +211,7 @@ def work_place_4(request, id):
 
 #___________________________USER INTERFACE_____________________________
 
+@login_required
 def user_interface(request):
     user = Usuario.objects.get(username = request.user.username)
     posted_assignments = Trabajo.objects.filter(publicador = user.id)
@@ -216,8 +224,10 @@ def user_interface(request):
     #print(context)
     return render(request, 'user_interface/user_interface.html', context)
 
+@login_required
 def user_interface_2(request):
     return render(request, 'user_interface/user_interface_2.html', {})
 
+@login_required
 def user_interface_3(request):
     return render(request, 'user_interface/user_interface_3.html', {})
