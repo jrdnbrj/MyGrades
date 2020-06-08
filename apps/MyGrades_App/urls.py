@@ -16,4 +16,5 @@ urlpatterns = [
     path('media/<path>', download_file, name='media/'),
     path('work_place_4/<int:id>', work_place_4, name='work_place_4'),
     path('user_interface/', user_interface, name='user_interface'),
+    path('edit_post_assignment/<int:id>', edit_post_assignment, name='edit_post_assignment')
 ]

@@ -6,6 +6,7 @@ from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
 import datetime
+import base64
 
 from .forms import *
 from .models import *
@@ -136,13 +137,18 @@ def post_assignment_2(request):
 
 @login_required
 def post_assignment_3(request):
+    context = {}
+    if 'precio' in request.session:
+        context['precio'] = request.session['precio']
+
     if request.method == 'POST':
         print(request.session['id'], request.POST['price'])
         trabajo = Trabajo.objects.get(id = request.session.pop('id'))
         trabajo.precio = request.POST['price']
+        trabajo.estado = 'published'
         trabajo.save()
         return redirect('work_place')
-    return render(request, 'post/post_assignment_3.html', {})
+    return render(request, 'post/post_assignment_3.html', context)
 
 #___________________________WORK PLACE_____________________________
 
@@ -226,8 +232,25 @@ def user_interface(request):
     return render(request, 'user_interface/user_interface.html', context)
 
 @login_required
-def user_interface_2(request):
-    return render(request, 'user_interface/user_interface_2.html', {})
+def edit_post_assignment(request, id):
+    trabajo = Trabajo.objects.get(id = id)
+    if request.method == 'POST':
+        print(request.POST)
+        form = TrabajoForm(request.POST, request.FILES, instance=trabajo)
+        if form.is_valid():
+            trabajo = form.save(commit=False)
+            trabajo.publicador = Usuario.objects.get(username = request.user)
+            trabajo.save()
+            request.session['id'] = trabajo.id
+            request.session['precio'] = str(trabajo.precio)
+            return redirect('post_assignment_3')
+        else:
+            print(form.errors)
+            context = {}
+    else:
+        options = {'Literature': 0, 'Social Sciences': 1, 'History': 2, 'Nature Sciences': 3, 'Biology': 4, 'Chemistry': 5, 'Mathematics': 6, 'Physics': 7, 'Engineering': 8, 'Computer Sciences': 9}
+        context = {'trabajo': trabajo, 'option': options[trabajo.area]}
+    return render(request, 'post/post_assignment.html', context)
 
 @login_required
 def user_interface_3(request):

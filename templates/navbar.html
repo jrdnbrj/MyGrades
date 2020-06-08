@@ -2,12 +2,12 @@
     <div class="container"><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"></button>
         <div class="collapse navbar-collapse" id="navcol-1" style="height: 40px;">
             <nav class="navbar navbar-light navbar-expand-md" style="height: 40px;">
-                <div class="container"><a class="navbar-brand h1" href="{% url 'landing_page' %}">MyGrades</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button></div>
+                <div class="container"><a class="navbar-brand h1" href="{% url 'landing_page' %}"><strong>MyGrades</strong></a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button></div>
                 {% if user.is_authenticated %}
                     <div class="collapse navbar-collapse" id="navcol-1">
                         <ul class="navbar-nav">
-                            <li class="nav-item col-auto" role="presentation"><a class="nav-link" href="{% url 'post_assignment' %}">Post Assignment</a></li>
-                            <li class="nav-item col-auto" role="presentation"><a class="nav-link" href="{% url 'work_place' %}">WorkPlace</a></li>
+                            <li class="nav-item col-9" role="presentation"><a class="nav-link" href="{% url 'post_assignment' %}">Post Assignment</a></li>
+                            <li class="nav-item col" role="presentation"><a class="nav-link" href="{% url 'work_place' %}">WorkPlace</a></li>
                         </ul>
                     </div>
                 {% endif %}
@@ -15,12 +15,12 @@
         {% if user.is_authenticated %}
         </div>
             <span>Hi, <a href="{% url 'user_interface' %}">{{ user.username | title }}</a></span>
-            <a class="btn btn-info ml-3" href="{% url 'signout' %}">Sign Out</a>
+            <a class=" btn-sm btn-info ml-3 rounded" href="{% url 'signout' %}">Sign Out</a>
         </div>
         {% else %}
         </div>
-            <a class="btn btn-outline-success ml-3" href="{% url 'signin' %}">Sign In</a>
-            <a class="btn btn-primary ml-3" href="{% url 'register' %}">Register</a>
+            <a class="btn-sm btn-outline-success ml-3 rounded" href="{% url 'signin' %}">Sign In</a>
+            <a class="btn-sm btn-primary ml-3 rounded" href="{% url 'register' %}">Register</a>
         </div>
         {% endif %}
 </nav>

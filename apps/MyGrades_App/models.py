@@ -34,7 +34,7 @@ class Trabajo(models.Model):
     fecha_expiracion = models.DateTimeField(auto_now_add=False)
     fecha_asignacion_trabajador = models.DateTimeField( auto_now_add=False, null=True, blank=True)
     fecha_entrega = models.DateTimeField( auto_now_add=False, null=True, blank=True)
-    estado = models.CharField(max_length=10, default='published')
+    estado = models.CharField(max_length=10, default='hidden')
     descripcion = models.TextField(max_length=None)
     archivos = models.FileField(upload_to='', max_length=None, null=True, blank=True)
     trabajador = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL, related_name='trabajador')

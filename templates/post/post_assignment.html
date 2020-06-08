@@ -8,8 +8,11 @@
     </section>
     <!-- Start: 2 Rows 1+2 Columns --><div>
     <div class="container">
-
+        {% if trabajo %}
+        <form action="{% url 'edit_post_assignment' trabajo.id %}" method="POST" enctype="multipart/form-data">
+        {% else %}
         <form action="{% url 'post_assignment' %}" method="POST" enctype="multipart/form-data">
+        {% endif %}
         {% csrf_token %}
         <div class="progress mt-3">
             <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" aria-valuemin="0" aria-valuemax="100" id="progress_bar">0%</div>
@@ -21,34 +24,36 @@
                 <div class="dropdown">
                     <select class="row form-control col-5" name="area" id="area" required>
                         <option value>Select...</option>
-                        <option value="Literature">Literature</option>
-                        <option value="Social Sciences">Social Sciences</option>
-                        <option value="History">History</option>
-                        <option value="Nature Sciences">Nature Sciences</option>
-                        <option value="Biology">Biology</option>
-                        <option value="Chemistry">Chemistry</option>
-                        <option value="Mathematics">Mathematics</option>
-                        <option value="Physics">Physics</option>
-                        <option value="Engineering">Engineering</option>
-                        <option value="Computer Sciences">Computer Sciences</option>
+                        <option {% if option == 0 %}selected{% endif %} value="Literature">Literature</option>
+                        <option {% if option == 1 %}selected{% endif %} value="Social Sciences">Social Sciences</option>
+                        <option {% if option == 2 %}selected{% endif %} value="History">History</option>
+                        <option {% if option == 3 %}selected{% endif %} value="Nature Sciences">Nature Sciences</option>
+                        <option {% if option == 4 %}selected{% endif %} value="Biology">Biology</option>
+                        <option {% if option == 5 %}selected{% endif %} value="Chemistry">Chemistry</option>
+                        <option {% if option == 6 %}selected{% endif %} value="Mathematics">Mathematics</option>
+                        <option {% if option == 7 %}selected{% endif %} value="Physics">Physics</option>
+                        <option {% if option == 8 %}selected{% endif %} value="Engineering">Engineering</option>
+                        <option {% if option == 9 %}selected{% endif %} value="Computer Sciences">Computer Sciences</option>
                     </select>
                 </div>
                 <small class="form-text text-muted" style="margin: 0px;">Write assignment title</small>
-                <textarea class="row form-control" name="titulo" placeholder="Type..." id="title" required></textarea>
+                <textarea class="row form-control" name="titulo" placeholder="Type..." id="title" required>{{ trabajo.titulo }}</textarea>
                 <br>
                 <h4 class="text-left">Assignment Description</h4><small class="form-text text-muted">Describe in detail your assignment, include requirements, complexity, format and related topics</small>
-                <textarea class="row form-control" style="height:150px" name="descripcion" id="description" placeholder="Type..." required></textarea>
+                <textarea class="row form-control" style="height:150px" name="descripcion" id="description" placeholder="Type..." required>{{ trabajo.descripcion }}</textarea>
                 <div class="clearfix"></div>
             </div>
             <div class="col-md-6">
                 <div class="Push-20" style="height: 14.5px;"></div>
                 <h4 class="text-left">Dead Line</h4>
                 <div class="row">
-                    <input class="col form-control" type="datetime-local" id="date" name="fecha_expiracion" required>
+                    <input class="col form-control" type="datetime-local" id="date" name="fecha_expiracion" value="{{ trabajo.fecha_expiracion|date:"c"|slice:':-9' }}" required>
                 </div>
                 </br>
                 <h4 class="text-left">Related Documents</h4><small class="form-text text-muted">Upload any assignment related documents (rubrics, forms, questionnaires, documents to be filld and any main format documents)</small>
-                <div class="form-group files color"><input type="file" onchange="readURL(this);" class="custom-file-input" style="cursor: pointer" name="archivos" id="archivos"></div>
+                <div class="form-group files">
+                    <input type="file" onchange="readURL(this);" class="custom-file-input" style="cursor: pointer" name="archivos" id="archivos" value="media/{{ trabajo.archivos }}">
+                </div>
             </div>
         </div>
     </div>
@@ -69,7 +74,14 @@
                     <div class="Push-20" style="height: 28.8px;"></div>
                     <h5 class="text-left" style="width: 450px;" id="archivos_title">Related Documents List</h5>
                     <div id="archivos2"></div><span id="file_text" class="text-danger"></span><br>
+
+                    {% if trabajo.archivos %}
+                        <h5 class="text-left" style="width: 450px;" id="archivos_title">Related Documents List</h5>
+                        <div id="archivos2"></div>+&nbsp<a id="file_text" class="" href="{% url 'media/' trabajo.archivos %}">{{ trabajo.archivos }}</a><br>
+                    {% endif %}
+
                     <div class="embed-responsive embed-responsive-21by9" id="frame">
+                        
                         <iframe src="" id="file_iframe" class="embed-responsive-item"></iframe>
                     </div>
                     <div class="Push-20" style="height: 13.8px;"></div>
@@ -88,7 +100,7 @@
                 <div class="col" style="height: 38px;"></div>
                 <div class="col">
                     <div class="btn-group" role="group">
-                        <button class="btn btn-primary border rounded" type="submit">Submit</button>
+                        <button class="btn-lg btn-primary border rounded" type="submit">Submit</button>
                     </div>
                 </div>
                 <div class="col" style="height: 38px;"></div>
@@ -118,8 +130,6 @@
     $('#archivos').on('change', progress);
 
     function progress(){
-        console.log('1')
-        //$('#file_iframe').toggle(display);
         var area = $.trim($('#area').val());
         var title = $.trim($('#title').val());
         var description = $.trim($('#description').val());
@@ -144,9 +154,21 @@
         }else{
              $('#title_area').html("");
         }
-
-        $('#date2').html(date);
-
+        
+        if(date != ""){
+            var datetime = new Date(date);
+            var mes = datetime.getMonth();
+            var dia = datetime.getDate();
+            var año = datetime.getFullYear();
+            var horas = datetime.getHours();
+            var minutos = datetime.getMinutes();
+            $('#date2').html(
+                (mes > 8) ? (mes + 1) : '0' + (mes + 1)  + '/' + ((dia > 9) ? dia : '0' + dia)  + '/' + año + ' ' + 
+                ((horas > 9) ? horas : '0' + horas)  + ':' + ((minutos > 9) ? minutos : '0' + minutos)
+            )
+        }else{
+            $('#date2').hide();
+        }
         if(description != ""){
             $('#description_title').show();
             $('#description2').html(description);
@@ -174,6 +196,7 @@
             var reader = new FileReader();
 
             reader.onload = function (e) {
+                console.log(e)
                 $('#file_iframe').attr('src', e.target.result);
             };
 
@@ -181,7 +204,7 @@
         }else{
             console.log('else')
             $('#frame').hide();
-            $('#file_text').html("Unable to display a file preview");
+            $('#file_text').html("Unable to display a file preview.");
         }
     }
 </script>
