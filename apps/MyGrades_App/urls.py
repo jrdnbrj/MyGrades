@@ -13,8 +13,10 @@ urlpatterns = [
     path('wp_ajax', wp_ajax, name='wp_ajax'),
     path('work_place_2/<int:pk>', work_place_2, name='work_place_2'),
     path('work_place_3/<int:id>', work_place_3, name='work_place_3'),
-    path('media/<path>', download_file, name='media/'),
     path('work_place_4/<int:id>', work_place_4, name='work_place_4'),
-    path('user_interface/', user_interface, name='user_interface'),
-    path('edit_post_assignment/<int:id>', edit_post_assignment, name='edit_post_assignment')
+    path('media/<path>', download_file, name='media/'),
+    path('profile/', user_profile, name='user_profile'),
+    path('edit_profile/', user_profile_2, name='user_profile_2'),
+    path('edit_post_assignment/<int:id>', edit_post_assignment, name='edit_post_assignment'),
+    path('assignments/', user_assignments, name='user_assignments')
 ]

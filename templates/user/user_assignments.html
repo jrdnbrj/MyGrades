@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block title %} User Interface {% endblock %}
+{% block content %}
+{% load static %}
+<body>
+    <section class="call-to-action text-white text-center" style="background:url('{% static 'images/WorkPlace-2.jpg'%}') no-repeat center center;background-size:cover;">
+        <div class="overlay"></div>
+    </section>
+<div></div>
+    <div>
+        <div class="Push-20" style="height: 7.2px;"></div>
+    </div>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="panel panel-default">
+                        <ul class="nav nav-tabs panel-heading">
+                            <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#tab-1">Posted Assignments</a></li>
+                            <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#tab-2">Taken Assigments</a></li>
+                        </ul>
+                        <div class="tab-content panel-body">
+                            <div class="tab-pane active" role="tabpanel" id="tab-1">
+                                <div role="tablist" id="accordion-1">
+
+                                        {% if posted_assignments %}
+
+                                                {% for trabajo in posted_assignments %}
+
+                                                            <div class="card">
+                                                                <div class="card-header" role="tab">
+                                                                    <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false" aria-controls="accordion-1 .item-{{ trabajo.id }}" href="#accordion-1 .item-{{ trabajo.id }}">{{ trabajo.titulo }}</a></h5>
+                                                                </div>
+                                                                <div class="collapse item-{{ trabajo.id }}" role="tabpanel" data-parent="#accordion-1">
+                                                                    <div class="card-body">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-6"><span><br></span></div>
+                                                                            <div class="col-sm-6 col-lg-2"><span><strong>Cost</strong></span></div>
+                                                                            <div class="col-sm-6 col-lg-2"><span><strong>Status</strong></span></div>
+                                                                            <div class="col-sm-6 col-lg-2"><span><br></span></div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-6">
+                                                                                <p class="card-text">{{ trabajo.descripcion | slice:':120'}}</p>
+                                                                            </div>
+                                                                            <div class="col-sm-6 col-lg-2"><span>${{ trabajo.precio }}</span></div>
+                                                                            <div class="col-sm-6 col-lg-2"><button class="btn btn-success rounded p-2" type="button">{{ trabajo.estado }}</button></div>
+                                                                            <div class="col-sm-6 col-lg-2"><button class="btn btn-secondary rounded p-2" type="button" onclick="location.href='{% url 'edit_post_assignment' trabajo.id %}'">Edit</button></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                {% endfor %}
+                                        
+                                        {% else %}
+                                                
+                                                <br><p>You haven't posted any assignment yet. For assignments to appear on this section you must creat an assignmet to be taken by another user.</p>
+                                                <div class="Push-20"></div>
+                                                <h4 class="text-left" style="width: 610px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Get Started!</h4>
+                                                    <button class="btn btn-primary rounded d-lg-flex my-auto" type="button" style="margin-left: 400px;" onclick="location.href='{% url 'post_assignment' %}'">Post Asignment</button>
+                                        {% endif %}
+
+                                </div>
+                            </div>
+                            <div class="tab-pane" role="tabpanel" id="tab-2">
+                                <div role="tablist" id="accordion-2">
+
+                                    {% if taken_assignments %}
+
+                                            {% for trabajo in taken_assignments %}
+
+                                                    <div class="card">
+                                                        <div class="card-header" role="tab">
+                                                            <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false" aria-controls="accordion-2 .item-{{ trabajo.id }}" href="#accordion-2 .item-{{ trabajo.id }}"><strong>{{ trabajo.titulo }}</strong><br></a></h5>
+                                                        </div>
+                                                        <div class="collapse item-{{ trabajo.id }}" role="tabpanel" data-parent="#accordion-2">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-sm-6"><span></span></div>
+                                                                    <div class="col-sm-2"><span><strong>Payment</strong></span></div>
+                                                                    <div class="col-sm-2 text-center"><span><strong>Status</strong></span></div>
+                                                                    <div class="col-sm-6 col-lg-2"><span><br></span></div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <p class="card-text">{{ trabajo.descripcion | slice:':180' }}...</p>
+                                                                    </div>
+                                                                    <div class="col-sm-2"><span>${{ trabajo.precio }}</span></div>
+                                                                    <div class="col-sm-2">
+                                                                        <div role="tablist" id="accordion-3">
+                                                                            <div class="">
+                                                                                <div class="card-header py-0" role="tab">
+                                                                                    <h5 class="mx-auto text-center"><a class="text-danger align-center" data-toggle="collapse" aria-expanded="true" aria-controls="accordion-3 .item-77" href="#accordion-3 .item-77">Send</a></h5>
+                                                                                </div>
+                                                                                <div class="collapse item-77" role="tabpanel" data-parent="#accordion-3">
+                                                                                    <div class="card-body py-1">
+                                                                                        <div class="form-group files">
+                                                                                            <input type="file" class="custom-file-input py-6" name="files" style="cursor: pointer;">
+                                                                                        </div>
+                                                                                        <button class="btn btn-primary rounded col ml-auto p-2" type="button">Send</button></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-2"><small>{{ trabajo.fecha_expiracion|timeuntil }} left</small></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                            {% endfor %}
+
+                                    {% else %}
+
+                                            <br><p>You haven't taken any assignment yet. For assignments to appear on this section you must take an assignmet to fulfill it and earn your payment.</p>
+                                            <div class="Push-20"></div>
+                                            <h4 class="text-left" style="width: 610px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Get Started!</h4>
+                                            <button class="btn btn-primary border rounded d-lg-flex my-auto" type="button" style="margin-left: 400px;" onclick="location.href='{% url 'work_place' %}'">Choose Asignment</button></div>
+
+                                    {% endif %}
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div class="Push-20" style="height: 14.4px;"></div>
+    <section class="showcase"></section>
+    <section class="call-to-action text-white text-center" style="background:url({% static 'images/Desk-1.jpg' %}) no-repeat center center;background-size:cover;">
+    <div class="overlay"></div>
+</section>
+
+</body>
+{% endblock %}

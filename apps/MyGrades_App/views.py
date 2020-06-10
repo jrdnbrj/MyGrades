@@ -217,25 +217,22 @@ def work_place_4(request, id):
     }
     return render(request, 'work_place/work_place_4.html', context)
 
-#___________________________USER INTERFACE_____________________________
+#___________________________USER PROFILE_____________________________
 
 @login_required
-def user_interface(request):
-    user = Usuario.objects.get(username = request.user.username)
-    posted_assignments = Trabajo.objects.filter(publicador = user.id)
-    taken_assignments = Trabajo.objects.filter(trabajador = user.id)
+def user_profile(request):
+    usuario = Usuario.objects.get(username = request.user.username)
+    return render(request, 'user/user_profile.html', {'usuario': usuario})
 
-    context = {
-        'posted_assignments': posted_assignments,
-        'taken_assignments': taken_assignments,
-    }
-    return render(request, 'user_interface/user_interface.html', context)
+@login_required
+def user_profile_2(request):
+    usuario = Usuario.objects.get(username = request.user.username)
+    return render(request, 'user/user_profile_2.html', {'usuario': usuario})
 
 @login_required
 def edit_post_assignment(request, id):
     trabajo = Trabajo.objects.get(id = id)
     if request.method == 'POST':
-        print(request.POST)
         form = TrabajoForm(request.POST, request.FILES, instance=trabajo)
         if form.is_valid():
             trabajo = form.save(commit=False)
@@ -253,5 +250,13 @@ def edit_post_assignment(request, id):
     return render(request, 'post/post_assignment.html', context)
 
 @login_required
-def user_interface_3(request):
-    return render(request, 'user_interface/user_interface_3.html', {})
+def user_assignments(request):
+    user = Usuario.objects.get(username = request.user.username)
+    posted_assignments = Trabajo.objects.filter(publicador = user.id)
+    taken_assignments = Trabajo.objects.filter(trabajador = user.id)
+
+    context = {
+        'posted_assignments': posted_assignments,
+        'taken_assignments': taken_assignments,
+    }
+    return render(request, 'user/user_assignments.html', context)

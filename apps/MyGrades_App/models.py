@@ -5,9 +5,12 @@ from django.db import models
 class Usuario(models.Model):
     id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=20, unique=True)
+    foto = models.ImageField(upload_to='', max_length=None, null=True, blank=True)
     mail = models.EmailField(max_length=50)
     password = models.CharField(max_length=32)
     celular = models.CharField(max_length=15, null=True, blank=True)
+    key_words = models.CharField(max_length=300, blank=True)
+    info_about = models.TextField(max_length=None, blank=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -40,6 +43,7 @@ class Trabajo(models.Model):
     trabajador = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL, related_name='trabajador')
     archivo_trabajador = models.FileField(upload_to='', max_length=None, null=True, blank=True)
     precio = models.DecimalField(decimal_places = 2, max_digits = 5, default=0.0)
+    fecha_editado = models.DateTimeField(auto_now=True, auto_now_add=False)
 
     def __str__(self):
         return self.titulo

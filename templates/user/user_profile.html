@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %} User Profile {% endblock %}
+{% block content %}
+{% load static %}
+<body>
+    <section class="call-to-action text-white text-center" style="background:url('{% static 'images/WorkPlace-2.jpg'%}') no-repeat center center;background-size:cover;">
+        <div class="overlay"></div>
+    </section>
+    <div></div>
+    <div class="container profile profile-view" id="profile">
+        <div class="form-row profile-row">
+            <div class="col-md-4 relative">
+                <div class="avatar">
+                    <div class="avatar-bg center"></div>
+                </div>
+                <div class="form-group mt-5"><label><strong class="h5">Key Words</strong></label><span class="form-control-plaintext">{{ usuario.key_words }}</span></div>
+                <div class="form-group"><label><strong class="h5">About you</strong></label><span class="form-control-plaintext">{{ usuario.info_about }}</span></div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-row">
+                    <div class="col-md-12 content-right"><button class="btn btn-secondary border rounded form-btn" onclick="location.href='{% url 'user_profile_2' %}'">Edit Profile</button></div>
+                </div>
+                <h1>User Profile </h1>
+                <hr>
+                <div class="">
+                    <label><strong class="h4">Username</strong></label>
+                    <span class="form-control-plaintext">{{ usuario.username }}</span></div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label><strong class="h4">Email</strong></label>
+                                <span class="form-control-plaintext">{{ usuario.mail }}</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label><strong class="h4">Cellphone Number</strong></label>
+                                <span class="form-control-plaintext">{{ usuario.celular }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Push-20" style="height: 28.8px;"></div>
+                    <small class="form-text text-muted">Only your user name, profile picture, key words and what you wrote about you will be visible to other users, information about your contact and your payment method will remain private</small>
+                    <div class="Push-20" style="height: 28.8px;"></div>
+                    <button class="btn btn-info d-lg-flex mx-auto rounded" onclick="location.href='{% url 'user_assignments' %}'">View Assignments</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <section class="showcase"></section>
+    <div></div>
+    <section class="showcase"></section>
+    <section class="call-to-action text-white text-center" style="background:url({% static 'images/Desk-1.jpg' %}) no-repeat center center;background-size:cover;">
+        <div class="overlay"></div>
+    </section>
+</body>
+{% endblock %}
