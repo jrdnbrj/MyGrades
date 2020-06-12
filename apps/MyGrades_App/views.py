@@ -227,7 +227,54 @@ def user_profile(request):
 @login_required
 def user_profile_2(request):
     usuario = Usuario.objects.get(username = request.user.username)
+    
     return render(request, 'user/user_profile_2.html', {'usuario': usuario})
+
+@login_required
+def edit_user(request):
+    print('user__')
+    usuario = Usuario.objects.get(username = request.user.username)
+    user = User.objects.get(username = request.user.username)
+    usuario.username = request.POST['username']
+    usuario.mail = request.POST['mail']
+    usuario.celular = request.POST['celular']
+    usuario.save()
+    user.username = request.POST['username']
+    usuario.email = request.POST['mail']
+    return redirect('user_profile_2')
+
+@login_required
+def edit_user_info(request):
+    print('user_info')
+    print(request.POST)
+    usuario = Usuario.objects.get(username = request.user.username)
+    return redirect('user_profile_2')
+
+@login_required
+def edit_payment_method(request):
+    print('user_payment_method')
+    print(request.POST)
+    usuario = Usuario.objects.get(username = request.user.username)
+    return redirect('user_profile_2')
+
+@login_required
+def edit_password(request):
+    print('user_password')
+    print(request.POST)
+    usuario = Usuario.objects.get(username = request.user.username)
+    return redirect('user_profile_2')
+
+@login_required
+def user_assignments(request):
+    user = Usuario.objects.get(username = request.user.username)
+    posted_assignments = Trabajo.objects.filter(publicador = user.id)
+    taken_assignments = Trabajo.objects.filter(trabajador = user.id)
+
+    context = {
+        'posted_assignments': posted_assignments,
+        'taken_assignments': taken_assignments,
+    }
+    return render(request, 'user/user_assignments.html', context)
 
 @login_required
 def edit_post_assignment(request, id):
@@ -249,14 +296,3 @@ def edit_post_assignment(request, id):
         context = {'trabajo': trabajo, 'option': options[trabajo.area]}
     return render(request, 'post/post_assignment.html', context)
 
-@login_required
-def user_assignments(request):
-    user = Usuario.objects.get(username = request.user.username)
-    posted_assignments = Trabajo.objects.filter(publicador = user.id)
-    taken_assignments = Trabajo.objects.filter(trabajador = user.id)
-
-    context = {
-        'posted_assignments': posted_assignments,
-        'taken_assignments': taken_assignments,
-    }
-    return render(request, 'user/user_assignments.html', context)

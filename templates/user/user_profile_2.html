@@ -7,140 +7,149 @@
         <div class="overlay"></div>
     </section>
     <div class="container">
-            <div class="form-row profile-row">
-                <div class="col-md-4 relative">
-                    <form method="POST" action="">
-                        <div class="avatar">
-                            <div class="avatar-bg center"></div>
-                        </div>
-                        <div class="form-group">
-                            <label><strong>Add Profile Picture</strong></label>
-                            <div class="custom-file"><input type="file" class="form-control custom-file-input" name="avatar-file">
-                                <label class="custom-file-label" for="inputGroupFile01"> {% if usuario.foto %}{{ usuario.foto }}{% else %}Choose File{% endif %}</label>
-                            </div>
-                        </div>
-                        <div class="form-group"><label><strong>Add Key Words</strong></label><small class="form-text text-muted">Add three main words or group oof words that describe your work and kind of assignments you will prefer to do or you will post</small><input class="form-control"
-                                type="text" placeholder="+Key Word 1"><input class="form-control" type="text" placeholder="+Key Word 2"><input class="form-control" type="text" placeholder="+Key Word 3"></div>
-                        <div class="form-group"><label><strong>About you</strong></label><small class="form-text text-muted">Write something about yourself, something for everyone to read</small><textarea class="form-control" placeholder="Type..." style="height: 218px;"></textarea></div>
-                        <button class="btn-sm btn-success border py-0 mx-auto col" type="submit">SAVE</button>
-                    <form>
-                </div>
-                <div class="col-md-8">
-                    <div class="Push-20" style="height: 28.8px;"></div>
-                    <h1>User Profile</h1>
-                    <hr>
-                    <div>
-                        <form method="POST" action="">
-                            <div class="form-group"><label><strong>Username</strong></label>
-                                <input class="form-control" type="text" required name="username" placeholder="ex: &quot;bestGPAstudent&quot;" value="{{ usuario.username }}">
-                            </div>
-                            <div class="form-row">
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <label><strong>Email</strong></label>
-                                        <input class="form-control" type="email" required name="email" placeholder="bestGPAstudent@example.com" value="{{ usuario.mail }}"></div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <label><strong>Celphone Number</strong></label>
-                                        <input class="form-control" type="email" required name="email" placeholder="Cellphone Number" value="{{ usuario.celular }}">
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="btn-sm btn-primary border py-0 mx-auto col" type="submit">SAVE</button>
-                        </form>
-                        <hr>
+        <div class="form-row profile-row">
+            <div class="col-md-4 relative">
+                <form method="POST" id="edit_user_infos" action="{% url 'edit_user_info' %}">{% csrf_token %}
+                    <div class="avatar">
+                        <div class="avatar-bg center"></div>
                     </div>
                     <div class="form-group">
-                        <form method="POST" action="">
-                            <label><strong>Payment Method</strong></label>
-                            <small class="form-text text-muted">If you chose a bank account make sure tu fulfill every empty space with your bank account data, otherways if you chose an internet account fulfill only the necesary spaces, like:&nbsp; Account Number or User and Key</small>
-                            <div class="form-row">
-                                <div class="col-sm-12 col-md-6 col-lg-5">
-                                    <div class="form-group">
-                                        <label>Payment Type</label>
-                                        <select class="form-control">
+                        <label><strong>Add Profile Picture</strong></label>
+                        <div class="custom-file">
+                            <input type="file" class="form-control custom-file-input" name="avatar-file">
+                            <label class="custom-file-label" for="inputGroupFile01"> {% if usuario.foto %}{{ usuario.foto }}{% else %}Choose File{% endif %}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Add Key Words</strong></label>
+                        <small class="form-text text-muted">Add three main words or group oof words that describe your work and kind of assignments you will prefer to do or you will post</small>
+                        <input class="form-control" type="text" placeholder="+Key Word 1" name="kw1">
+                        <input class="form-control" type="text" placeholder="+Key Word 2" name="kw2">
+                        <input class="form-control" type="text" placeholder="+Key Word 3" name="kw3">
+                    </div>
+                    <div class="form-group">
+                        <label><strong>About you</strong></label>
+                        <small class="form-text text-muted">Write something about yourself, something for everyone to read</small>
+                        <textarea class="form-control" placeholder="Type..." style="height: 218px;" name="about"></textarea>
+                    </div>
+                    <button type="submit" form="edit_user_infos" class="btn-sm btn-success border py-0 mx-auto col">SAVE</button>
+                </form>
+            </div>
+
+            <div class="col-md-8">
+                <div class="Push-20" style="height: 28.8px;"></div>
+                <h1>User Profile</h1>
+                <hr>
+                <div>
+                    <form method="POST" id="edit_user" action="{% url 'edit_user' %}">{% csrf_token %}
+                        <div class="form-group">
+                            <label><strong>Username</strong></label>
+                            <input class="form-control" type="text" name="username" placeholder="ex: &quot;bestGPAstudent&quot;" value="{{ usuario.username }}" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                    <label><strong>Email</strong></label>
+                                    <input class="form-control" type="email" name="mail" placeholder="bestGPAstudent@example.com" value="{{ usuario.mail }}" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                    <label><strong>Cellphone Number</strong></label>
+                                    <input class="form-control" type="number" name="celular" placeholder="Cellphone Number" value="{{ usuario.celular }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" form="edit_user" class="btn-sm btn-primary border py-0 mx-auto col">SAVE</button>
+                    </form>
+                    <hr>
+                </div>
+
+                <div class="form-group">
+                    <form method="POST" id="edit_payment_method" action="{% url 'edit_payment_method' %}">{% csrf_token %}
+                        <label><strong>Payment Method</strong></label>
+                        <small class="form-text text-muted">If you chose a bank account make sure tu fulfill every empty space with your bank account data, otherways if you chose an internet account fulfill only the necesary spaces, like:&nbsp; Account Number or User and Key</small>
+                        <div class="form-row">
+                            <div class="col-sm-12 col-md-6 col-lg-5">
+                                <div class="form-group">
+                                    <label>Payment Type</label>
+                                    <select class="form-control">
+                                    <optgroup label="Select">
+                                        <option value="12" selected="">Internet</option>
+                                        <option value="12">Bank</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-7">
+                                <div class="form-group">
+                                    <label>Institution</label>
+                                    <input class="form-control" form="edit_payment_method" type="text" name="institution" placeholder="PayPal, Bank of America..." required>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>Account Number or User</label>
+                                    <input class="form-control" type="text" name="acount-number" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>Account Key</label>
+                                    <input class="form-control" type="text" name="account-key" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>Type of Account</label>
+                                    <select class="form-control" name="account_type" required>
                                         <optgroup label="Select">
-                                            <option value="12" selected="">Internet</option>
-                                            <option value="12">Bank</option>
+                                            <option value="12" selected="">Savings</option>
+                                            <option value="12">Credit</option>
                                         </optgroup>
                                     </select>
                                 </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-7">
-                                    <div class="form-group">
-                                        <label>Institution</label>
-                                        <input class="form-control" type="email" autocomplete="off" required="" name="email" placeholder="PayPal, Bank of America...">
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-3">
-                                    <div class="form-group">
-                                        <label>Account Number or User</label>
-                                        <input class="form-control" type="email" autocomplete="off" required="" name="email">
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-3">
-                                    <div class="form-group">
-                                        <label>Account Key</label>
-                                        <input class="form-control" type="password" name="confirmpass" autocomplete="off" required="">
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-3">
-                                    <div class="form-group">
-                                        <label>Type of Account</label>
-                                        <select class="form-control">
-                                            <optgroup label="Select">
-                                                <option value="12" selected="">Savings</option>
-                                                <option value="12">Credit</option>
-                                            </optgroup>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-3">
-                                    <div class="form-group">
-                                        <label>ID Number</label>
-                                        <input class="form-control" type="email" autocomplete="off" required="" name="email">
-                                    </div>
-                                </div>
-                                <button class="btn-sm btn-primary border py-0 mx-auto col" type="submit">SAVE</button>
                             </div>
-                        </form>
-                        <hr>
-                    </div>
-                    <div>
-                        <form method="POST" action="">
-                            <div class="form-group">
-                                <label class="d-lg-flex align-items-lg-start"><strong>Change Password</strong></label>
-                                <label class="d-lg-flex justify-content-lg-start align-items-lg-start">Actual Password</label>
-                                <input class="form-control" type="password" name="password" required>
-                            </div>
-                            <div class="form-row">
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <label>New Password </label>
-                                        <input class="form-control" type="password" name="password" required>
-                                    </div>
+                            <div class="col-sm-12 col-md-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>ID Number</label>
+                                    <input class="form-control" type="text" name="account_id" required>
                                 </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <label>Confirm New Password</label>
-                                        <input class="form-control" type="password" name="confirmpass" required>
-                                    </div>
-                                </div>
-                                <button class="btn-sm btn-primary border py-0 mx-auto col" type="submit">SAVE</button>
                             </div>
-                        </form>
-                    </div>
-                    <div class="Push-20" style="height: 28.8px;"></div>
+                            <button type="submit" form="edit_payment_method" class="btn-sm btn-primary border py-0 mx-auto col">SAVE</button>
+                        </div>
+                    </form>
+                    <hr>
                 </div>
+
+                <div>
+                    <form method="POST" id="edit_password" action="{% url 'edit_password' %}">{% csrf_token %}
+                        <div class="form-group">
+                            <label class="d-lg-flex align-items-lg-start"><strong>Change Password</strong></label>
+                            <label class="d-lg-flex justify-content-lg-start align-items-lg-start">Actual Password</label>
+                            <input class="form-control" type="password" name="password_actual" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                    <label>New Password </label>
+                                    <input class="form-control" type="password" name="password" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                    <label>Confirm New Password</label>
+                                    <input class="form-control" type="password" name="confirmpass" required>
+                                </div>
+                            </div>
+                            <button type="submit" form="edit_password" class="btn-sm btn-primary border py-0 mx-auto col">SAVE</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="Push-20" style="height: 28.8px;"></div>
             </div>
+        </div>
     </div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <section class="showcase"></section>
-    <div></div>
-    <section class="showcase"></section>
     <section class="call-to-action text-white text-center" style="background:url({% static 'images/Desk-1.jpg' %}) no-repeat center center;background-size:cover;">
         <div class="overlay"></div>
     </section>
