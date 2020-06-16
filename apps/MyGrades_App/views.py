@@ -28,28 +28,30 @@ def register(request):
         username = request.POST['username']
         celular = request.POST['celular']
         password = request.POST['password']
-        password_verify = request.POST['password-repeat']
-        if password == password_verify:
-            usuario = UsuarioForm(request.POST)
-            if usuario.is_valid():
-                request.session['email'] = email
-                request.session['username'] = username
-                request.session['password'] = password
-                request.session['celular'] = celular
-                request.method = 'GET'
-                return register_verification(request)
-            else:
-                print(usuario.errors)
+        password_verify = request.POST['password_repeat']
+        #if password == password_verify:
+        usuario = UsuarioForm(request.POST)
+        if usuario.is_valid():
+            request.session['email'] = email
+            request.session['username'] = username
+            request.session['password'] = password
+            request.session['celular'] = celular
+            request.method = 'GET'
+            return register_verification(request)
         else:
-            messages.error(request, 'Las contraseñas no coinciden')
-            print('---------Password Error---------------')
+            print(usuario.errors)
+            context['form'] = usuario
+            return render(request, 'home/register.html', context)
+        #else:
+         #   context['error'] = 'Passowords do not match'
+        #    print('-'*10, 'Passowords do not match', '-'*10)
     return render(request, 'home/register.html', context)
 
 def register_verification(request):
     if request.method == 'POST':
-        print(request.session['code'], request.POST['code'], request.session['email'])
+        #print(request.session['code'], request.POST['code'], request.session['email'])
         if int(request.POST['code']) == int(request.session['code']):
-            print('Codigo verificado')
+            #print('Codigo verificado')
             data = request.POST.copy()
             data['mail'] = request.session['email']
             data['username'] = request.session['username']
@@ -76,15 +78,12 @@ def register_verification(request):
 
             sender = 'contact.mygrades@gmail.com'
             code = random.randint(100000, 999999)
-            print('code: ', code)
 
             msg = EmailMessage()
             msg['Subject'] = "MyGrades Account Verification Code"
             msg['From'] = sender
             msg['To'] = request.session['email']
-            print('Before content')
             msg.set_content('Code: ' + str(code))
-            print('After content')
 
             with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
                 smtp.login(sender, "mygrades123")
@@ -98,6 +97,7 @@ def register_verification(request):
         return render(request, 'home/register_verification.html', {})
 
 def signin(request):
+    context = {}
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -106,9 +106,10 @@ def signin(request):
             login(request, user)
             return redirect('landing_page')
         else:
-            messages.error(request, 'Credenciales Incorrectas')
             print('Credenciales incorrectas')
-    return render(request, 'home/signin.html', {})
+            context['error'] = 'Incorrect username or password.'
+            context['username'] = username
+    return render(request, 'home/signin.html', context)
 
 def signout(request):
     logout(request)
@@ -142,7 +143,7 @@ def post_assignment_3(request):
         context['precio'] = request.session['precio']
 
     if request.method == 'POST':
-        print(request.session['id'], request.POST['price'])
+        #print(request.session['id'], request.POST['price'])
         trabajo = Trabajo.objects.get(id = request.session.pop('id'))
         trabajo.precio = request.POST['price']
         trabajo.estado = 'published'
@@ -227,20 +228,20 @@ def user_profile(request):
 @login_required
 def user_profile_2(request):
     usuario = Usuario.objects.get(username = request.user.username)
-    
     return render(request, 'user/user_profile_2.html', {'usuario': usuario})
 
 @login_required
 def edit_user(request):
-    print('user__')
     usuario = Usuario.objects.get(username = request.user.username)
-    user = User.objects.get(username = request.user.username)
     usuario.username = request.POST['username']
     usuario.mail = request.POST['mail']
     usuario.celular = request.POST['celular']
     usuario.save()
+
+    user = User.objects.get(username = request.user.username)
     user.username = request.POST['username']
-    usuario.email = request.POST['mail']
+    user.email = request.POST['mail']
+    user.save()
     return redirect('user_profile_2')
 
 @login_required

@@ -153,19 +153,22 @@
         }else{
              $('#title_area').html("");
         }
-        
+        console.log(date)
         if(date != ""){
+            console.log('if')
             var datetime = new Date(date);
             var mes = datetime.getMonth();
             var dia = datetime.getDate();
             var año = datetime.getFullYear();
             var horas = datetime.getHours();
             var minutos = datetime.getMinutes();
+            $('#date2').show();
             $('#date2').html(
                 (mes > 8) ? (mes + 1) : '0' + (mes + 1)  + '/' + ((dia > 9) ? dia : '0' + dia)  + '/' + año + ' ' + 
                 ((horas > 9) ? horas : '0' + horas)  + ':' + ((minutos > 9) ? minutos : '0' + minutos)
             )
         }else{
+            console.log('else')
             $('#date2').hide();
         }
         if(description != ""){

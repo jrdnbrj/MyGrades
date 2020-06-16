@@ -1,0 +1,38 @@
+VIM
+
+:w guardas
+:q salir
+:q! forzar salisa
+:wq guardar y salir
+
+i // modo insertar para escribir
+w // siguiente palabra
+e // final de la palabra
+b // anterior palabra
+j // abajo
+k // arriba
+5j // 5 lineas para abajo
+2k // 2 lineas para arriba
+fy // buscar la siguiente 'y' en la misma linea
+fa // buscar la siguiente 'a' en la misma linea
+0 // principio de la linea
+$ // final linea
+* // siguiente palabra de la palabra actual
+% // va a apertura o cierre de parentesis
+gg // cursor al inicio
+G // cursos al final
+15G // va a la linea 15
+o // crea nueva linea delante y lleva al modo insertar
+O // crea nueva linea antes y lleva al modo insertar
+x // borra letra actual
+X // borra letra anterior
+rn // reemplaza letra actual por 'n'
+dw // borra y/o corta la palabra
+dd // corta toda la linea
+p // pega linea
+yy // copiar linea
+3yy // copiar 3 lineas
+. // reptir ultimo comando
+v // modo visual // j - k para seleccionar lineas
+
+

@@ -8,16 +8,41 @@
         <form method="post">
             {% csrf_token %}
             <h2 class="text-center"><strong>Create</strong> an account</h2>
-            <div class="form-group"><input class="form-control" type="text" name="username" placeholder="Username" id="username" required></div>
-            <div class="form-group"><input class="form-control" type="email" name="mail" placeholder="Email" id="email" value="{{ email }}" required></div>
-            <div class="form-group"><input class="form-control" type="tel" name="celular" placeholder="Phone number (optional)"></div>
-            <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password" id="password" required></div>
             <div class="form-group">
-                <input class="form-control" type="password" name="password-repeat" placeholder="Rewrite Password" required id="password-repeat">
-                <small style="color: red" id="password-error">hola</small>
+                <input class="form-control" type="text" name="username" placeholder="Username" id="username" 
+                    value="{% if form.errors %}{{ form.username.value }}{% endif %}">
+                {% for error in form.username.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
             </div>
-            <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id="next" disabled>Next</button></div>
-            <span class="already" href="#">You already have an account? <a class="already" href="{% url 'signin' %}">SignIn here</a></span></form>
+            <div class="form-group">
+                <input class="form-control" type="text" name="mail" placeholder="Email" id="email" 
+                value="{% if form.errors %}{{ form.mail.value }}{% else %}{{ email }}{% endif %}">
+                {% for error in form.mail.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="tel" name="celular" placeholder="Phone number (optional)"
+                value="{% if form.errors %}{{ form.celular.value }}{% endif %}">
+                {% for error in form.celular.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="password" name="password" placeholder="Password" id="password" >
+                {% for error in form.password.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="password" name="password_repeat" placeholder="Rewrite Password" id="password-repeat">
+                {% for error in form.password_repeat.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+            <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id="next">Next</button></small>
+            <span class="already mt-4" href="#">You already have an account? <a class="already" href="{% url 'signin' %}">SignIn here</a></span>
         </form>
     </div>
 </div>
@@ -34,7 +59,7 @@
         $('#password-repeat').on('keyup', validate);
 
         function validate(){
-            var username = $.trim($('#username').val());
+            /*var username = $.trim($('#username').val());
             var email = $.trim($('#email').val());
             var password = $.trim($('#password').val());
             var password_repeat = $.trim($('#password-repeat').val());
@@ -63,10 +88,9 @@
                 $('#password-error').prop('disabled', true );
                 $('#next').prop('disabled', true);
             }else{
-                
                 $('#password-error').prop('disabled', true);
                 $('#next').prop('disabled', false);
-            }
+            }*/
         }
     </script>
 {% endblock js %}

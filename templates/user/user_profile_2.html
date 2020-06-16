@@ -9,7 +9,7 @@
     <div class="container">
         <div class="form-row profile-row">
             <div class="col-md-4 relative">
-                <form method="POST" id="edit_user_infos" action="{% url 'edit_user_info' %}">{% csrf_token %}
+                <form method="POST" id="edit_user_infos" action="{% url 'edit_user_info' %}" enctype="multipart/form-data">{% csrf_token %}
                     <div class="avatar">
                         <div class="avatar-bg center"></div>
                     </div>

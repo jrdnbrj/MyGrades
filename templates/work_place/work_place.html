@@ -25,10 +25,10 @@
              <option value="Engineering">Engineering</option>
              <option value="Computer Sciences">Computer Sciences</option>
         </select><br>
-            <label for="start">From:</label>
-            <input type="date" name="date_from" id="date_from"/><br>
-            <label for="start">To:</label>
-            <input type="date" name="date_to" id="date_to"/>
+        <label for="start">From:</label>
+        <input type="date" name="date_from" id="date_from"/><br>
+        <label for="start">To:</label>
+        <input type="date" name="date_to" id="date_to"/>
     </form>
 </div></div>
             </div>
@@ -77,11 +77,7 @@
             var area = $('#area').val();
             var date_from = $('#date_from').val();
             var date_to = $('#date_to').val();
-            console.log(title);
-            console.log(area);
-            console.log(date_from);
-            console.log(date_to);
-
+            console.log(title + ',' + area + ',' + date_from + ',' + date_to);
             var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
 
             $.ajax({
@@ -95,6 +91,7 @@
                 type: 'post',
                 success: function(data){
                     var trabajos = JSON.parse(data.trabajos);
+                    console.log(trabajos)
                     $('#list').html("");
                     $('#len_list').html(data.len + " results");
                     for(var i = 0; i < trabajos.length; i++){
