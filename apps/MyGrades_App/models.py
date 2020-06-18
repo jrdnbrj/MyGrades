@@ -3,15 +3,16 @@ from django.db import models
 # Create your models here.
 
 class Usuario(models.Model):
-    id = models.AutoField(primary_key=True)
-    username = models.CharField(max_length=20, unique=True)
-    foto = models.ImageField(upload_to='', max_length=None, null=True, blank=True)
-    mail = models.EmailField(max_length=50)
-    password = models.CharField(max_length=32)
-    celular = models.CharField(max_length=15, null=True, blank=True)
-    key_words = models.CharField(max_length=300, blank=True)
-    info_about = models.TextField(max_length=None, blank=True)
-    is_active = models.BooleanField(default=True)
+    id =            models.AutoField(primary_key=True)
+    username =      models.CharField(max_length=20, unique=True)
+    foto =          models.ImageField(upload_to='', max_length=None, null=True, blank=True)
+    mail =          models.EmailField(max_length=50)
+    password =      models.CharField(max_length=32)
+    celular =       models.CharField(max_length=15, null=True, blank=True)
+    key_words =     models.CharField(max_length=300, blank=True)
+    info_about =    models.TextField(max_length=None, blank=True)
+    is_active =     models.BooleanField(default=True)
+    fecha_editado = models.DateTimeField(auto_now=True, auto_now_add=False)
 
     def __str__(self):
         return self.username
@@ -39,7 +40,8 @@ class Trabajo(models.Model):
     fecha_entrega = models.DateTimeField( auto_now_add=False, null=True, blank=True)
     estado = models.CharField(max_length=10, default='hidden')
     descripcion = models.TextField(max_length=None)
-    archivos = models.FileField(upload_to='', max_length=None, null=True, blank=True)
+    archivos = models.ManyToManyField("app.Model", verbose_name=_(""))
+    #archivos = models.FileField(upload_to='', max_length=None, null=True, blank=True)
     trabajador = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL, related_name='trabajador')
     archivo_trabajador = models.FileField(upload_to='', max_length=None, null=True, blank=True)
     precio = models.DecimalField(decimal_places = 2, max_digits = 5, default=0.0)
@@ -47,3 +49,7 @@ class Trabajo(models.Model):
 
     def __str__(self):
         return self.titulo
+
+class Archivo(models.Model):
+    id = models.AutoField(primary_key=True)
+    archivo = models.FileField(upload_to='', max_length=None)

@@ -25,9 +25,13 @@ class UsuarioForm(forms.Form):
                 raise forms.ValidationError({'password_repeat':'Passwords do not match.'})
         return data
 
-    #class Meta:
-     #   model = Usuario
-     #   fields = ['username', 'mail', 'password']
+    def save(self, commit=True):
+        data = self.cleaned_data
+        data.pop('password_repeat')
+        usuario = Usuario.objects.create(**data)
+        if commit:
+            usuario.save()
+        return usuario
 
 class TrabajoForm(forms.ModelForm):
 

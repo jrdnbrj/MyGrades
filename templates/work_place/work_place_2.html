@@ -11,19 +11,20 @@
     <div>
         <div class="container">
             <div class="row">
-                <div class="col-md-4 col-lg-2"></div>
-                <div class="col-md-4 col-lg-6">
-                    <h4 class="text-left" style="width: 450px;">{{ trabajo.titulo }}&nbsp;-&nbsp;{{ trabajo.area }}</h4><small class="form-text text-muted" style="margin: 0px;">{{ trabajo.fecha_publicacion }} - {{ trabajo.fecha_expiracion }}<br></small>
-                    <div class="Push-20" style="height: 28.8px;"></div>
-                    <h4 class="text-left" style="width: 450px;">Assignment Description</h4><p class="form-control-plaintext">{{ trabajo.descripcion }}</p>
+                <div class="col-lg-8 mx-auto my-4">
+                    <h4 class="text-left">{{ trabajo.titulo }}&nbsp;-&nbsp;{{ trabajo.area }}</h4>
+                    <small class="form-text text-muted" style="margin: 0px;">{{ trabajo.fecha_publicacion }} - {{ trabajo.fecha_expiracion }}<br></small>
+                    <h2><span class="badge badge-pill badge-secondary float-right">${{ trabajo.precio }}</span></h2>
+                    <div class="Push-20" style="height: 8.8px;"></div>
+                    <h4 class="text-left">Assignment Description</h4><p class="form-control-plaintext ml-3">{{ trabajo.descripcion }}</p>
                     <div class="Push-20" style="height: 28.8px;"></div>
                     {% if trabajo.archivos %}
-                    <h5 class="text-left" style="width: 450px;">Related Documents List</h5>+&nbsp<a href="{% url 'media/' trabajo.archivos %}">{{ trabajo.archivos }}</a><br>
-                    <div class="Push-20" style="height: 30px;"></div>
+                        <h5 class="text-left">Related Documents List</h5>
+                        <span class="ml-3">+&nbsp<a href="{#{% url 'media/' trabajo.archivos %}#}">{{ trabajo.archivos }}</a></span>
+                        <br>
+                        <div class="Push-20" style="height: 30px;"></div>
                     {% endif %}
                 </div>
-                <div class="col-md-4 col-lg-2"><button class="btn btn-success border rounded" type="button" disabled>{{ trabajo.precio }}</button></div>
-                <div class="col-md-4 col-lg-2"></div>
             </div>
         </div>
     </div>
@@ -34,7 +35,7 @@
                 <div class="col-md-4 col-lg-3"></div>
                 <div class="col-md-4 col-lg-3"></div>
                 <div class="col-md-4 col-lg-3"></div>
-                <div class="col-md-4 col-lg-3"><button class="btn btn-primary rounded" type="button" onclick="location.href='{% url 'work_place_3' trabajo.id %}'">Next</button></div>
+                <div class="col-md-4 col-lg-3"><button class="btn-lg btn-primary rounded border" type="button" onclick="location.href='{% url 'work_place_3' trabajo.id %}'">Next</button></div>
             </div>
         </div>
     </div>

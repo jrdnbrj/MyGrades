@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 import datetime
 import base64
 
@@ -29,7 +30,6 @@ def register(request):
         celular = request.POST['celular']
         password = request.POST['password']
         password_verify = request.POST['password_repeat']
-        #if password == password_verify:
         usuario = UsuarioForm(request.POST)
         if usuario.is_valid():
             request.session['email'] = email
@@ -42,9 +42,6 @@ def register(request):
             print(usuario.errors)
             context['form'] = usuario
             return render(request, 'home/register.html', context)
-        #else:
-         #   context['error'] = 'Passowords do not match'
-        #    print('-'*10, 'Passowords do not match', '-'*10)
     return render(request, 'home/register.html', context)
 
 def register_verification(request):
@@ -56,6 +53,7 @@ def register_verification(request):
             data['mail'] = request.session['email']
             data['username'] = request.session['username']
             data['password'] = request.session['password']
+            data['password_repeat'] = request.session['password']
             data['celular'] = request.session['celular']
             form = UsuarioForm(data)
             if form.is_valid():
@@ -168,16 +166,14 @@ def wp_ajax(request):
 
         trabajos = Trabajo.objects.filter(estado='published')
 
+        if title:
+            trabajos = trabajos.filter(Q(titulo__icontains=title) | Q(descripcion__icontains=title))
         if area:
             trabajos = trabajos.filter(area=area)
         if date_from:
             trabajos = trabajos.exclude(fecha_expiracion__lt=date_from)
         if date_to:
             trabajos = trabajos.exclude(fecha_publicacion__gt=date_to)
-        if title:
-            trabajos_title = trabajos.filter(titulo__icontains=title)
-            trabajos_description = trabajos.filter(descripcion__icontains=title)
-            trabajos = trabajos_title.union(trabajos_description)
 
         trabajos = trabajos.order_by('fecha_expiracion')
 
