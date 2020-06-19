@@ -17,14 +17,14 @@
             </div>
             <div class="form-group">
                 <input class="form-control" type="text" name="mail" placeholder="Email" id="email" 
-                value="{% if form.errors %}{{ form.mail.value }}{% else %}{{ email }}{% endif %}">
+                    value="{% if form.errors %}{{ form.mail.value }}{% else %}{{ email }}{% endif %}">
                 {% for error in form.mail.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
             </div>
             <div class="form-group">
-                <input class="form-control" type="tel" name="celular" placeholder="Phone number (optional)"
-                value="{% if form.errors %}{{ form.celular.value }}{% endif %}">
+                <input class="form-control" type="number" name="celular" placeholder="Phone number (optional)"
+                    value="{% if form.errors %}{{ form.celular.value }}{% endif %}">
                 {% for error in form.celular.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}

@@ -29,6 +29,14 @@ class Cuenta_Bancaria(models.Model):
     def __str__(self):
         return self.numero_cuenta
 
+class Archivo(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=100)
+    archivo = models.FileField(upload_to='', max_length=None)
+
+    def __str__(self):
+        return self.nombre
+
 class Trabajo(models.Model):
     id = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=60, unique=True)
@@ -40,7 +48,7 @@ class Trabajo(models.Model):
     fecha_entrega = models.DateTimeField( auto_now_add=False, null=True, blank=True)
     estado = models.CharField(max_length=10, default='hidden')
     descripcion = models.TextField(max_length=None)
-    archivos = models.ManyToManyField("app.Model", verbose_name=_(""))
+    archivos = models.ManyToManyField(Archivo)
     #archivos = models.FileField(upload_to='', max_length=None, null=True, blank=True)
     trabajador = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL, related_name='trabajador')
     archivo_trabajador = models.FileField(upload_to='', max_length=None, null=True, blank=True)
@@ -49,7 +57,3 @@ class Trabajo(models.Model):
 
     def __str__(self):
         return self.titulo
-
-class Archivo(models.Model):
-    id = models.AutoField(primary_key=True)
-    archivo = models.FileField(upload_to='', max_length=None)

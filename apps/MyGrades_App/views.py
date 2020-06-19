@@ -41,12 +41,18 @@ def register(request):
         else:
             print(usuario.errors)
             context['form'] = usuario
+            print(usuario)
             return render(request, 'home/register.html', context)
     return render(request, 'home/register.html', context)
 
 def register_verification(request):
+    context = {}
     if request.method == 'POST':
         #print(request.session['code'], request.POST['code'], request.session['email'])
+        print('Request Post: ', request.POST)
+        if not 'license_terms' in request.POST:
+            context['license_error'] = 'License conditions must be accepted to continue.'
+            return render(request, 'home/register_verification.html', context)
         if int(request.POST['code']) == int(request.session['code']):
             #print('Codigo verificado')
             data = request.POST.copy()
@@ -55,19 +61,22 @@ def register_verification(request):
             data['password'] = request.session['password']
             data['password_repeat'] = request.session['password']
             data['celular'] = request.session['celular']
-            form = UsuarioForm(data)
-            if form.is_valid():
-                form.save()
+            usuario = UsuarioForm(data)
+            if usuario.is_valid():
+                usuario.save()
                 user = User.objects.create_user(request.session['username'], request.session['email'], request.session['password'])
                 if user is None:
-                    messages.error(request, 'Error al registrar usuario')
                     print('--------------Create User Error---------------')
+                return redirect('landing_page')
             else:
                 print('------------User Error--------------')
                 print(form.errors)
+                context['form'] = usuario
+                return render(request, 'home/register.html', context)
         else:
             print('Codigo incorrecto')
-        return redirect('landing_page')
+            context['code_error'] = 'The Code does not match.'
+        return render(request, 'home/register_verification.html', context)
     else:
         try:
             import random
