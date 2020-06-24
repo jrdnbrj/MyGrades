@@ -1,6 +1,6 @@
 from django import forms
+from django.utils import timezone
 from .models import *
-from datetime import datetime
 
 class UsuarioForm(forms.Form):
 
@@ -38,30 +38,32 @@ class UsuarioForm(forms.Form):
 class PostAssignmentForm(forms.Form):
 
     titulo = forms.CharField(min_length=1, max_length=50)
-    area = forms.CharField(min_length=1, max_length=15) # cambiar si se requiere al agregar nuevas áreas
-    descripcion = forms.CharField(min_length=0, max_length=2000, required=False)
+    area = forms.CharField(min_length=1, max_length=17) # cambiar si se requiere al agregar nuevas áreas
+    descripcion = forms.CharField(min_length=0, max_length=2000)
     fecha_expiracion = forms.DateTimeField(
         input_formats = ['%Y-%m-%dT%H:%M'],
         widget = forms.DateTimeInput( attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M')
     )
 
     def clean_fecha_expiracion(self):
-        fecha_expiracion = super().cleaned_data['fecha_expiracion']
-        fecha_expiracion = datetime.strptime(fecha_expiracion)
-        if datetime.now >= fecha_expiracion:
-            raise forms.ValidationError('The DeadLine must be greater than', datime.now())
+        data = self.cleaned_data
+        fecha_expiracion = data['fecha_expiracion']
+        if timezone.now() >= fecha_expiracion:
+            raise forms.ValidationError('The DeadLine must be greater than '+ str(timezone.now()))
         return fecha_expiracion
 
-    def save(self):
-        post_assigment = self.cleaned_data
+    def save(self, commit=False):
+        post_assignment = self.cleaned_data
         titulo = post_assignment['titulo']
         area = post_assignment['area']
         descripcion = post_assignment['descripcion']
         fecha_expiracion = post_assignment['fecha_expiracion']
-        post_assigment = Trabajo.objects.create(
-            titulo = titutulo,
+        post_assignment = Trabajo(
+            titulo = titulo,
             area = area,
             descripcion = descripcion,
             fecha_expiracion = fecha_expiracion
         )
-        return post_assigment
+        if commit:
+            post_assignment.save()
+        return post_assignment

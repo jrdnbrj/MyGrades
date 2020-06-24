@@ -29,7 +29,7 @@ def register(request):
         username = request.POST['username']
         celular = request.POST['celular']
         password = request.POST['password']
-        password_verify = request.POST['password_repeat']
+        #password_verify = request.POST['password_repeat']
         usuario = UsuarioForm(request.POST)
         if usuario.is_valid():
             request.session['email'] = email
@@ -70,7 +70,7 @@ def register_verification(request):
                 return redirect('landing_page')
             else:
                 print('------------User Error--------------')
-                print(form.errors)
+                print(usuario.errors)
                 context['form'] = usuario
                 return render(request, 'home/register.html', context)
         else:
@@ -126,9 +126,10 @@ def signout(request):
 
 @login_required
 def post_assigment(request):
+    context = {}
     if request.method == 'POST':
         print(request.POST)
-        form = TrabajoForm(request.POST, request.FILES)
+        form = PostAssignmentForm(request.POST, request.FILES)
         if form.is_valid():
             trabajo = form.save(commit=False)
             trabajo.publicador = Usuario.objects.get(username = request.user)
@@ -136,8 +137,9 @@ def post_assigment(request):
             request.session['id'] = trabajo.id
             return redirect('post_assignment_3')
         else:
+            context['form'] = form
             print(form.errors)
-    return render(request, 'post/post_assignment.html', {})
+    return render(request, 'post/post_assignment.html', context)
 
 @login_required
 def post_assignment_2(request):
@@ -185,7 +187,7 @@ def wp_ajax(request):
             trabajos = trabajos.exclude(fecha_publicacion__gt=date_to)
 
         trabajos = trabajos.order_by('fecha_expiracion')
-
+        print('trabajos: ', trabajos)
         long = len(trabajos)
         trabajos = serializers.serialize('json', trabajos)
     return JsonResponse(data={'trabajos': trabajos, 'len': long}, safe=False)
@@ -286,7 +288,7 @@ def user_assignments(request):
 def edit_post_assignment(request, id):
     trabajo = Trabajo.objects.get(id = id)
     if request.method == 'POST':
-        form = TrabajoForm(request.POST, request.FILES, instance=trabajo)
+        form = PostAssignmentForm(request.POST, request.FILES, instance=trabajo)
         if form.is_valid():
             trabajo = form.save(commit=False)
             trabajo.publicador = Usuario.objects.get(username = request.user)
