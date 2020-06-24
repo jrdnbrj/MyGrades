@@ -128,12 +128,19 @@ def signout(request):
 def post_assigment(request):
     context = {}
     if request.method == 'POST':
-        print(request.POST)
+        print('POST: ', request.POST)
+        print('FILES: ', request.FILES)
         form = PostAssignmentForm(request.POST, request.FILES)
         if form.is_valid():
             trabajo = form.save(commit=False)
             trabajo.publicador = Usuario.objects.get(username = request.user)
             trabajo.save()
+            for file in request.FILES.getlist('archivos'):
+                archivo = Archivo.objects.create(nombre=file.name, archivo=file)
+                print('ARCHIVO: ', archivo.nombre)
+                trabajo.archivos.add(archivo)
+                
+            
             request.session['id'] = trabajo.id
             return redirect('post_assignment_3')
         else:
