@@ -48,10 +48,9 @@ class Trabajo(models.Model):
     fecha_entrega = models.DateTimeField( auto_now_add=False, null=True, blank=True)
     estado = models.CharField(max_length=10, default='hidden')
     descripcion = models.TextField(max_length=None)
-    archivos = models.ManyToManyField(Archivo)
-    #archivos = models.FileField(upload_to='', max_length=None, null=True, blank=True)
+    archivos = models.ManyToManyField(Archivo, related_name='archivos')
     trabajador = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL, related_name='trabajador')
-    archivo_trabajador = models.FileField(upload_to='', max_length=None, null=True, blank=True)
+    archivos_trabajador = models.ManyToManyField(Archivo, related_name='archivos_trabajador')
     precio = models.DecimalField(decimal_places = 2, max_digits = 5, default=0.0)
     fecha_editado = models.DateTimeField(auto_now=True, auto_now_add=False)
 

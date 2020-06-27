@@ -157,6 +157,7 @@ def post_assignment_3(request):
     context = {}
     if 'precio' in request.session:
         context['precio'] = request.session['precio']
+        print('precio:', request.session['precio'])
 
     if request.method == 'POST':
         #print(request.session['id'], request.POST['price'])
@@ -213,6 +214,8 @@ def work_place_3(request, id):
     return render(request, 'work_place/work_place_3.html', context)
 
 def download_file(request, path):
+    path = str(path.replace(' ', '_'))
+    print('\npath', path)
     response = HttpResponse(open('media/' + path, 'rb').read())
     response['Content-Type'] = 'text/plain'
     response['Content-Disposition'] = 'attachment; filename='+path
@@ -294,14 +297,16 @@ def user_assignments(request):
 @login_required
 def edit_post_assignment(request, id):
     trabajo = Trabajo.objects.get(id = id)
+    print('trabajo: ', trabajo)
     if request.method == 'POST':
-        form = PostAssignmentForm(request.POST, request.FILES, instance=trabajo)
+        form = PostAssignmentForm(request.POST, request.FILES)
         if form.is_valid():
-            trabajo = form.save(commit=False)
+            trabajo = form.save(commit=False, instance=trabajo)
             trabajo.publicador = Usuario.objects.get(username = request.user)
             trabajo.save()
             request.session['id'] = trabajo.id
             request.session['precio'] = str(trabajo.precio)
+            print('precio2: ', str(trabajo.precio))
             return redirect('post_assignment_3')
         else:
             print(form.errors)

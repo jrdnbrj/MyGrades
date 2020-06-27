@@ -18,10 +18,12 @@
                     <div class="Push-20" style="height: 8.8px;"></div>
                     <h4 class="text-left">Assignment Description</h4><p class="form-control-plaintext ml-3">{{ trabajo.descripcion }}</p>
                     <div class="Push-20" style="height: 28.8px;"></div>
-                    {% if trabajo.archivos %}
+                    {% if trabajo.archivos.all %}
                         <h5 class="text-left">Related Documents List</h5>
-                        <span class="ml-3">+&nbsp<a href="{#{% url 'media/' trabajo.archivos %}#}">{{ trabajo.archivos }}</a></span>
-                        <br>
+                        {% for archivo in trabajo.archivos.all %}
+                            <span class="ml-3">+&nbsp<a href="{% url 'media/' archivo %}">{{ archivo }}</a></span>
+                            <br>
+                        {% endfor %}
                         <div class="Push-20" style="height: 30px;"></div>
                     {% endif %}
                 </div>

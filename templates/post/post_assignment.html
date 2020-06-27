@@ -89,39 +89,22 @@
                     <p class="form-control-plaintext" id="description2"></p>
                     <div class="Push-20" style="height: 8.8px;"></div>
                     <h5 class="text-left" style="width: 450px;" id="archivos_title">Related Documents List</h5>
-                    <div id="archivos2"></div><span id="file_text" class="text-danger"></span><br>
+                    <div id="archivos2"></div>
 
-                    {% if trabajo.archivos %}
+                    <!--{% if trabajo.archivos %}
                         <h5 class="text-left" style="width: 450px;" id="archivos_title_2">Related Documents List</h5>
                         <div id="file_text_2">
-                            +&nbsp<a class="" 
-                            href="{% url 'media/' trabajo.archivos %}">{{ trabajo.archivos }}</a>
+                            +&nbsp<a class="" href="{% url 'media/' trabajo.archivos %}">{{ trabajo.archivos }}</a>
                         </div><br>
-                    {% endif %}
-
-                    <div class="embed-responsive embed-responsive-21by9" id="frame">
+                    {% endif %}-->
+                    <div id="frame_div" class=""></div>
+                    <!--<div class="embed-responsive embed-responsive-21by9" id="frame">
                         <iframe src="" id="file_iframe" class="embed-responsive-item"></iframe>
-                    </div>
+                    </div>-->
                     <div class="Push-20" style="height: 13.8px;"></div>
                     <div class="Push-20" style="height: 30px;"></div>
+                    <div class="col-7 mx-auto"><button class="btn-lg btn-primary border rounded col" type="submit">Submit</button></div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <!-- End: 1 Row 3 Columns -->
-    <!-- Start: 1 Row 1 Column -->
-    <div>
-        <div class="container">
-            <!-- End: Juvi - Push Empty Space 20px -->
-            <div class="row">
-                <div class="col" style="height: 38px;"></div>
-                <div class="col" style="height: 38px;"></div>
-                <div class="col">
-                    <div class="btn-group" role="group">
-                        <button class="btn-lg btn-primary border rounded" type="submit">Submit</button>
-                    </div>
-                </div>
-                <div class="col" style="height: 38px;"></div>
             </div>
         </div>
     </div>
@@ -147,16 +130,71 @@
     $('#date').on('change', progress);
     $('#archivos').on('change', progress);
 
+    function readURL(input) {
+        //console.log(input.files)
+        //console.log(input.files[0].name)
+        files = input.files
+        console.log(files)
+        
+        if(files){
+            $('#frame_div').show();
+            $('#frame_div').html("");
+            for(var i = 0; i < files.length; i++){
+                
+                //console.log(files[i].name)
+                if (/\.(jpe?g|png|gif|pdf|md|txt|py|html|css|php)$/i.test(files[i].name) ) {
+                    (function(file) {
+                        var reader = new FileReader();
+                        console.log(file.name)
+                        $('#frame_div').append(` <span class="m-3">+&nbsp` + file.name + `</span><br>`);
+                        reader.onload = function (r) {
+                            console.log(r)
+                            $('#frame_div').append(
+                            `   <div class="embed-responsive embed-responsive-21by9 shadow my-3" id="frame">
+                                    <iframe src="` + r.target.result + `" id="file_iframe" class="embed-responsive-item"></iframe>
+                                </div>                    
+                            `);
+                        };
+                        reader.readAsDataURL(file);
+                    })(files[i]);
+                }else{
+                    $('#frame_div').append(`
+                        <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">Unable to display a file preview.</span>
+                    `);
+                }
+            }
+        }else{
+            console.log('else')
+            //$('#frame').hide();
+            //$('#file_text').html("Unable to display a file preview.");
+        }
+        /*if (input.files && input.files[0] && /\.(jpe?g|png|gif|pdf|md|txt|py|html|css|php)$/i.test(input.files[0].name) ) {
+            $('#frame').show();
+            $('#file_text').html("");
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                //console.log(e)
+                $('#file_iframe').attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }else{
+            $('#frame').hide();
+            $('#file_text').html("Unable to display a file preview.");
+        }*/
+    }
+
     function progress(){
         var area = $.trim($('#area').val());
         var title = $.trim($('#title').val());
         var description = $.trim($('#description').val());
         var date = $.trim($('#date').val());
         var archivos = $.trim($('#archivos').val());
-
+        //console.log(archivos)
         var components = [area, title, description, date]
         var cont = 0;
-        console.log(components)
+        //console.log(components)
         for(var i=0; i<components.length; i++){
             if(components[i] != ""){
                 cont = cont + 1;
@@ -172,9 +210,7 @@
         }else{
              $('#title_area').html("");
         }
-        console.log(date)
         if(date != ""){
-            console.log('if')
             var datetime = new Date(date);
             var mes = datetime.getMonth();
             var dia = datetime.getDate();
@@ -187,7 +223,6 @@
                 ((horas > 9) ? horas : '0' + horas)  + ':' + ((minutos > 9) ? minutos : '0' + minutos)
             )
         }else{
-            console.log('else')
             $('#date2').hide();
         }
         if(description != ""){
@@ -200,35 +235,17 @@
 
         if(archivos){
             $('#archivos_title').show();
-            var nombre_archivo = archivos.split('\\')[2];
-            $('#archivos2').html('+ ' + nombre_archivo);
-            $('#archivos_title_2').hide();
-            $('#file_text_2').hide();
+            //var nombre_archivo = archivos.split('\\')[2];
+            //$('#archivos2').html('+ ' + nombre_archivo);
+            //$('#archivos_title_2').hide();
+            //$('#file_text_2').hide();
         }else{
             $('#archivos_title').hide();
-            $('#archivos2').html("");
-            $('#frame').hide();
+            //$('#archivos2').html("");
+            //$('#frame').hide();
         }
     }
 
-    function readURL(input) {
-        console.log(input.files[0].name)
-        if (input.files && input.files[0] && /\.(jpe?g|png|gif|pdf|md|txt)$/i.test(input.files[0].name) ) {
-            $('#frame').show();
-            $('#file_text').html("");
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                console.log(e)
-                $('#file_iframe').attr('src', e.target.result);
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        }else{
-            console.log('else')
-            $('#frame').hide();
-            $('#file_text').html("Unable to display a file preview.");
-        }
-    }
+    
 </script>
 {% endblock js %}
