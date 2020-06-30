@@ -8,7 +8,7 @@ urlpatterns = [
     path('signin', signin, name='signin'),
     path('signout', signout, name='signout'),
 
-    path('post_assignment', post_assigment, name='post_assignment'),
+    path('post_assignment', post_assignment, name='post_assignment'),
     path('post_assignment_3', post_assignment_3, name = 'post_assignment_3'),
 
     path('work_place/', work_place, name='work_place'),

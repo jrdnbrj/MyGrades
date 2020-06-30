@@ -39,7 +39,7 @@ class Archivo(models.Model):
 
 class Trabajo(models.Model):
     id = models.AutoField(primary_key=True)
-    titulo = models.CharField(max_length=60, unique=True)
+    titulo = models.CharField(max_length=60)
     area = models.CharField(max_length=50)
     publicador = models.ForeignKey(Usuario, null=True, on_delete=models.SET_NULL, related_name='publicador')
     fecha_publicacion = models.DateTimeField(auto_now_add=True, editable=True)

@@ -52,21 +52,19 @@ class PostAssignmentForm(forms.Form):
             raise forms.ValidationError('The DeadLine must be greater than '+ str(timezone.now()))
         return fecha_expiracion
 
-    def save(self, commit=False, instance=Trabajo(), *args, **kwargs):
+    def save(self, instance=None, commit=False):
         #instance = super(PostAssignmentForm, self).save(commit=False, *args, **kwargs)
         #print(*args, **kwargs)
+        if not instance:
+            instance = Trabajo()
+        print('instance1:',instance)
         post_assignment = self.cleaned_data
         instance.titulo = post_assignment['titulo']
         instance.area = post_assignment['area']
         instance.descripcion = post_assignment['descripcion']
         instance.fecha_expiracion = post_assignment['fecha_expiracion']
-        '''post_assignment = Trabajo(
-            titulo = titulo,
-            area = area,
-            descripcion = descripcion,
-            fecha_expiracion = fecha_expiracion
-        )'''
+        print('instance2:',instance)
+        
         if commit:
             instance.save()
-            #post_assignment.save()
         return instance

@@ -49,7 +49,7 @@ def register_verification(request):
     context = {}
     if request.method == 'POST':
         #print(request.session['code'], request.POST['code'], request.session['email'])
-        print('Request Post: ', request.POST)
+        #print('Request Post: ', request.POST)
         if not 'license_terms' in request.POST:
             context['license_error'] = 'License conditions must be accepted to continue.'
             return render(request, 'home/register_verification.html', context)
@@ -125,28 +125,37 @@ def signout(request):
 #___________________________POST ASSIGNMENT_____________________________
 
 @login_required
-def post_assigment(request):
+def post_assignment(request):
     context = {}
     if request.method == 'POST':
-        #print('POST: ', request.POST)
+        print('POST: ', request.POST)
         #print('FILES: ', request.FILES)
-        form = PostAssignmentForm(request.POST, request.FILES)
+        print('_______________________POST ASSIGNMENT_______________________')
+        form = PostAssignmentForm(request.POST)
         if form.is_valid():
             trabajo = form.save(commit=False)
             trabajo.publicador = Usuario.objects.get(username = request.user)
             trabajo.save()
+            if 'files_from_validation' in request.POST:
+                for file in request.POST.getlist('files_from_validation'):
+                    trabajo.archivos.add(Archivo.objects.get(id = file))
+
+            if request.FILES:
+                for archivo in trabajo.archivos.all():
+                    trabajo.archivos.remove(archivo)
+
             for file in request.FILES.getlist('archivos'):
                 archivo = Archivo.objects.create(nombre=file.name, archivo=file)
                 trabajo.archivos.add(archivo)
-                
-            
+
             request.session['id'] = trabajo.id
+            print('id_pa1:',request.session['id'])
             return redirect('post_assignment_3')
         else:
             context['form'] = form
-            print([file.name.replace('(', '').replace(')', '') for file in request.FILES.getlist('archivos')])
+            #print([file.name.replace('(', '').replace(')', '') for file in request.FILES.getlist('archivos')])
             files = [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos')]
-            print(files)
+            #print(files)
             context['files'] = files
             print(form.errors)
     return render(request, 'post/post_assignment.html', context)
@@ -163,6 +172,7 @@ def post_assignment_3(request):
 
     if request.method == 'POST':
         #print(request.session['id'], request.POST['price'])
+        print('id_pa3:', request.session['id'])
         trabajo = Trabajo.objects.get(id = request.session.pop('id'))
         trabajo.precio = request.POST['price']
         trabajo.estado = 'published'
@@ -300,25 +310,40 @@ def user_assignments(request):
 def edit_post_assignment(request, id):
     trabajo = Trabajo.objects.get(id = id)
     print('trabajo: ', trabajo)
+    print('_______________________EDIT POST ASSIGNMENT_______________________')
     if request.method == 'POST':
         form = PostAssignmentForm(request.POST)
         if form.is_valid():
             trabajo = form.save(commit=False, instance=trabajo)
             trabajo.publicador = Usuario.objects.get(username = request.user)
+            trabajo.save()
+            if 'files_from_validation' in request.POST:
+                for archivo in trabajo.archivos.all():
+                    trabajo.archivos.remove(archivo)
+                for file in request.POST.getlist('files_from_validation'):
+                    trabajo.archivos.add(Archivo.objects.get(id = file))
+
             if request.FILES:
                 for archivo in trabajo.archivos.all():
                     trabajo.archivos.remove(archivo)
+
             for file in request.FILES.getlist('archivos'):
                 archivo = Archivo.objects.create(nombre=file.name, archivo=file)
                 trabajo.archivos.add(archivo)
-            trabajo.save()
+
+
             request.session['id'] = trabajo.id
             request.session['precio'] = str(trabajo.precio)
-            print('precio2: ', str(trabajo.precio))
+            #print('precio2: ', str(trabajo.precio))
             return redirect('post_assignment_3')
         else:
             print(form.errors)
             context = {}
+            context['form'] = form
+            files = [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos')]
+            context['files'] = files
+            context['trabajo_id'] = trabajo.id
+            
     else:
         options = {'Literature': 0, 'Social Sciences': 1, 'History': 2, 'Nature Sciences': 3, 'Biology': 4, 'Chemistry': 5, 'Mathematics': 6, 'Physics': 7, 'Engineering': 8, 'Computer Sciences': 9}
         context = {'trabajo': trabajo, 'option': options[trabajo.area]}
