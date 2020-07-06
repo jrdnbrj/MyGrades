@@ -4,16 +4,19 @@ from django.db import models
 
 class Usuario(models.Model):
     id =            models.AutoField(primary_key=True)
-    username =      models.CharField(max_length=20, unique=True)
+    username =      models.CharField(max_length=50, unique=True)
     foto =          models.ImageField(upload_to='', max_length=None, null=True, blank=True)
-    mail =          models.EmailField(max_length=50)
-    password =      models.CharField(max_length=32)
-    celular =       models.CharField(max_length=15, null=True, blank=True)
-    key_words =     models.CharField(max_length=300, blank=True)
-    info_about =    models.TextField(max_length=None, blank=True)
+    mail =          models.EmailField('Email', max_length=50, unique=True)
+    password =      models.CharField(max_length=24)
+    celular =       models.CharField(max_length=25, null=True, blank=True)
+    key_words =     models.CharField(max_length=100, blank=True)
+    info_about =    models.TextField(max_length=50, blank=True)
     is_active =     models.BooleanField(default=True)
     fecha_editado = models.DateTimeField(auto_now=True, auto_now_add=False)
 
+    class Meta:
+        verbose_name = "User"
+    
     def __str__(self):
         return self.username
 

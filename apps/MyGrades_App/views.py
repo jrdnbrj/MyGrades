@@ -227,7 +227,7 @@ def work_place_3(request, id):
 
 def download_file(request, path):
     path = str(path.replace(' ', '_'))
-    print('\npath', path)
+    #print('\npath', path)
     response = HttpResponse(open('media/' + path, 'rb').read())
     response['Content-Type'] = 'text/plain'
     response['Content-Disposition'] = 'attachment; filename='+path
@@ -251,34 +251,54 @@ def work_place_4(request, id):
 
 @login_required
 def user_profile(request):
-    usuario = Usuario.objects.get(username = request.user.username)
+    usuario = Usuario.objects.get(username = request.user)
     return render(request, 'user/user_profile.html', {'usuario': usuario})
 
 @login_required
 def user_profile_2(request):
-    usuario = Usuario.objects.get(username = request.user.username)
-    return render(request, 'user/user_profile_2.html', {'usuario': usuario})
+    context = {}
+    usuario = Usuario.objects.get(username = request.user)
+    context['kw1'], context['kw2'], context['kw3'] = usuario.key_words.split(',')
+    context['usuario'] = usuario
+    return render(request, 'user/user_profile_2.html', context)
 
 @login_required
 def edit_user(request):
-    usuario = Usuario.objects.get(username = request.user.username)
-    usuario.username = request.POST['username']
-    usuario.mail = request.POST['mail']
-    usuario.celular = request.POST['celular']
-    usuario.save()
-
-    user = User.objects.get(username = request.user.username)
-    user.username = request.POST['username']
-    user.email = request.POST['mail']
-    user.save()
-    return redirect('user_profile_2')
+    context = {}
+    usuario = Usuario.objects.get(username = request.user)
+    context['usuario'] = usuario
+    if request.method == 'POST':
+        form = EditUserForm(request.POST, instance=usuario)
+        if form.is_valid():
+            usuario = form.save()
+            user = User.objects.get(username = request.user)
+            user.username = usuario.username
+            user.email = usuario.mail
+            user.save()
+        else:
+            print(form.errors)
+            context['form1'] = form
+    return render(request,'user/user_profile_2.html', context)
 
 @login_required
 def edit_user_info(request):
-    print('user_info')
-    print(request.POST)
-    usuario = Usuario.objects.get(username = request.user.username)
-    return redirect('user_profile_2')
+    context = {}
+    usuario = Usuario.objects.get(username = request.user)
+    context['usuario'] = usuario
+    if request.method == 'POST':
+        #print(request.POST)
+        form = EditUserInfoForm(request.POST, request.FILES, instance=usuario)
+        if form.is_valid():
+            usuario = form.save(commit=False)
+            usuario.key_words = ','.join(request.POST.getlist('key_words'))
+            usuario.save()
+        else:
+            print(form.errors)
+            context['form2'] = form
+            context['kw1'], context['kw2'], context['kw3'] = request.POST.getlist('key_words')
+            return render(request,'user/user_profile_2.html', context)
+    context['kw1'], context['kw2'], context['kw3'] = usuario.key_words.split(',')
+    return render(request,'user/user_profile_2.html', context)
 
 @login_required
 def edit_payment_method(request):

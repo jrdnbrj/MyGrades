@@ -1,5 +1,7 @@
 from django import forms
 from django.utils import timezone
+from django.contrib.auth.models import User
+
 from .models import *
 
 class UsuarioForm(forms.Form):
@@ -10,11 +12,18 @@ class UsuarioForm(forms.Form):
     password = forms.CharField(min_length=8, max_length=24)
     password_repeat = forms.CharField(min_length=8, max_length=24)
 
+    def clean_mail(self):
+        mail = self.cleaned_data['mail']
+        mail_taken = Usuario.objects.filter(mail=mail)
+        if mail_taken:
+            raise forms.ValidationError('The email already belongs to an account')
+        return mail
+    
     def clean_username(self):
         username = self.cleaned_data['username']
         username_taken = Usuario.objects.filter(username=username)
         if username_taken:
-            raise forms.ValidationError('Username is already in use.')
+            raise forms.ValidationError('A user with that username already exists')
         return username
 
     def clean(self):
@@ -34,6 +43,23 @@ class UsuarioForm(forms.Form):
         if commit:
             usuario.save()
         return usuario
+
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ('username', 'mail', 'celular')
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        usuario = User.objects.filter(username=username)
+        if usuario and not self.instance.username == username:
+            raise forms.ValidationError('User with this Username already exists.')
+        return username
+
+class EditUserInfoForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ('foto', 'info_about')
 
 class PostAssignmentForm(forms.Form):
 
