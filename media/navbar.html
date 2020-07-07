@@ -1,0 +1,74 @@
+<nav class="navbar fixed-top navbar-expand navbar-dark bg-primary">
+  <a class="navbar-brand" href="{% url 'home' %}"><strong>Restaurante</strong></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+
+    <ul class="navbar-nav mr-auto mx-4">
+      <li class="dropdown nav-item px-2">
+        <a class="nav-link" href="" data-toggle="dropdown" data-target="#firstDropdown">Menú</a>
+        <div class="dropdown-menu dropright" id="firstDropdown">
+          <a class="dropdown-item" href="" data-toggle="dropdown" data-target="#secondDropdown" aria-expanded="false">Productos</a>
+          <div class="" id="secondDropdown">
+            <a class="dropdown-item">Nuevo Producto</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item px-2">
+        <a class="nav-link" href="">Promociones</a>
+      </li>
+      <li class="nav-item px-2">
+        <a class="nav-link" href="">Registro Ventas</a>
+      </li>
+      <li class="nav-item px-2">
+        <a class="nav-link" href="">Contacto</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav dropdown">
+      {% if user.is_authenticated %}
+
+        <li class="nav-item active"><a class="nav-link">Hola, {{ user.username }}</a></li>
+        <a class="btn btn-outline-light" href="{% url 'cerrar_sesión' %}">Cerrar Sesión</a>
+
+      {% else %}
+
+        <a href="" class="btn btn-outline-light" data-toggle="dropdown">Iniciar Sesión o Registrarse</a>
+        <div class="dropdown-menu py-2 row col-20">
+
+          <form class="form container-fluid" method="POST" action="{% url 'iniciar_sesión' %}">
+            {% csrf_token %}
+            {% if messages %}
+
+              {% for message in messages %}
+                <span class="text-danger">{{ message }}<span>
+              {% endfor %}
+
+            {% else %}
+              <br>
+            {% endif %}
+            <div class="form-group"><input class="form-control" name="username" type="text" placeholder="Usuario"></div>
+            <div class="form-group"><input class="form-control" name="password" type="password" placeholder="Contraseña" ></div>  
+            
+            <button type="submit" class="btn btn-outline-success btn-block">Iniciar Sesión</button>
+            <hr>
+            <a href="" class="" title="Es rápido y gratis!" data-toggle="collapse" data-target="#signup">Registrar Usuario</a>
+          </form>
+
+          <form id="signup" class="collapse container-fluid" method="POST" action="{% url 'registrar_usuario' %}">
+            {% csrf_token %}
+            <br>
+            <div class="form-group"><input class="form-control" name="email" type="email" placeholder="Correo"></div>
+            <div class="form-group"><input class="form-control" name="username" type="text" placeholder="Nombre de usuario"></div>
+            <div class="form-group"><input class="form-control" name="password" type="password" placeholder="Contraseña"></div>
+            <div class="form-group"><input class="form-control" name="password_verify" type="password" placeholder="Contraseña (otra vez)"></div>
+            <button type="submit" class="btn btn-outline-success btn-block">Sign Up</button>
+          </form>	
+
+        </div>      
+
+      {% endif %}
+    </ul>
+  </div>
+</nav>

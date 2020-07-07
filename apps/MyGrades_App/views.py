@@ -12,8 +12,6 @@ import base64
 from .forms import *
 from .models import *
 
-# Create your views here.
-
 def landing_page(request):
     return render(request, 'home/landing_page.html', {})
 
@@ -48,8 +46,6 @@ def register(request):
 def register_verification(request):
     context = {}
     if request.method == 'POST':
-        #print(request.session['code'], request.POST['code'], request.session['email'])
-        #print('Request Post: ', request.POST)
         if not 'license_terms' in request.POST:
             context['license_error'] = 'License conditions must be accepted to continue.'
             return render(request, 'home/register_verification.html', context)
@@ -258,7 +254,7 @@ def user_profile(request):
 def user_profile_2(request):
     context = {}
     usuario = Usuario.objects.get(username = request.user)
-    context['kw1'], context['kw2'], context['kw3'] = usuario.key_words.split(',')
+    #context['kw1'], context['kw2'], context['kw3'] = usuario.key_words.split(',')
     context['usuario'] = usuario
     return render(request, 'user/user_profile_2.html', context)
 
@@ -266,7 +262,7 @@ def user_profile_2(request):
 def edit_user(request):
     context = {}
     user = Usuario.objects.get(username = request.user)
-    context['usuario'] = usuario
+    context['usuario'] = user
     if request.method == 'POST':
         form = EditUserForm(request.POST, instance=user)
         if form.is_valid():
@@ -277,6 +273,7 @@ def edit_user(request):
         else:
             print(form.errors)
             context['form1'] = form
+    #context['kw1'], context['kw2'], context['kw3'] = user.key_words.split(',')
     return render(request,'user/user_profile_2.html', context)
 
 @login_required
@@ -285,7 +282,7 @@ def edit_user_info(request):
     usuario = Usuario.objects.get(username = request.user)
     context['usuario'] = usuario
     if request.method == 'POST':
-        #print(request.POST)
+        
         form = EditUserInfoForm(request.POST, request.FILES, instance=usuario)
         if form.is_valid():
             usuario = form.save(commit=False)
@@ -294,9 +291,10 @@ def edit_user_info(request):
         else:
             print(form.errors)
             context['form2'] = form
-            context['kw1'], context['kw2'], context['kw3'] = request.POST.getlist('key_words')
+            context['key_words_error'] = request.POST.getlist('key_words')
             return render(request,'user/user_profile_2.html', context)
-    context['kw1'], context['kw2'], context['kw3'] = usuario.key_words.split(',')
+        
+    #context['kw1'], context['kw2'], context['kw3'] = usuario.key_words.split(',')
     return render(request,'user/user_profile_2.html', context)
 
 @login_required
@@ -319,6 +317,7 @@ def edit_password(request):
         else:
             print(form.errors)
             context['form4'] = form
+            #context['kw1'], context['kw2'], context['kw3'] = user.key_words.split(',')
     return render(request,'user/user_profile_2.html', context)
 
 @login_required
@@ -336,8 +335,6 @@ def user_assignments(request):
 @login_required
 def edit_post_assignment(request, id):
     trabajo = Trabajo.objects.get(id = id)
-    print('trabajo: ', trabajo)
-    print('_______________________EDIT POST ASSIGNMENT_______________________')
     if request.method == 'POST':
         form = PostAssignmentForm(request.POST)
         if form.is_valid():
@@ -358,10 +355,8 @@ def edit_post_assignment(request, id):
                 archivo = Archivo.objects.create(nombre=file.name, archivo=file)
                 trabajo.archivos.add(archivo)
 
-
             request.session['id'] = trabajo.id
             request.session['precio'] = str(trabajo.precio)
-            #print('precio2: ', str(trabajo.precio))
             return redirect('post_assignment_3')
         else:
             print(form.errors)
@@ -370,7 +365,6 @@ def edit_post_assignment(request, id):
             files = [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos')]
             context['files'] = files
             context['trabajo_id'] = trabajo.id
-            
     else:
         options = {'Literature': 0, 'Social Sciences': 1, 'History': 2, 'Nature Sciences': 3, 'Biology': 4, 'Chemistry': 5, 'Mathematics': 6, 'Physics': 7, 'Engineering': 8, 'Computer Sciences': 9}
         context = {'trabajo': trabajo, 'option': options[trabajo.area]}

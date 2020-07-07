@@ -19,6 +19,9 @@ class Usuario(models.Model):
     
     def __str__(self):
         return self.username
+    
+    def key_words_list(self):
+        return self.key_words.split(',')
 
 class Cuenta_Bancaria(models.Model):
     id = models.AutoField(primary_key=True)

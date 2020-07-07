@@ -1,0 +1,65 @@
+Curso de Docker de Platzi
+Instalacion Docker
+sudo apt-get update // actualiza apt de linux
+sudo apt-get install \  //instala lo necesario para instalar docker
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - // configura la seguridad de docker
+sudo add-apt-repository \ //descarga el repositorio
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
+sudo apt-get update // actualiza apt
+sudo apt-get install docker-ce docker-ce-cli containerd.io // instala docker y complementos
+docker --version // ver version de docker
+sudo usermod -aG docker jrdnbrj // agrego el usuario "jrnbrj" al grupo de docker
+sudo - jrdnbrj // "reinicio" la sesión para que se registren los cambios
+// ahora se puede usar docker sin sudo
+docker run hello-world // corre el contenedor, si no existe lo crea; debe ser el nombre en minusculas
+docker ps // ver estado de procesos
+docker ps -a // ver estado de todos los procesos
+docker inspect <id_container> // metadata del contenedor; en vez del id puede ser el nombre
+docker inspect -d '{{ json .Config.Env }}' <id_container> // filtros en el metadata
+docker rename <name_container> <new_name_container> // renombrar 
+docker run --name <name_container> <name_image> // correr un contenedor con un nombre definido
+docker logs <name_container> // imprime output del container, no se ejecuta
+docker rm <name_container> // borra el contenedor
+docker ps -aq // imprime solo los id's de los contenedores
+docker run ubuntu // crea el contenedor con la imagen de ubuntu
+docker run -it ubuntu // ejecuta la terminal de ubuntu
+docker exec -it <name_container_ubuntu> bash // abre bash de ubuntu, accede al contenedor que se está ejecutando
+docker images // muestra un historial de contenedores descargados con su peso
+docker run --detach --name server -p 8080:80 nginx // corre contenedor de nginx y con -p asocia el puerto 80 del contenedor con el 8080 del host
+docker run -d --name db mongo // descarga y corre imagen de mongo
+docker run --name db -d -v C:\Users\borja\Desktop\mongodata:/data/db mongo // -v de volumes agrega el directorio al directorio del contenedor, tiene persistencia de datos
+docker inspect <name_container> // datos del contenedor
+docker volume ls // ver todos los volumenes
+docker volume prune // borrar todos los volumenes
+docker volume create dbdata // crea el volumen "dbdata"
+docker run -d --name db --mount src=dbdata,dst=/data/db mongo // monta el volumen de src a dst
+docker pull <name> // descarga la imagen
+docker image ls // ver imagenes
+docker login // iniciar sesión con la cuenta de docker
+docker tag ubuntu:platzi jrdnbrj/ubuntu:platzi // agregar tag a la imagen
+docker push jrdnbrj/ubuntu:platzi // manda al respositorio online
+docker build -t ubuntu:platzi . // realiza los procesos que estan en dockerfile, -t de tag
+docker history ubuntu:platzi // muestra la historia de esa imagen
+docker run --rm -p 3000:3000 platziapp // --rm elimina el contenedor cuando se termine de usar, -p puerto
+docker network ls // redes de docker
+docker network create --attachable platzinet // crea una red con el nombre "platzinet", --atachable permite que otros contenedores se conecten a este
+// driver bridge por defecto para redes locales
+docker network connect <name_network> <name_container> // liga la red con el contenedor
+docker run -d --name app -p 3000:3000 --env MONGO_URL=mongodb://<mongo_container_name>:<port>/<directorio_archivos> // corre un contenedor con la variable de entorno de mongo que está en otro contenedor
+docker-compose up -d // ejecuta el archivo "docker-compose.yml", -d para omitir el output
+docker-compose ps // servicios de docker-compose
+docker-compose logs -f <name_service>
+docker-compose scale app=4 // escala "app" (nombre de servicio) a 4 contenedores
+
+
+
+
+

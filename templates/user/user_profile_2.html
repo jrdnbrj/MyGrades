@@ -30,9 +30,15 @@
                     <div class="form-group">
                         <label><strong>Add Key Words</strong></label>
                         <small class="form-text text-muted">Add three main words or group oof words that describe your work and kind of assignments you will prefer to do or you will post</small>
-                        <input class="form-control" type="text" placeholder="Key Word 1" name="key_words" value="{{ kw1 }}">
-                        <input class="form-control" type="text" placeholder="Key Word 2" name="key_words" value="{{ kw2 }}">
-                        <input class="form-control" type="text" placeholder="Key Word 3" name="key_words" value="{{ kw3 }}">
+                        {% if key_words_error %}
+                            {% for kw in key_words_error %}
+                                <input class="form-control" type="text" placeholder="Enter a key word" name="key_words" value="{{ kw }}">
+                            {% endfor %}
+                        {% else %}
+                            {% for kw in usuario.key_words_list %}
+                                <input class="form-control" type="text" placeholder="Enter a key word" name="key_words" value="{{ kw }}">
+                            {% endfor %}
+                        {% endif %}
                         {% for error in form.key_words.errors %}
                             <small class="text-danger">{{ error }}</small>
                         {% endfor %}
