@@ -265,13 +265,12 @@ def user_profile_2(request):
 @login_required
 def edit_user(request):
     context = {}
-    usuario = Usuario.objects.get(username = request.user)
+    user = Usuario.objects.get(username = request.user)
     context['usuario'] = usuario
     if request.method == 'POST':
-        form = EditUserForm(request.POST, instance=usuario)
+        form = EditUserForm(request.POST, instance=user)
         if form.is_valid():
             usuario = form.save()
-            user = User.objects.get(username = request.user)
             user.username = usuario.username
             user.email = usuario.mail
             user.save()
@@ -303,16 +302,24 @@ def edit_user_info(request):
 @login_required
 def edit_payment_method(request):
     print('user_payment_method')
-    print(request.POST)
-    usuario = Usuario.objects.get(username = request.user.username)
     return redirect('user_profile_2')
 
 @login_required
 def edit_password(request):
-    print('user_password')
-    print(request.POST)
-    usuario = Usuario.objects.get(username = request.user.username)
-    return redirect('user_profile_2')
+    context = {}
+    user = User.objects.get(username=request.user)
+    context['usuario'] = Usuario.objects.get(username=user.username)
+    if request.method == 'POST':
+        form = EditPasswordForm(request.POST, instance=user)
+        if form.is_valid():
+            usuario = form.save()
+            user.set_password(usuario.password)
+            user.save()
+            return redirect('signin')
+        else:
+            print(form.errors)
+            context['form4'] = form
+    return render(request,'user/user_profile_2.html', context)
 
 @login_required
 def user_assignments(request):

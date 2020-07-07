@@ -1,6 +1,7 @@
 from django import forms
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 
 from .models import *
 
@@ -44,6 +45,7 @@ class UsuarioForm(forms.Form):
             usuario.save()
         return usuario
 
+
 class EditUserForm(forms.ModelForm):
     class Meta:
         model = Usuario
@@ -60,6 +62,33 @@ class EditUserInfoForm(forms.ModelForm):
     class Meta:
         model = Usuario
         fields = ('foto', 'info_about')
+
+
+class EditPasswordForm(forms.ModelForm):
+        
+    actual_password = forms.CharField()
+    password = forms.CharField(min_length=8, max_length=24)
+    confirm_password = forms.CharField()
+
+    class Meta:
+        model = Usuario
+        fields = ('password',)
+
+    def clean_actual_password(self):
+        actual_password_clean = self.cleaned_data['actual_password']
+        if not self.instance.check_password(actual_password_clean):
+            raise forms.ValidationError('Does not match current password')
+        return actual_password_clean
+    
+    def clean(self):
+        data = super().clean()
+        if 'password' in data and 'confirm_password' in data:
+            new_password = data['password']
+            confirm_new_password = data['confirm_password']
+
+            if new_password != confirm_new_password:
+                raise forms.ValidationError({'password':'Passwords do not match.'})
+        return data
 
 class PostAssignmentForm(forms.Form):
 

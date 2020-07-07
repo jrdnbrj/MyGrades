@@ -152,19 +152,28 @@
                         <div class="form-group">
                             <label class="d-lg-flex align-items-lg-start"><strong>Change Password</strong></label>
                             <label class="d-lg-flex justify-content-lg-start align-items-lg-start">Actual Password</label>
-                            <input class="form-control" type="password" name="password_actual" required>
+                            <input class="form-control" type="password" name="actual_password" required>
+                            {% for error in form4.actual_password.errors %}
+                                <small class="text-danger">{{ error }}</small>
+                            {% endfor %}
                         </div>
                         <div class="form-row">
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
                                     <label>New Password </label>
                                     <input class="form-control" type="password" name="password" required>
+                                    {% for error in form4.password.errors %}
+                                        <small class="text-danger">{{ error }}</small>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
                                     <label>Confirm New Password</label>
-                                    <input class="form-control" type="password" name="confirmpass" required>
+                                    <input class="form-control" type="password" name="confirm_password" required>
+                                    {% for error in form4.confirm_password.errors %}
+                                        <small class="text-danger">{{ error }}</small>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <button type="submit" form="edit_password" class="btn-sm btn-primary border py-0 mx-auto col">SAVE</button>
