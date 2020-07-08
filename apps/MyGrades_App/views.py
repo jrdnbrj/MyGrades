@@ -370,10 +370,16 @@ def edit_post_assignment(request, id):
 
 def send_assignment(request):
     pk = request.POST['pk']
-    print('pk:', pk)
     trabajo = Trabajo.objects.get(pk=pk)
     if request.method == 'POST':
+        
+        if request.FILES:
+            print('files')
+            for archivo in trabajo.archivos_trabajador.all():
+                trabajo.archivos_trabajador.remove(archivo)
+        
         for file in request.FILES.getlist('archivos'):
+            print('getlist')
             archivo = Archivo.objects.create(nombre=file.name, archivo=file)
             trabajo.archivos_trabajador.add(archivo)
             trabajo.estado = 'sent'
