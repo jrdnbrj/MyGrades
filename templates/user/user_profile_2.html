@@ -22,7 +22,7 @@
                         <div class="custom-file">
                             <input type="file" class="form-control custom-file-input" name="foto"><!--avatar-file-->
                             <label class="custom-file-label" for="inputGroupFile01"> {% if usuario.foto %}{{ usuario.foto }}{% else %}Choose File{% endif %}</label>
-                            {% for error in form.foto.errors %}
+                            {% for error in form2.foto.errors %}
                                 <small class="text-danger">{{ error }}</small>
                             {% endfor %}
                         </div>

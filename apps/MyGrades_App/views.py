@@ -1,16 +1,17 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.core import serializers
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.core import serializers
+
 import datetime
 import base64
 
 from .forms import *
 from .models import *
+
 
 def landing_page(request):
     return render(request, 'home/landing_page.html', {})
@@ -89,11 +90,9 @@ def register_verification(request):
             msg.set_content('Code: ' + str(code))
 
             with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-                smtp.login(sender, "mygrades123")
-                print('login')
-                smtp.send_message(msg)
+                smtp.login(sender, "mygrades123");   print('login')
+                smtp.send_message(msg);              print('Sent', code)
                 request.session['code'] = code
-                print('Sent', code)
         except:
             print('---------------Email Error------------')
             return redirect('register')
@@ -124,9 +123,6 @@ def signout(request):
 def post_assignment(request):
     context = {}
     if request.method == 'POST':
-        print('POST: ', request.POST)
-        #print('FILES: ', request.FILES)
-        print('_______________________POST ASSIGNMENT_______________________')
         form = PostAssignmentForm(request.POST)
         if form.is_valid():
             trabajo = form.save(commit=False)
@@ -148,12 +144,11 @@ def post_assignment(request):
             print('id_pa1:',request.session['id'])
             return redirect('post_assignment_3')
         else:
-            context['form'] = form
-            #print([file.name.replace('(', '').replace(')', '') for file in request.FILES.getlist('archivos')])
-            files = [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos')]
-            #print(files)
-            context['files'] = files
             print(form.errors)
+            context['form'] = form
+            files = [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos')]
+            context['files'] = files
+            
     return render(request, 'post/post_assignment.html', context)
 
 @login_required
@@ -175,6 +170,10 @@ def post_assignment_3(request):
         trabajo.save()
         return redirect('work_place')
     return render(request, 'post/post_assignment_3.html', context)
+
+@login_required
+def post_assignment_4(request):
+    pass
 
 #___________________________WORK PLACE_____________________________
 
@@ -319,9 +318,9 @@ def edit_password(request):
 
 @login_required
 def user_assignments(request):
-    user = Usuario.objects.get(username = request.user.username)
-    posted_assignments = Trabajo.objects.filter(publicador = user.id)
-    taken_assignments = Trabajo.objects.filter(trabajador = user.id)
+    user = Usuario.objects.get(username=request.user)
+    posted_assignments = Trabajo.objects.filter(publicador=user.id).exclude(estado='deleted')
+    taken_assignments = Trabajo.objects.filter(trabajador=user.id).exclude(estado='deleted')
 
     context = {
         'posted_assignments': posted_assignments,
@@ -367,3 +366,16 @@ def edit_post_assignment(request, id):
         context = {'trabajo': trabajo, 'option': options[trabajo.area]}
     return render(request, 'post/post_assignment.html', context)
 
+#___________________________SEND ASSIGNMENT_____________________________
+
+def send_assignment(request):
+    pk = request.POST['pk']
+    print('pk:', pk)
+    trabajo = Trabajo.objects.get(pk=pk)
+    if request.method == 'POST':
+        for file in request.FILES.getlist('archivos'):
+            archivo = Archivo.objects.create(nombre=file.name, archivo=file)
+            trabajo.archivos_trabajador.add(archivo)
+            trabajo.estado = 'sent'
+            trabajo.save()
+    return redirect('user_assignments')

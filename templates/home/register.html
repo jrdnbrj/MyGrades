@@ -10,14 +10,14 @@
             <h2 class="text-center"><strong>Create</strong> an account</h2>
             <div class="form-group">
                 <input class="form-control" type="text" name="username" placeholder="Username" id="username" 
-                    value="{% if form.errors %}{{ form.username.value }}{% endif %}">
+                    value="{% if form.errors %}{{ form.username.value }}{% endif %}" required>
                 {% for error in form.username.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
             </div>
             <div class="form-group">
                 <input class="form-control" type="text" name="mail" placeholder="Email" id="email" 
-                    value="{% if form.errors %}{{ form.mail.value }}{% else %}{{ email }}{% endif %}">
+                    value="{% if form.errors %}{{ form.mail.value }}{% else %}{{ email }}{% endif %}" required>
                 {% for error in form.mail.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
@@ -30,18 +30,18 @@
                 {% endfor %}
             </div>
             <div class="form-group">
-                <input class="form-control" type="password" name="password" placeholder="Password" id="password" >
+                <input class="form-control" type="password" name="password" placeholder="Password" required>
                 {% for error in form.password.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
             </div>
             <div class="form-group">
-                <input class="form-control" type="password" name="password_repeat" placeholder="Rewrite Password" id="password-repeat">
+                <input class="form-control" type="password" name="password_repeat" placeholder="Rewrite Password" required>
                 {% for error in form.password_repeat.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
             </div>
-            <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id="next">Next</button></small>
+            <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Next</button></small>
             <span class="already mt-4" href="#">You already have an account? <a class="already" href="{% url 'signin' %}">SignIn here</a></span>
         </form>
     </div>
@@ -51,46 +51,3 @@
 <div></div>
 <section class="showcase"></section>
 {% endblock %}
-{% block js %}
-    <script>
-        $('#username').on('keyup', validate);
-        $('#email').on('keyup', validate);
-        $('#password').on('keyup', validate);
-        $('#password-repeat').on('keyup', validate);
-
-        function validate(){
-            /*var username = $.trim($('#username').val());
-            var email = $.trim($('#email').val());
-            var password = $.trim($('#password').val());
-            var password_repeat = $.trim($('#password-repeat').val());
-
-            var components = [username, email, password, password_repeat]
-            var cont = 0;
-            console.log(components)
-            for(var i=0; i<components.length; i++){
-                if(components[i] != ""){
-                    cont = cont + 1;
-                }
-            }
-            if(cont == 4){
-                $('#next').prop('disabled', false);
-            }else{
-                $('#next').prop('disabled', true);
-            }
-            if(password.length > 7){
-                $('#password-repeat').prop('disabled', false);
-                $('#next').prop('disabled', false);
-            }else{
-                $('#password-repeat').prop('disabled', true);
-                $('#next').prop('disabled', true);
-            }
-            if(password_repeat != password && password != "" && password_repeat != ""){
-                $('#password-error').prop('disabled', true );
-                $('#next').prop('disabled', true);
-            }else{
-                $('#password-error').prop('disabled', true);
-                $('#next').prop('disabled', false);
-            }*/
-        }
-    </script>
-{% endblock js %}

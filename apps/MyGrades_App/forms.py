@@ -1,9 +1,10 @@
 from django import forms
 from django.utils import timezone
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import User
 
 from .models import *
+
 
 class UsuarioForm(forms.Form):
 
@@ -108,8 +109,6 @@ class PostAssignmentForm(forms.Form):
         return fecha_expiracion
 
     def save(self, instance=None, commit=False):
-        #instance = super(PostAssignmentForm, self).save(commit=False, *args, **kwargs)
-        #print(*args, **kwargs)
         if not instance:
             instance = Trabajo()
         print('instance1:',instance)

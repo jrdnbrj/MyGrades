@@ -1,5 +1,7 @@
 from django.urls import path
+
 from .views import *
+
 
 urlpatterns = [
     path('', landing_page, name='landing_page'),
@@ -27,4 +29,6 @@ urlpatterns = [
     path('edit_user_info/', edit_user_info, name='edit_user_info'),
     path('edit_payment_method/', edit_payment_method, name='edit_payment_method'),
     path('edit_password/', edit_password, name='edit_password'),
+    
+    path('send_assignment/', send_assignment, name="send_assignment"),
 ]
