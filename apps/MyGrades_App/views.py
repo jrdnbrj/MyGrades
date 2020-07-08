@@ -254,7 +254,6 @@ def user_profile(request):
 def user_profile_2(request):
     context = {}
     usuario = Usuario.objects.get(username = request.user)
-    #context['kw1'], context['kw2'], context['kw3'] = usuario.key_words.split(',')
     context['usuario'] = usuario
     return render(request, 'user/user_profile_2.html', context)
 
@@ -273,7 +272,6 @@ def edit_user(request):
         else:
             print(form.errors)
             context['form1'] = form
-    #context['kw1'], context['kw2'], context['kw3'] = user.key_words.split(',')
     return render(request,'user/user_profile_2.html', context)
 
 @login_required
@@ -293,8 +291,6 @@ def edit_user_info(request):
             context['form2'] = form
             context['key_words_error'] = request.POST.getlist('key_words')
             return render(request,'user/user_profile_2.html', context)
-        
-    #context['kw1'], context['kw2'], context['kw3'] = usuario.key_words.split(',')
     return render(request,'user/user_profile_2.html', context)
 
 @login_required
@@ -306,18 +302,19 @@ def edit_payment_method(request):
 def edit_password(request):
     context = {}
     user = User.objects.get(username=request.user)
-    context['usuario'] = Usuario.objects.get(username=user.username)
+    usuario = Usuario.objects.get(username=user.username)
+    context['usuario'] = usuario
     if request.method == 'POST':
         form = EditPasswordForm(request.POST, instance=user)
         if form.is_valid():
-            usuario = form.save()
-            user.set_password(usuario.password)
-            user.save()
+            user = form.save(commit=False)
+            usuario.password = user.password
+            user.set_password(user.password)
+            user.save(); usuario.save()
             return redirect('signin')
         else:
             print(form.errors)
             context['form4'] = form
-            #context['kw1'], context['kw2'], context['kw3'] = user.key_words.split(',')
     return render(request,'user/user_profile_2.html', context)
 
 @login_required

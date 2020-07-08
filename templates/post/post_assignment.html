@@ -84,13 +84,13 @@
             <div class="row">
                 <div class="col-lg-8 mx-auto">
                     <h1 class="text-center">PREVIEW</h1><br>
-                    <h4 class="text-left" style="width: 450px;" id="title_area"></h4>
+                    <h4 class="text-left" id="title_area"></h4>
                     <small class="form-text text-muted" style="margin: 0px;" id="date2"><br></small>
-                    <div class="Push-20" style="height: 28.8px;"></div>
-                    <h4 class="text-left" style="width: 450px;" id="description_title">Assignment Description</h4>
+                    <div class="Push-20"></div>
+                    <h4 class="text-left" id="description_title">Assignment Description</h4>
                     <p class="form-control-plaintext" id="description2"></p>
                     <div class="Push-20" style="height: 8.8px;"></div>
-                    <h5 class="text-left" style="width: 450px;" id="archivos_title">Related Documents List</h5>
+                    <h5 class="text-left" id="archivos_title">Related Documents List</h5>
                     <div id="archivos2"></div>
 
                     <!--{% if trabajo.archivos %}
@@ -221,7 +221,7 @@
         }
         if(description != ""){
             $('#description_title').show();
-            $('#description2').html(description);
+            $('#description2').html(description.replace(/\r\n|\r|\n/g,"</br>"));
         }else{
             $('#description_title').hide();
             $('#description2').html("");

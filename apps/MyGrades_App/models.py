@@ -20,6 +20,9 @@ class Usuario(models.Model):
     def __str__(self):
         return self.username
     
+    def key_words_comma(self):
+        return self.key_words.replace(',', ', ')
+    
     def key_words_list(self):
         return self.key_words.split(',')
 
