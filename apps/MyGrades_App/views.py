@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core import serializers
+
 
 import datetime
 import base64
@@ -164,23 +166,23 @@ def post_assignment_3(request):
     if request.method == 'POST':
         #print(request.session['id'], request.POST['price'])
         print('id_pa3:', request.session['id'])
-        trabajo = Trabajo.objects.get(id = request.session.pop('id'))
+        trabajo = Trabajo.objects.get(id = request.session['id'])
         trabajo.precio = request.POST['price']
         trabajo.estado = 'published'
         trabajo.save()
-        return redirect('work_place')
+        return redirect('post_assignment_4')
     return render(request, 'post/post_assignment_3.html', context)
 
 @login_required
 def post_assignment_4(request):
-    pass
+    trabajo = Trabajo.objects.get(id = request.session.pop('id'))
+    return render(request, 'post/post_assignment_4.html', {'trabajo': trabajo})
 
 #___________________________WORK PLACE_____________________________
 
 @login_required
-def work_place(request):
-    trabajos = Trabajo.objects.filter(estado = 'publicado').order_by('fecha_expiracion')
-    return render(request, 'work_place/work_place.html', {'trabajos': trabajos})
+def work_place(request): 
+    return render(request, 'work_place/work_place.html', {})
 
 def wp_ajax(request):
     if request.is_ajax and request.method == "POST":
@@ -200,9 +202,9 @@ def wp_ajax(request):
             trabajos = trabajos.exclude(fecha_expiracion__lt=date_from)
         if date_to:
             trabajos = trabajos.exclude(fecha_publicacion__gt=date_to)
-
         trabajos = trabajos.order_by('fecha_expiracion')
-        print('trabajos: ', trabajos)
+        
+        #print('trabajos: ', trabajos)
         long = len(trabajos)
         trabajos = serializers.serialize('json', trabajos)
     return JsonResponse(data={'trabajos': trabajos, 'len': long}, safe=False)
@@ -316,11 +318,19 @@ def edit_password(request):
             context['form4'] = form
     return render(request,'user/user_profile_2.html', context)
 
+def verify_assigments(assignments):
+    date_time = utc.localize(datetime.datetime.now())
+    
+    for assignment in assignments:
+        if assignment.fecha_expiracion < date_time:
+            assignment.estado = 'closed'
+    return assigments
+
 @login_required
 def user_assignments(request):
     user = Usuario.objects.get(username=request.user)
-    posted_assignments = Trabajo.objects.filter(publicador=user.id).exclude(estado='deleted')
-    taken_assignments = Trabajo.objects.filter(trabajador=user.id).exclude(estado='deleted')
+    posted_assignments = Trabajo.objects.filter(publicador__username=request.user).exclude(estado='deleted')
+    taken_assignments = Trabajo.objects.filter(trabajador__username=request.user).exclude(estado='deleted')
 
     context = {
         'posted_assignments': posted_assignments,
@@ -383,5 +393,6 @@ def send_assignment(request):
             archivo = Archivo.objects.create(nombre=file.name, archivo=file)
             trabajo.archivos_trabajador.add(archivo)
             trabajo.estado = 'sent'
+            trabajo.fecha_entrega = datetime.datetime.now()
             trabajo.save()
     return redirect('user_assignments')

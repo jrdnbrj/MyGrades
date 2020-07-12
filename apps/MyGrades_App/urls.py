@@ -12,6 +12,7 @@ urlpatterns = [
 
     path('post_assignment', post_assignment, name='post_assignment'),
     path('post_assignment_3', post_assignment_3, name = 'post_assignment_3'),
+    path('post_assignment_4', post_assignment_4, name = 'post_assignment_4'),
 
     path('work_place/', work_place, name='work_place'),
     path('wp_ajax', wp_ajax, name='wp_ajax'),

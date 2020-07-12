@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Post Assignment {% endblock %}
+{% block content %}
+{% load static %}
+<section class="call-to-action text-white text-center" style="background:url(static/images/WorkPlace-2.jpg) no-repeat center center;background-size:cover;">
+    <div class="overlay"></div>
+</section>
+<div>
+        <div class="Push-20" style="height: 14.4px;"></div>
+    </div>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-lg-3"></div>
+                <div class="col-md-4 col-lg-6">
+                    <h4 class="text-left" style="width: 450px;">Congratulations, you have posted an assignment!</h4>
+                    <div class="Push-20" style="height: 7.2px;"></div>
+                    <small class="form-text text-muted">
+                        We remind you you will have have to wait for someone to take it and he will have until <strong>{{ trabajo.fecha_expiracion }}</strong> to submit <strong>"{{ trabajo.titulo }}"</strong> already completed to you.
+                    </small>
+                    <div class="Push-20" style="height: 7.2px;"></div>
+                    <small class="form-text text-muted">
+                        We appreciate your time and interest for taking this assignment, also we'd like to thank you for using our plataform and trusting our services. Please feel free to comment about our services with your friends and in our main page.
+                    </small>
+                    <div class="Push-20" style="height: 7.2px;"></div>
+                <h4 class="text-left" style="width: 450px;">Best of lucks,&nbsp;</h4>
+                <h4 class="text-left" style="width: 450px;">MyGrades Group</h4>
+                <div class="Push-20" style="height: 28.8px;"></div>
+            </div> 
+            <div class="col-md-4 col-lg-3"></div>
+        </div>
+    </div>
+    </div>
+    <div></div>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-lg-3"></div>
+                <div class="col-md-4 col-lg-3"></div>
+                <div class="col-md-4 col-lg-3"></div>
+                <div class="col-md-4 col-lg-3">
+                    <button class="btn btn-primary rounded border" type="button" nclick="location.href='{% url 'work_place' %}'">Back to content</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Push-20" style="height: 14.4px;"></div>
+<section class="showcase"></section>
+<section class="call-to-action text-white text-center" style="background:url(static/images/Desk-1.jpg) no-repeat center center;background-size:cover;">
+    <div class="overlay"></div>
+</section>
+{% endblock %}

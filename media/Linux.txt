@@ -1,0 +1,66 @@
+service network restart // reinicio de servicios de red
+service network start // encender servicios de red
+service network stop // parar servicios de red
+lsblk // muestra dispositivos de bloque
+rpm -qa | grep asm // ver instalaciones con el patron asm
+rpm -ihv <archivo rpm>// instalar rpm
+groupadd <nombre grupo>// añadir grupos
+ll /dev/oracleasm/disks // listado de los discos
+usermod -g oinstall -G dba,asmdba,asmoper,asmadmin,vboxsf oracle// añade los grupos al usuario oracle
+id oracle // ver lo grupos agregados
+oracleasm init // después del rpm
+oracleasm configure -i // configuración de oracle - user>oracle - group>asmadmin
+fdisk /dev/sdb // gestionar disco - sdb,sdc,sdd
+chown -R oracle:oinstall /u01 // dueño Oracle a la carpeta "/u01"
+______________________________________________________________________________________________________
+ps -ef | grep pmon // procesos de acm corriendo
+ps -ef | grep lsnr // procesos listener
+. oraenv > +ASM // seteo variables de entorno
+env | grep ORA // veo las variables de entorno y entorno
+crs_stat -t // estado de servicios
+asmca // asistente de ASM en el entorno virtual
+_____________________________________________________________-
+setear entorno en oracle
+. oraenv > jbdb1
+sqlplus
+
+cd $ORACLE_HOME
+pwd
+cd dbs // archivo de parametros
+cat orapwjbsrv1
+
+cat initjbdb1.ora // parametro de ubicacion archivo spfile
+sqlplus / as sysdba // localmente como usuario SYSdba
+
+sql>
+desc v$parameter
+select substr(name, 1, 40), substr
+show parameter processes
+show paramater nls_date_format // parametro date format
+memory // el cambio se pondra en caliente pero no se persste e el archivo de param, no perdura en la base
+
+
+ps -ef | grep pmon // ver la base subida
+emctl start dbconsole // subir la consola e ingresar a jbdb1:1158/em
+
+tail -f <nombre log> // actualización continua de archivo
+
+
+
+
+_________________________________________________________________________
+SWAP - More Space
+dd if=/dev/zero of=/root/swapfile bs=1M count=1024
+mkswap /root/swapfile
+swapon /root/swapfile
+vim /etc/fstab
+- agregar "/root/swapfile    swap    swap    defaults  0 0"
+swapon -s // para verificar
+free -k // para verificar
+
+_________________________________________________________________________
+history // devuelve un listado de los comandos que se han usado
+!<numero de historial> // (!72) vuelve a ejecutar el comando que tiene ese numero en history
+
+
+

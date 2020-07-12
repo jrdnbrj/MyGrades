@@ -5,6 +5,10 @@ from django.contrib.auth.models import User
 
 from .models import *
 
+import datetime
+import pytz
+
+utc = pytz.UTC
 
 class UsuarioForm(forms.Form):
 
@@ -104,21 +108,25 @@ class PostAssignmentForm(forms.Form):
     def clean_fecha_expiracion(self):
         data = self.cleaned_data
         fecha_expiracion = data['fecha_expiracion']
-        if timezone.now() >= fecha_expiracion:
-            raise forms.ValidationError('The DeadLine must be greater than '+ str(timezone.now()))
+        date_time = utc.localize(datetime.datetime.now())
+        if date_time >= fecha_expiracion:
+            raise forms.ValidationError('The DeadLine must be greater than '+ str(date_time)[:-16])
         return fecha_expiracion
 
     def save(self, instance=None, commit=False):
+        
         if not instance:
             instance = Trabajo()
-        print('instance1:',instance)
+            
+        #print('instance1:',instance)
         post_assignment = self.cleaned_data
         instance.titulo = post_assignment['titulo']
         instance.area = post_assignment['area']
         instance.descripcion = post_assignment['descripcion']
         instance.fecha_expiracion = post_assignment['fecha_expiracion']
-        print('instance2:',instance)
+        #print('instance2:',instance)
         
         if commit:
             instance.save()
+            
         return instance
