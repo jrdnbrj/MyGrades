@@ -59,7 +59,7 @@
                                                                     </div>
                                                                     <div class="col">
                                                                         {% if trabajo.archivos_trabajador.all %}
-                                                                            <h5 class="text-left" id="archivos_title">Documents Sent</h5>
+                                                                            <h5 class="text-left" id="archivos_title">Sent Documents</h5>
                                                                             {% for archivo in trabajo.archivos_trabajador.all %}
                                                                                 <div id="file_text_2">
                                                                                     +&nbsp<a class="" href="{% url 'media/' archivo %}">{{ archivo }}</a>
@@ -141,7 +141,7 @@
                                                                     </div>
                                                                     <div class="col">
                                                                         {% if trabajo.archivos_trabajador.all %}
-                                                                            <h5 class="text-left" id="archivos_title">Documents Sent</h5>
+                                                                            <h5 class="text-left" id="archivos_title">Sent Documents</h5>
                                                                             {% for archivo in trabajo.archivos_trabajador.all %}
                                                                                 <div id="file_text_2">
                                                                                     +&nbsp<a class="" href="{% url 'media/' archivo %}">{{ archivo }}</a>

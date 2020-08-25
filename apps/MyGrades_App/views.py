@@ -372,7 +372,27 @@ def edit_post_assignment(request, id):
             context['files'] = files
             context['trabajo_id'] = trabajo.id
     else:
-        options = {'Literature': 0, 'Social Sciences': 1, 'History': 2, 'Nature Sciences': 3, 'Biology': 4, 'Chemistry': 5, 'Mathematics': 6, 'Physics': 7, 'Engineering': 8, 'Computer Sciences': 9}
+        options = {
+            'Literature': 0, 
+            'Social Sciences': 1, 
+            'Nature Sciences': 2,
+            'Engineering': 3,
+            'History': 4, 
+            'Biology': 5, 
+            'Chemistry': 6, 
+            'Physics': 7, 
+            'Calculus': 8,
+            'Algebra': 9,
+            'Languages': 10,
+            'Economics': 11,
+            'Laws': 12,
+            'Arts': 13,
+            'Marketing and Publicity': 14,
+            'Architecture and Design': 15,
+            'Business and Management': 16,
+            'Psychology': 17,
+            'Other...': 18
+        }
         context = {'trabajo': trabajo, 'option': options[trabajo.area]}
     return render(request, 'post/post_assignment.html', context)
 

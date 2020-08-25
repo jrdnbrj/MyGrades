@@ -29,7 +29,7 @@
                     </div>
                     <div class="form-group">
                         <label><strong>Add Key Words</strong></label>
-                        <small class="form-text text-muted">Add three main words or group oof words that describe your work and kind of assignments you will prefer to do or you will post</small>
+                        <small class="form-text text-muted">Add three main words or group of words that describe your work and kind of assignments you will prefer to do or you will post.</small>
                         {% if key_words_error %}
                             {% for kw in key_words_error %}
                                 <input class="form-control" type="text" placeholder="Enter a key word" name="key_words" value="{{ kw }}">
@@ -45,7 +45,7 @@
                     </div>
                     <div class="form-group">
                         <label><strong>About you</strong></label>
-                        <small class="form-text text-muted">Write something about yourself, something for everyone to read</small>
+                        <small class="form-text text-muted">Write something about yourself, something for everyone to read.</small>
                         <textarea class="form-control" placeholder="Type..." style="height: 218px;" name="info_about">{% if form2.errors %}{{ form2.info_about.value }}{% else %}{{ usuario.info_about }}{% endif %}</textarea>
                         {% for error in form2.info_about.errors %}
                             <small class="text-danger">{{ error }}</small>
@@ -99,7 +99,7 @@
                 <div class="form-group">
                     <form method="POST" id="edit_payment_method" action="{% url 'edit_payment_method' %}">{% csrf_token %}
                         <label><strong>Payment Method</strong></label>
-                        <small class="form-text text-muted">If you chose a bank account make sure tu fulfill every empty space with your bank account data, otherways if you chose an internet account fulfill only the necesary spaces, like:&nbsp; Account Number or User and Key</small>
+                        <small class="form-text text-muted">If you choose a bank account, make sure to fulfill every empty space with your bank account data, otherways if you choose an internet account fulfill only the necessary spaces, like:&nbsp; Account Number or User and Key.</small>
                         <div class="form-row">
                             <div class="col-sm-12 col-md-6 col-lg-5">
                                 <div class="form-group">
