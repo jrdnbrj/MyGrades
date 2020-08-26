@@ -26,28 +26,44 @@ def register(request):
         context = {}
 
     if request.method == 'POST':
+        
+        '''username = request.POST['username']
         email = request.POST['mail']
-        username = request.POST['username']
         celular = request.POST['celular']
         password = request.POST['password']
-        #password_verify = request.POST['password_repeat']
+        #password_verify = request.POST['password_repeat']'''
         usuario = UsuarioForm(request.POST)
         if usuario.is_valid():
-            request.session['email'] = email
+            usuario = usuario.save()
+            if not 'license_terms' in request.POST:
+                context['license_error'] = 'License conditions must be accepted to continue.'
+                context['form'] = usuario
+                return render(request, 'home/register.html', context)
+            user = User.objects.create_user(usuario.username, usuario.mail, usuario.password)
+            if user is None:
+                print('--------------Create User Error---------------')
+            '''request.session['email'] = email
             request.session['username'] = username
             request.session['password'] = password
             request.session['celular'] = celular
-            request.method = 'GET'
-            return register_verification(request)
+            request.method = 'GET'''
+            return redirect('signin')
         else:
             print(usuario.errors)
+            if not 'license_terms' in request.POST:
+                context['license_error'] = 'License conditions must be accepted to continue.'
             context['form'] = usuario
             print(usuario)
             return render(request, 'home/register.html', context)
     return render(request, 'home/register.html', context)
 
 def register_verification(request):
+    
     context = {}
+
+
+    
+    '''context = {}
     if request.method == 'POST':
         if not 'license_terms' in request.POST:
             context['license_error'] = 'License conditions must be accepted to continue.'
@@ -98,7 +114,7 @@ def register_verification(request):
         except:
             print('---------------Email Error------------')
             return redirect('register')
-        return render(request, 'home/register_verification.html', {})
+        return render(request, 'home/register_verification.html', {})'''
 
 def signin(request):
     context = {}

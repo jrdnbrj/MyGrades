@@ -46,8 +46,7 @@ class UsuarioForm(forms.Form):
         data = self.cleaned_data
         data.pop('password_repeat')
         usuario = Usuario.objects.create(**data)
-        if commit:
-            usuario.save()
+        if commit: usuario.save()
         return usuario
 
 

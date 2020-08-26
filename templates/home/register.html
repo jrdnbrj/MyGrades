@@ -5,18 +5,18 @@
 <div class="register-photo">
     <div class="form-container">
         <div class="image-holder"></div>
-        <form method="post">
+        <form id="form" method="post">
             {% csrf_token %}
             <h2 class="text-center"><strong>Create</strong> an account</h2>
             <div class="form-group">
-                <input class="form-control" type="text" name="username" placeholder="Username" id="username" 
+                <input class="form-control" type="text" name="username" minlength="3" placeholder="Username" id="username" 
                     value="{% if form.errors %}{{ form.username.value }}{% endif %}" required>
                 {% for error in form.username.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
             </div>
             <div class="form-group">
-                <input class="form-control" type="text" name="mail" placeholder="Email" id="email" 
+                <input class="form-control" type="email" name="mail" placeholder="Email" id="email" 
                     value="{% if form.errors %}{{ form.mail.value }}{% else %}{{ email }}{% endif %}" required>
                 {% for error in form.mail.errors %}
                     <small class="text-danger">{{ error }}</small>
@@ -30,24 +30,51 @@
                 {% endfor %}
             </div>
             <div class="form-group">
-                <input class="form-control" type="password" name="password" placeholder="Password" required>
+                <input class="form-control" type="password" name="password" minlength="8" placeholder="Password" required>
                 {% for error in form.password.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
             </div>
             <div class="form-group">
-                <input class="form-control" type="password" name="password_repeat" placeholder="Rewrite Password" required>
+                <input class="form-control" type="password" name="password_repeat" minlength="8" placeholder="Rewrite Password" required>
                 {% for error in form.password_repeat.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
             </div>
-            <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Next</button></small>
+            <div class="form-group">
+                <div class="form-check row">
+                    <input class="form-check-input" type="checkbox" name="license_terms" required>
+                    <label class="form-check-label ml-4">I agree to the license terms.</label>
+                    {% if license_error %}
+                        <small class="text-danger">{{ license_error }}</small>
+                    {% endif %}
+                </div>
+            </div>
+            <div id='recaptcha' class="g-recaptcha"
+                data-sitekey="6Le6psMZAAAAAHjsHXDvGN0aPYM3fFZlbrseyyTW"
+                data-callback="onCompleted"
+                data-size="invisible"></div>
+            <div class="form-group">
+                <button 
+                    class="btn btn-primary btn-block" 
+                    type="submit"
+                >Next</button>
             <span class="already mt-4" href="#">You already have an account? <a class="already" href="{% url 'signin' %}">SignIn here</a></span>
         </form>
     </div>
 </div>
-<div></div>
-<div></div>
-<div></div>
-<section class="showcase"></section>
 {% endblock %}
+{% block js %}
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script>
+    $('#form').submit(event => {
+        if (!grecaptcha.getResponse()) {
+            event.preventDefault();
+            grecaptcha.execute();
+        }
+    })
+    onCompleted = function() {
+        $('#form').submit()
+    }
+</script>
+{% endblock js %}
