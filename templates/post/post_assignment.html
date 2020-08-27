@@ -27,15 +27,23 @@
                     <select class="row form-control col-5" name="area" id="area" required>
                         <option value>Select...</option>
                         <option {% if option == 0 or form.area.value == 'Literature'%}selected{% endif %} value="Literature">Literature</option>
-                        <option {% if option == 1 or form.area.value == 'Social Sciences' %}selected{% endif %} value="Social Sciences">Social Sciences</option>
-                        <option {% if option == 2 or form.area.value == 'History' %}selected{% endif %} value="History">History</option>
+                        <option {% if option == 1 or form.area.value == 'History' %}selected{% endif %} value="History">History</option>
+                        <option {% if option == 2 or form.area.value == 'Social Sciences' %}selected{% endif %} value="Social Sciences">Social Sciences</option>
                         <option {% if option == 3 or form.area.value == 'Nature Sciences' %}selected{% endif %} value="Nature Sciences">Nature Sciences</option>
                         <option {% if option == 4 or form.area.value == 'Biology' %}selected{% endif %} value="Biology">Biology</option>
                         <option {% if option == 5 or form.area.value == 'Chemistry' %}selected{% endif %} value="Chemistry">Chemistry</option>
                         <option {% if option == 6 or form.area.value == 'Mathematics' %}selected{% endif %} value="Mathematics">Mathematics</option>
                         <option {% if option == 7 or form.area.value == 'Physics' %}selected{% endif %} value="Physics">Physics</option>
                         <option {% if option == 8 or form.area.value == 'Engineering' %}selected{% endif %} value="Engineering">Engineering</option>
-                        <option {% if option == 9 or form.area.value == 'Computer Sciences' %}selected{% endif %} value="Computer Sciences">Computer Sciences</option>
+                        <option {% if option == 9 or form.area.value == 'Languages' %}selected{% endif %} value="Languages">Languages</option>
+                        <option {% if option == 10 or form.area.value == 'Economics' %}selected{% endif %} value="Economics">Economics</option>
+                        <option {% if option == 11 or form.area.value == 'Laws' %}selected{% endif %} value="Laws">Laws</option>
+                        <option {% if option == 12 or form.area.value == 'Arts' %}selected{% endif %} value="Arts">Arts</option>
+                        <option {% if option == 13 or form.area.value == 'Marketing and Publicity' %}selected{% endif %} value="Marketing and Publicity">Marketing and Publicity</option>
+                        <option {% if option == 14 or form.area.value == 'Architecture and Design' %}selected{% endif %} value="Architecture and Design">Architecture and Design</option>
+                        <option {% if option == 15 or form.area.value == 'Business and Management' %}selected{% endif %} value="Business and Management">Business and Management</option>
+                        <option {% if option == 16 or form.area.value == 'Psychology' %}selected{% endif %} value="Psychology">Psychology</option>
+                        <option {% if option == 17 or form.area.value == 'Other' %}selected{% endif %} value="Other">Other...</option>
                     </select>
                 </div>
                 
@@ -61,7 +69,7 @@
                 <h4 class="text-left">Dead Line</h4>
                 <div class="row">
                     <input class="col form-control" type="datetime-local" id="date" name="fecha_expiracion" required
-                        value="{% if form.errors %}{{ form.fecha_expiracion.value }}{% elif trabajo %}{{ trabajo.fecha_expiracion|date:"c"|slice:':-9' }}{% else %}2020-07-01T12:00{% endif %}">
+                        value="{% if form.errors %}{{ form.fecha_expiracion.value }}{% elif trabajo %}{{ trabajo.fecha_expiracion|date:"c"|slice:':-9' }}{% else %}{% endif %}">
                 </div>
                 {% for error in form.fecha_expiracion.errors %}
                     <small class="text-danger">{{ error }}</small>

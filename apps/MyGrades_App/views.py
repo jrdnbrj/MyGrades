@@ -26,12 +26,6 @@ def register(request):
         context = {}
 
     if request.method == 'POST':
-        
-        '''username = request.POST['username']
-        email = request.POST['mail']
-        celular = request.POST['celular']
-        password = request.POST['password']
-        #password_verify = request.POST['password_repeat']'''
         usuario = UsuarioForm(request.POST)
         if usuario.is_valid():
             usuario = usuario.save()
@@ -42,11 +36,6 @@ def register(request):
             user = User.objects.create_user(usuario.username, usuario.mail, usuario.password)
             if user is None:
                 print('--------------Create User Error---------------')
-            '''request.session['email'] = email
-            request.session['username'] = username
-            request.session['password'] = password
-            request.session['celular'] = celular
-            request.method = 'GET'''
             return redirect('signin')
         else:
             print(usuario.errors)
@@ -57,65 +46,6 @@ def register(request):
             return render(request, 'home/register.html', context)
     return render(request, 'home/register.html', context)
 
-def register_verification(request):
-    
-    context = {}
-
-
-    
-    '''context = {}
-    if request.method == 'POST':
-        if not 'license_terms' in request.POST:
-            context['license_error'] = 'License conditions must be accepted to continue.'
-            return render(request, 'home/register_verification.html', context)
-        if int(request.POST['code']) == int(request.session.pop('code')):
-            #print('Codigo verificado')
-            data = request.POST.copy()
-            data['mail'] = request.session['email']
-            data['username'] = request.session['username']
-            data['password'] = request.session['password']
-            data['password_repeat'] = request.session['password']
-            data['celular'] = request.session['celular']
-            usuario = UsuarioForm(data)
-            if usuario.is_valid():
-                usuario.save()
-                user = User.objects.create_user(request.session['username'], request.session['email'], request.session['password'])
-                if user is None:
-                    print('--------------Create User Error---------------')
-                return redirect('landing_page')
-            else:
-                print('------------User Error--------------')
-                print(usuario.errors)
-                context['form'] = usuario
-                return render(request, 'home/register.html', context)
-        else:
-            print('Codigo incorrecto')
-            context['code_error'] = 'The Code does not match.'
-        return render(request, 'home/register_verification.html', context)
-    else:
-        try:
-            import random
-            import smtplib
-            from email.message import EmailMessage
-
-            sender = 'contact.mygrades@gmail.com'
-            code = random.randint(100000, 999999)
-
-            msg = EmailMessage()
-            msg['Subject'] = "MyGrades Account Verification Code"
-            msg['From'] = sender
-            msg['To'] = request.session['email']
-            msg.set_content('Code: ' + str(code))
-
-            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-                smtp.login(sender, "mygrades123");   print('login')
-                smtp.send_message(msg);              print('Sent', code)
-                request.session['code'] = code
-        except:
-            print('---------------Email Error------------')
-            return redirect('register')
-        return render(request, 'home/register_verification.html', {})'''
-
 def signin(request):
     context = {}
     if request.method == 'POST':
@@ -124,7 +54,7 @@ def signin(request):
         user = authenticate(request, username = username, password = password)
         if user is not None:
             login(request, user)
-            return redirect('landing_page')
+            return redirect('work_place')
         else:
             print('Credenciales incorrectas')
             context['error'] = 'Incorrect username or password.'
@@ -203,27 +133,30 @@ def work_place(request):
 def wp_ajax(request):
     if request.is_ajax and request.method == "POST":
         print(request.POST['title'], request.POST['area'], request.POST['date_from'], request.POST['date_to'])
-        title = request.POST['title']
-        area = request.POST['area']
-        date_from = request.POST['date_from']
-        date_to = request.POST['date_to']
 
         trabajos = Trabajo.objects.filter(estado='published')
-
-        if title:
-            trabajos = trabajos.filter(Q(titulo__icontains=title) | Q(descripcion__icontains=title))
-        if area:
-            trabajos = trabajos.filter(area=area)
-        if date_from:
-            trabajos = trabajos.exclude(fecha_expiracion__lt=date_from)
-        if date_to:
-            trabajos = trabajos.exclude(fecha_publicacion__gt=date_to)
+        if request.POST['title']:
+            trabajos = trabajos.filter(Q(titulo__icontains=request.POST['title']) | Q(descripcion__icontains=request.POST['title']))
+        if request.POST['area']:
+            trabajos = trabajos.filter(area=request.POST['area'])
+        if request.POST['date_from']:
+            trabajos = trabajos.exclude(fecha_expiracion__lt=request.POST['date_from'])
+        if request.POST['date_to']:
+            trabajos = trabajos.exclude(fecha_publicacion__gt=request.POST['date_to'])
         trabajos = trabajos.order_by('fecha_expiracion')
+
+        # len_trabajos = len(trabajos)
+        page = request.POST['page']
+        trabajos = Paginator(trabajos, 10)
+        pags = {
+            'page': page,
+            'has_previous': trabajos.page(page).has_previous(),
+            'has_next': trabajos.page(page).has_next(),
+            'num_pages': trabajos.num_pages,
+            'objects': serializers.serialize('json', trabajos.page(page).object_list)
+        }
         
-        #print('trabajos: ', trabajos)
-        long = len(trabajos)
-        trabajos = serializers.serialize('json', trabajos)
-    return JsonResponse(data={'trabajos': trabajos, 'len': long}, safe=False)
+    return JsonResponse(data={'len': trabajos.count, 'pags': pags}, safe=False)
 
 @login_required
 def work_place_2(request, pk):
@@ -390,24 +323,23 @@ def edit_post_assignment(request, id):
     else:
         options = {
             'Literature': 0, 
-            'Social Sciences': 1, 
-            'Nature Sciences': 2,
-            'Engineering': 3,
-            'History': 4, 
-            'Biology': 5, 
-            'Chemistry': 6, 
+            'History': 1, 
+            'Social Sciences': 2, 
+            'Nature Sciences': 3,
+            'Biology': 4, 
+            'Chemistry': 5, 
+            'Mathematics': 6,
             'Physics': 7, 
-            'Calculus': 8,
-            'Algebra': 9,
-            'Languages': 10,
-            'Economics': 11,
-            'Laws': 12,
-            'Arts': 13,
-            'Marketing and Publicity': 14,
-            'Architecture and Design': 15,
-            'Business and Management': 16,
-            'Psychology': 17,
-            'Other...': 18
+            'Engineering': 8,
+            'Languages': 9,
+            'Economics': 10,
+            'Laws': 11,
+            'Arts': 12,
+            'Marketing and Publicity': 13,
+            'Architecture and Design': 14,
+            'Business and Management': 15,
+            'Psychology': 16,
+            'Other...': 17
         }
         context = {'trabajo': trabajo, 'option': options[trabajo.area]}
     return render(request, 'post/post_assignment.html', context)

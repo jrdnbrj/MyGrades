@@ -3,63 +3,65 @@
 {% block content %}
 {% load static %}
 <section class="call-to-action text-white text-center" style="background:url(/static/images/WorkPlace-2.jpg) no-repeat center center;background-size:cover;">
-        <div class="overlay"></div>
-    </section>
+    <div class="overlay"></div>
+</section>
 
     <div>
         <div class="container">
-            <div class="row">
-                <div class="col-md-12"><div class="filter">
-    <form>
-        <input placeholder="e.g Chemical Reactions Essay" name="words" id="title"></input><br>
-        <select name="area" id="area">
-             <option selected value>Select an area...</option>
-             <option value="Literature">Literature</option>
-             <option value="Social Sciences">Social Sciences</option>
-             <option value="History">History</option>
-             <option value="Nature Sciences">Nature Sciences</option>
-             <option value="Biology">Biology</option>
-             <option value="Chemistry">Chemistry</option>
-             <option value="Mathematics">Mathematics</option>
-             <option value="Physics">Physics</option>
-             <option value="Engineering">Engineering</option>
-             <option value="Computer Sciences">Computer Sciences</option>
-        </select><br>
-        <label for="start">From:</label>
-        <input type="date" name="date_from" id="date_from"/><br>
-        <label for="start">To:</label>
-        <input type="date" name="date_to" id="date_to"/>
-    </form>
-</div></div>
+            <div class="col-xl-8 mx-auto">
+                <form>
+                    <div class="filter">
+                        <select name="area" id="area">
+                            <option selected value>Select an area...</option>
+                            <option value="Literature">Literature</option>
+                            <option value="History">History</option>
+                            <option value="Social Sciences">Social Sciences</option>
+                            <option value="Nature Sciences">Nature Sciences</option>
+                            <option value="Biology">Biology</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Languages">Languages</option>
+                            <option value="Economics">Economics</option>
+                            <option value="Laws">Laws</option>
+                            <option value="Arts">Arts</option>
+                            <option value="Marketing and Publicity">Marketing and Publicity</option>
+                            <option value="Architecture and Design">Architecture and Design</option>
+                            <option value="Business and Management">Business and Management</option>
+                            <option value="Psychology">Psychology</option>
+                            <option value="Other">Other...</option>
+                        </select>
+                        <input placeholder="e.g Chemical Reactions Essay" name="words" id="title" class="title col"></input><br>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label for="date_from" class="label">Date From:</label>
+                                <input type="date" name="date_from" id="date_from" class="date form-control col"/>
+                            </div>
+                            <div class="form-group col">
+                                <label for="date_to" class="label">Date To:</label>
+                                <input type="date" name="date_to" id="date_to" class="date form-control col"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
     <div>
         <div class="container">{% csrf_token %}
-            <div class="row">
-                <div class="col-xl-8 mx-auto">
-                    <div class="Push-20" style="height: 10px;"></div>
-                    <small class="form-text text-muted" style="margin: 0px;">
-                        Choose any assignment from the list below
-                        <span class="float-right" id="len_list">{{ trabajos | length }} results</span>
-                    </small>
-                    <ul class="list-group" id="list"></ul>
-                </div>
+            <div class="col-xl-8 mx-auto">
+                <small class="form-text text-muted" style="margin: 0px;">
+                    Choose any assignment from the list below
+                    <span class="float-right" id="len_list">{{ trabajos | length }} results</span>
+                </small>
+                <ul class="list-group" id="list"></ul>
             </div>
         </div>
     </div>
     <div>
         <nav class="mt-3">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-                </li>
+            <ul class="pagination justify-content-center" id="pagination">
             </ul>
         </nav>
     </div>
@@ -74,49 +76,108 @@
 
     <script>
 
-        $(document).ready(inicio);
-        $('#title').on('keyup', inicio);
-        $('#area').on('change', inicio);
-        $('#date_from').on('change', inicio);
-        $('#date_to').on('change', inicio);
+        $(document).ready(first);
+        $('#title').on('keyup', first);
+        $('#area').on('change', first);
+        $('#date_from').on('change', first);
+        $('#date_to').on('change', first);
 
-        function inicio(){
+
+        function first () { getTrabajos(1) }
+
+        function page(option) { getTrabajos(option) }
+        
+        function getTrabajos(page) {
             var title = $('#title').val();
             var area = $('#area').val();
             var date_from = $('#date_from').val();
             var date_to = $('#date_to').val();
             console.log(title + ',' + area + ',' + date_from + ',' + date_to);
             var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
-
             $.ajax({
-                data: {'csrfmiddlewaretoken': csrfToken,
-                       'title': title,
-                       'area': area,
-                       'date_from': date_from,
-                       'date_to': date_to
-                       },
+                data: {
+                    'csrfmiddlewaretoken': csrfToken,
+                    'title': title,
+                    'area': area,
+                    'date_from': date_from,
+                    'date_to': date_to,
+                    'page': page
+                },
                 url: "{% url 'wp_ajax' %}",
                 type: 'post',
                 success: function(data){
-                    var trabajos = JSON.parse(data.trabajos);
-                    console.log(trabajos)
-                    $('#list').html("");
+
                     $('#len_list').html(data.len + " results");
-                    for(var i = 0; i < trabajos.length; i++){
-                        var pk = trabajos[i].pk
-                        $('#list').append(
-                        `
-                        <li class='list-group-item'>` + `
-                            <span><a href="/work_place_2/` + pk + `">`+trabajos[i]['fields'].titulo+`</a></span>
-                            <span style="float: right" class='badge badge-secondary'>$ ` + trabajos[i]['fields'].precio + `</span>
-                            <small class='form-text text-muted' style='margin: 0px;'>` + trabajos[i]['fields'].descripcion.substring(0, 350) + `...` + `<br></small>
-                        </li>
-                        `);
-                    }
+
+                    showList(JSON.parse(data.pags.objects))
+                    pagination(data.pags)
                 }
             }).fail(function (data){
                 alert("fail");
             })
+        }
+
+        function showList(trabajos) {
+            console.log(trabajos)
+            $('#list').html("");
+            for(var i = 0; i < trabajos.length; i++){
+                var pk = trabajos[i].pk
+                $('#list').append(`
+                    <li class='list-group-item'>` + `
+                        <span><a href="/work_place_2/` + pk + `">`+trabajos[i]['fields'].titulo+` - <small>`+trabajos[i]['fields'].area+`</small></a></span>
+                        <span style="float: right" class='badge badge-secondary'>$ ` + trabajos[i]['fields'].precio + `</span>
+                        <small class='form-text text-muted' style='margin: 0px;'>` + trabajos[i]['fields'].descripcion.substring(0, 350) + `...` + `<br></small>
+                    </li>
+                `);
+            }
+        }
+
+        function pagination(data) {
+             $('#pagination').html("");
+            /*if (data.has_previous) {
+                $('#pagination').append(`
+                    <li class="page-item ">
+                        <button class="page-link" onclick="page('previous')">Previous</button>
+                    </li>
+                `)
+            } else {
+                $('#pagination').append(`
+                    <li class="page-item disabled">
+                        <button class="page-link" onclick="page('previous')">Previous</button>
+                    </li>
+                `)
+            }*/
+
+            for (i = 0; i < data.num_pages; i++) {
+                let j = i + 1
+                if (j == data.page) {
+                    $('#pagination').append(`
+                        <li class="page-item active">
+                            <button class="page-link" id="active" onclick="page(`+j+`)">`+j+`</button>
+                        </li>
+                    `)    
+                } else {
+                    $('#pagination').append(`
+                        <li class="page-item">
+                            <button class="page-link" onclick="page(`+j+`)">`+j+`</button>
+                        </li>
+                    `)    
+                }
+            }
+            
+            /*if (data.has_next) {
+                $('#pagination').append(`
+                    <li class="page-item ">
+                        <button class="page-link" onclick="page('next')">Next</button>
+                    </li>
+                `)
+            } else {
+                $('#pagination').append(`
+                    <li class="page-item disabled">
+                        <button class="page-link" onclick="page('next')">Next</button>
+                    </li>
+                `)
+            }*/
         }
 
     </script>

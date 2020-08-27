@@ -6,7 +6,7 @@ from .views import *
 urlpatterns = [
     path('', landing_page, name='landing_page'),
     path('register', register, name='register'),
-    path('register_verification', register_verification, name='register_verification'),
+    # path('register_verification', register_verification, name='register_verification'),
     path('signin', signin, name='signin'),
     path('signout', signout, name='signout'),
 
@@ -32,4 +32,5 @@ urlpatterns = [
     path('edit_password/', edit_password, name='edit_password'),
     
     path('send_assignment/', send_assignment, name="send_assignment"),
+
 ]

@@ -97,7 +97,7 @@ class EditPasswordForm(forms.ModelForm):
 class PostAssignmentForm(forms.Form):
 
     titulo = forms.CharField(min_length=1, max_length=50)
-    area = forms.CharField(min_length=1, max_length=17) # cambiar si se requiere al agregar nuevas áreas
+    area = forms.CharField(min_length=1, max_length=50) # cambiar si se requiere al agregar nuevas áreas
     descripcion = forms.CharField(min_length=0, max_length=2000)
     fecha_expiracion = forms.DateTimeField(
         input_formats = ['%Y-%m-%dT%H:%M'],
