@@ -31,6 +31,7 @@ urlpatterns = [
     path('edit_payment_method/', edit_payment_method, name='edit_payment_method'),
     path('edit_password/', edit_password, name='edit_password'),
     
-    path('send_assignment/', send_assignment, name="send_assignment"),
+    path('send_assignment/', send_assignment, name='send_assignment'),
 
+    path('pago/', pago, name='pago'),
 ]

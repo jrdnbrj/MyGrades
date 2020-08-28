@@ -64,3 +64,20 @@ class Trabajo(models.Model):
 
     def __str__(self):
         return self.titulo
+
+class Order(models.Model):
+    id = models.AutoField(primary_key=True)
+    orderID = models.CharField(max_length=150)
+    trabajo = models.ForeignKey(Trabajo, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(Usuario, null=True, on_delete=models.SET_NULL)
+    estado = models.CharField(max_length=150)
+    codigo_estado = models.CharField(max_length=150)
+    precio_total = models.DecimalField(decimal_places = 2, max_digits = 5)
+    nombre = models.CharField(max_length=150)
+    apellido = models.CharField(max_length=150)
+    email = models.CharField(max_length=150)
+    direccion = models.CharField(max_length=150)
+    fecha_editado = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+    def __str__(self):
+        return self.trabajo.titulo

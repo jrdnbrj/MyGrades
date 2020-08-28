@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.MyGrades_App',
+    'paypal.standard.ipn',
+    'paypalcheckoutsdk'
 ]
 
 MIDDLEWARE = [

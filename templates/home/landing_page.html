@@ -19,6 +19,9 @@
             </div>
         </div>
     </header>
+
+    <div id="paypal-button-container"></div>
+
     <section class="features-icons bg-light text-center">
         <div class="row">
             <div class="col-lg-4 offset-lg-2">
@@ -125,3 +128,67 @@
         </div>
     </section>
 {% endblock %}
+
+{% block js %}
+    <script src="https://www.paypal.com/sdk/js?client-id=AWLMBI3BwXhtXFpMZw-BnZLMvw3NjS_52qMjdQPx-e7Oe7Q7_x33nyg4EXcMHVu9ZhdNw_0CNfpgOR2M&currency=USD"></script>
+    <script>
+
+        function token(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = token('csrftoken');
+
+        paypal.Buttons({
+            style: {
+                color:  'blue',
+                shape:  'pill',
+                label:  'pay',
+                height: 40
+            },
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '32.00'
+                        }
+                    }]
+                });
+            },
+            onError: function(err) {
+                console.log("EERRRROORRR!!!!!")
+                alert('EERRRROORRR!!!!!')
+                console.log(err)
+            },
+            onCancel: function (data) {
+                console.log("CANCEL!!!!!")
+                alert('CANCEL!!!!!')
+            },
+            onApprove: function(data) {
+                return fetch('{% url 'pago' %}', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ orderID: data.orderID })
+                }).then(function(res) {
+                    return res.json();
+                }).then(function(details) {
+                    alert(details.message);
+                })
+            }
+
+        }).render('#paypal-button-container');
+    </script>
+{% endblock js %}
