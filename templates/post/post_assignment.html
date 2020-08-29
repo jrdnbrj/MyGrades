@@ -24,7 +24,7 @@
                 <div class="Push-20" style="height: 28.8px;"></div>
                 <h4 class="text-left">Assignment Field</h4>
                 <div class="dropdown">
-                    <select class="row form-control col-5" name="area" id="area" required>
+                    <select class="row form-control col" name="area" id="area" required>
                         <option value>Select...</option>
                         <option {% if option == 0 or form.area.value == 'Literature'%}selected{% endif %} value="Literature">Literature</option>
                         <option {% if option == 1 or form.area.value == 'History' %}selected{% endif %} value="History">History</option>
