@@ -382,7 +382,7 @@ def pago(request):
     print('detalle', detalle, detalle_precio)
 
     trx = CaptureOrder().capture_order(order_id, debug=True)
-    print('???????????????', detalle_precio == float(trabajo.precio), detalle_precio, float(trabajo.precio))
+    # print('???????????????', detalle_precio == float(trabajo.precio), detalle_precio, float(trabajo.precio))
     if detalle_precio == float(trabajo.precio):
         order = Order(
             orderID = trx.result.id,

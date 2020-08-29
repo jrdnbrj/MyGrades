@@ -20,7 +20,7 @@
                         </div>
                         <input class="form-control" type="text" name="price" placeholder="Enter a price" value="{{ precio }}" required>
                     </div>
-                    <div class="form-group"><input class="form-control" type="text" name="paypal" placeholder="PayPal Payment Button"></div>
+                    <div class="form-group"><div id="paypal-button-container"></div></div>
                     <div class="form-group"><button class="btn-lg btn-primary rounded btn-block" type="submit">Submit</button></div>
                 </form>
             </div>
@@ -34,3 +34,53 @@
     <div class="overlay"></div>
 </section>
 {% endblock %}
+
+{% block js %}
+    <script src="https://www.paypal.com/sdk/js?client-id=AWLMBI3BwXhtXFpMZw-BnZLMvw3NjS_52qMjdQPx-e7Oe7Q7_x33nyg4EXcMHVu9ZhdNw_0CNfpgOR2M&currency=USD"></script>
+    <script>
+        
+        const csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+        paypal.Buttons({
+            style: {
+                color:  'blue',
+                shape:  'pill',
+                label:  'pay',
+                height: 40
+            },
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '25'
+                        }
+                    }]
+                });
+            },
+            onError: function(err) {
+                console.log("EERRRROORRR!!!!!")
+                alert('EERRRROORRR!!!!!')
+                console.log(err)
+            },
+            onCancel: function (data) {
+                console.log("CANCEL!!!!!")
+                alert('CANCEL!!!!!')
+            },
+            onApprove: function(data) {
+                return fetch('{% url 'pago' %}', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ orderID: data.orderID })
+                }).then(function(res) {
+                    return res.json();
+                }).then(function(details) {
+                    alert(details.message);
+                })
+            }
+
+        }).render('#paypal-button-container');
+    </script>
+{% endblock js %}
