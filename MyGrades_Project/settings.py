@@ -38,7 +38,7 @@ SECRET_KEY = '(w+b%a@=lubxw5ksd_$fk#vz36=2ojzgc(+zpt6jz%ul(z_gbd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['55788a2331d9.ngrok.io', 'localhost']
+ALLOWED_HOSTS = ['64.227.48.115', 'mygrades.works', 'localhost']
 
 # Application definition
 
