@@ -103,6 +103,7 @@ class PostAssignmentForm(forms.Form):
         input_formats = ['%Y-%m-%dT%H:%M'],
         widget = forms.DateTimeInput( attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M')
     )
+    # precio = 
 
     def clean_fecha_expiracion(self):
         data = self.cleaned_data

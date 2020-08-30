@@ -9,7 +9,7 @@ Añadir validaciones
 POST ASSIGNMENT.-
 Agregar Precio
 Arreglar Titulos Preview
-agregar recaptcha
+// agregar recaptcha
 
 WORKPLACE.-
 Mensaje si no existenn resultados

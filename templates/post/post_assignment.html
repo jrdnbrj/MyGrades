@@ -21,7 +21,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="Push-20" style="height: 28.8px;"></div>
+                <div class="Push-20" style="height: 14.5px;"></div>
                 <h4 class="text-left">Assignment Field</h4>
                 <div class="dropdown">
                     <select class="row form-control col" name="area" id="area" required>
@@ -58,7 +58,7 @@
                 <br>
                 <h4 class="text-left">Assignment Description</h4>
                 <small class="form-text text-muted">Describe in detail your assignment, include requirements, complexity, format and related topics</small>
-                <textarea class="row form-control" style="height:150px" name="descripcion" id="description" placeholder="Type..." required>{% if form.errors %}{{ form.descripcion.value }}{% else %}{{ trabajo.descripcion }}{% endif %}</textarea>
+                <textarea class="row form-control" style="height:215px" name="descripcion" id="description" placeholder="Type..." required>{% if form.errors %}{{ form.descripcion.value }}{% else %}{{ trabajo.descripcion }}{% endif %}</textarea>
                 {% for error in form.descripcion.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
@@ -69,16 +69,24 @@
                 <h4 class="text-left">Dead Line</h4>
                 <div class="row">
                     <input class="col form-control" type="datetime-local" id="date" name="fecha_expiracion" required
-                        value="{% if form.errors %}{{ form.fecha_expiracion.value }}{% elif trabajo %}{{ trabajo.fecha_expiracion|date:"c"|slice:':-9' }}{% else %}{% endif %}">
+                        value="{% if form.errors %}{{ form.fecha_expiracion.value }}{% elif trabajo %}{{ trabajo.fecha_expiracion|date:"c"|slice:':-9' }}{% endif %}">
                 </div>
                 {% for error in form.fecha_expiracion.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
                 </br>
-                <h4 class="text-left">Related Documents</h4><small class="form-text text-muted">Upload any assignment related documents (rubrics, forms, questionnaires, documents to be filld and any main format documents)</small>
+                <h4 class="text-left">Related Documents</h4>
+                <small class="form-text text-muted">Upload any assignment related documents (rubrics, forms, questionnaires, documents to be filld and any main format documents)</small>
                 <div class="form-group files">
                     <input type="file" multiple onchange="readURL(this);" class="custom-file-input" style="cursor: pointer" name="archivos" id="archivos"
                         value="{{ files }}">
+                </div>
+                <h4 class="text-left">Assignment Price</h4>
+                <div class=" input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
+                    </div>
+                    <input class="form-control" type="number" name="precio" id="precio" placeholder="Enter a price" value="{% if form.errors %}{{ form.precio.value }}{% elif trabajo.precio %}{{ trabajo.precio }}{% endif %}" required>
                 </div>
             </div>
         </div>
@@ -137,6 +145,7 @@
     $('#description').on('keyup', progress);
     $('#date').on('change', progress);
     $('#archivos').on('change', progress);
+    $('#precio').on('keyup', progress);
 
     function readURL(input) {
         files = input.files
@@ -182,7 +191,10 @@
         var description = $.trim($('#description').val());
         var date = $.trim($('#date').val());
         var archivos = $.trim($('#archivos').val());
-        var components = [area, title, description, date]
+        var precio = $.trim($('#precio').val());
+
+        var components = [area, title, description, date, precio]
+
         var cont = 0;
         for(var i=0; i<components.length; i++){
             if(components[i] != ""){
@@ -232,6 +244,11 @@
             $('#archivos_title').hide();
             //$('#archivos2').html("");
             //$('#frame').hide();
+        }
+        if (precio != "") {
+
+        } else {
+            
         }
     }
 
