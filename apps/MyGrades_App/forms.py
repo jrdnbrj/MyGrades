@@ -21,32 +21,48 @@ class UsuarioForm(forms.Form):
     def clean_mail(self):
         mail = self.cleaned_data['mail']
         mail_taken = Usuario.objects.filter(mail=mail)
+
         if mail_taken:
             raise forms.ValidationError('The email already belongs to an account')
+
         return mail
     
     def clean_username(self):
         username = self.cleaned_data['username']
         username_taken = Usuario.objects.filter(username=username)
+
         if username_taken:
             raise forms.ValidationError('A user with that username already exists')
+
         return username
+
+    def clean_celular(self):
+        celular = self.cleaned_data['celular']
+
+        if not celular.isnumeric():
+            raise forms.ValidationError("The input must be a valid phone number. Don't add special characters.")
+
+        return celular
 
     def clean(self):
         data = super().clean()
+
         if 'password' in data and 'password_repeat' in data:
             password = data['password']
             password_repeat = data['password_repeat']
 
             if password != password_repeat:
                 raise forms.ValidationError({'password_repeat':'Passwords do not match.'})
+
         return data
 
     def save(self, commit=True):
         data = self.cleaned_data
         data.pop('password_repeat')
         usuario = Usuario.objects.create(**data)
+
         if commit: usuario.save()
+
         return usuario
 
 
@@ -58,8 +74,10 @@ class EditUserForm(forms.ModelForm):
     def clean_username(self):
         username = self.cleaned_data['username']
         usuario = User.objects.filter(username=username)
+
         if usuario and not self.instance.username == username:
             raise forms.ValidationError('User with this Username already exists.')
+
         return username
 
 class EditUserInfoForm(forms.ModelForm):
@@ -80,53 +98,64 @@ class EditPasswordForm(forms.ModelForm):
 
     def clean_actual_password(self):
         actual_password_clean = self.cleaned_data['actual_password']
+
         if not self.instance.check_password(actual_password_clean):
             raise forms.ValidationError('Does not match current password')
+
         return actual_password_clean
     
     def clean(self):
         data = super().clean()
+
         if 'password' in data and 'confirm_password' in data:
             new_password = data['password']
             confirm_new_password = data['confirm_password']
 
             if new_password != confirm_new_password:
-                raise forms.ValidationError({'password':'Passwords do not match.'})
+                raise forms.ValidationError({ 'password': 'Passwords do not match.' })
+
         return data
 
 class PostAssignmentForm(forms.Form):
 
     titulo = forms.CharField(min_length=1, max_length=50)
-    area = forms.CharField(min_length=1, max_length=50) # cambiar si se requiere al agregar nuevas áreas
+    area = forms.CharField(min_length=1, max_length=50)
     descripcion = forms.CharField(min_length=0, max_length=2000)
     fecha_expiracion = forms.DateTimeField(
         input_formats = ['%Y-%m-%dT%H:%M'],
-        widget = forms.DateTimeInput( attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M')
+        widget = forms.DateTimeInput(attrs={ 'type': 'datetime-local' }, format='%Y-%m-%dT%H:%M')
     )
-    # precio = 
+    precio = forms.DecimalField(max_digits=5, decimal_places=2)
 
     def clean_fecha_expiracion(self):
         data = self.cleaned_data
         fecha_expiracion = data['fecha_expiracion']
         date_time = utc.localize(datetime.datetime.now())
+
         if date_time >= fecha_expiracion:
             raise forms.ValidationError('The DeadLine must be greater than '+ str(date_time)[:-16])
+
         return fecha_expiracion
+
+    def clean_precio(self):
+        precio = self.cleaned_data['precio']
+
+        try: float(precio)
+        except: 
+            raise forms.ValidationError("The input must be a valid price. Don't forget to use the point as a decimal separator.")
+
+        return precio
 
     def save(self, instance=None, commit=False):
         
-        if not instance:
-            instance = Trabajo()
+        if not instance: instance = Trabajo()
             
-        #print('instance1:',instance)
         post_assignment = self.cleaned_data
         instance.titulo = post_assignment['titulo']
         instance.area = post_assignment['area']
         instance.descripcion = post_assignment['descripcion']
         instance.fecha_expiracion = post_assignment['fecha_expiracion']
-        #print('instance2:',instance)
         
-        if commit:
-            instance.save()
+        if commit: instance.save()
             
         return instance
