@@ -50,15 +50,15 @@
                 {% for error in form.area.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
-                <small class="form-text text-muted" style="margin: 0px;">Write assignment title</small>
-                <textarea class="row form-control" name="titulo" placeholder="Type..." id="title" required>{% if form.errors %}{{ form.titulo.value }}{% elif trabajo.titulo %}{{ trabajo.titulo }}{% endif %}</textarea>
+                <small class="form-text text-muted" style="margin-top: 10px;">Write assignment title.</small>
+                <input class="row form-control" name="titulo" maxlength="60" type="text" placeholder="Type the assignment title..." id="title" value="{% if form.errors %}{{ form.titulo.value }}{% elif trabajo.titulo %}{{ trabajo.titulo }}{% endif %}" required>
                 {% for error in form.titulo.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
                 <br>
                 <h4 class="text-left">Assignment Description</h4>
-                <small class="form-text text-muted">Describe in detail your assignment, include requirements, complexity, format and related topics</small>
-                <textarea class="row form-control" style="height:215px" name="descripcion" id="description" placeholder="Type..." required>{% if form.errors %}{{ form.descripcion.value }}{% else %}{{ trabajo.descripcion }}{% endif %}</textarea>
+                <small class="form-text text-muted">Describe in detail your assignment, include requirements, complexity, format and related topics.</small>
+                <textarea class="row form-control" style="height:229px" name="descripcion" id="description" placeholder="Type the assignment description..." required>{% if form.errors %}{{ form.descripcion.value }}{% else %}{{ trabajo.descripcion }}{% endif %}</textarea>
                 {% for error in form.descripcion.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
@@ -76,53 +76,60 @@
                 {% endfor %}
                 </br>
                 <h4 class="text-left">Related Documents</h4>
-                <small class="form-text text-muted">Upload any assignment related documents (rubrics, forms, questionnaires, documents to be filld and any main format documents)</small>
+                <small class="form-text text-muted">Upload any assignment related documents (rubrics, forms, questionnaires, documents to be filld and any main format documents). Maximum size per file: 10 MB </small>
                 <div class="form-group files">
                     <input type="file" multiple onchange="readURL(this);" class="custom-file-input" style="cursor: pointer" name="archivos" id="archivos"
                         value="{{ files }}">
                 </div>
                 <h4 class="text-left">Assignment Price</h4>
-                <div class=" input-group">
+                <div class="row input-group mr-0">
                     <div class="input-group-prepend">
                         <div class="input-group-text">$</div>
                     </div>
-                    <input class="form-control" type="number" name="precio" id="precio" placeholder="Enter a price" value="{% if form.errors %}{{ form.precio.value }}{% elif trabajo.precio %}{{ trabajo.precio }}{% endif %}" required>
+                    <input class="form-control col" type="text" name="precio" id="price" placeholder="24.20" maxlength="6" value="{% if form.errors %}{{ form.precio.value }}{% elif trabajo.precio %}{{ trabajo.precio }}{% endif %}" required>
                 </div>
+                {% for error in form.precio.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
             </div>
         </div>
     </div>
 </div>
 
 <div class="Push-20" style="height: 14.4px;"></div>
+<div class="col-4 mx-auto"><button class="btn-lg btn-primary border rounded col" type="submit">Submit</button></div>
 <hr>
     <div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mx-auto">
                     <h1 class="text-center">PREVIEW</h1><br>
+                    <h2 id="price-badge"><span class="badge badge-pill badge-secondary float-right mr-5" id="price_badge_2"></span></h2>
                     <h4 class="text-left" id="title_area"></h4>
-                    <small class="form-text text-muted" style="margin: 0px;" id="date2"><br></small>
-                    <div class="Push-20"></div>
-                    <h4 class="text-left" id="description_title">Assignment Description</h4>
-                    <p class="form-control-plaintext" id="description2"></p>
-                    <div class="Push-20" style="height: 8.8px;"></div>
-                    <h5 class="text-left" id="archivos_title">Related Documents List</h5>
+                    <small class="form-text text-muted ml-3" id="date2"><br></small>
+                    {% comment %} <div class="Push-20"></div> {% endcomment %}
+                    <h4 class="text-left mt-4" id="description_title">Assignment Description</h4>
+                    <p class="form-control-plaintext ml-3 mb-4" id="description2"></p>
+                    {% comment %} <div class="Push-20" style="height: 8.8px;"></div> {% endcomment %}
+                    <h4 class="text-left mt-3" id="archivos_title">Related Documents List</h4>
                     <div id="archivos2"></div>
-                    <h5 class="text-left" style="width: 450px;" id="archivos_title_2">Related Documents List</h5>
-                    {% for archivo in trabajo.archivos.all %}
-                        <div id="file_text_2">
-                            +&nbsp<a class="" href="{% url 'media/' archivo %}">{{ archivo }}</a>
-                        </div>
-                    {% endfor %}
-                    {% for file in files %}
-                        <h3 style="color: green;">FILES from validation error</h3>
-                        +&nbsp<a class="" href="{% url 'media/' file %}">{{ file.nombre }}</a>
-                        <input type="hidden" name="files_from_validation" value="{{ file.pk }}">
-                    {% endfor %}
+                    <section id="archivo_validation_edit">
+                        {% if trabajo.archivos.all %}<h4 class="text-left mt-3">Related Documents List</h4>{% endif %}
+                        {% for archivo in trabajo.archivos.all %}
+                            <div id="file_text_2">
+                                <span class="m-3">+&nbsp<a href="{% url 'media/' archivo %}">{{ archivo }}</a></span>
+                                <input type="hidden" name="files_from_validation" value="{{ archivo.pk }}"></br>
+                            </div>
+                        {% endfor %}
+                    </section>
+                    <section id="archivo_validation">
+                        {% if files %}<h4 class="text-left mt-3">Related Documents List</h4>{% endif %}
+                        {% for file in files %}
+                            <span class="m-3">+&nbsp<a href="{% url 'media/' file %}">{{ file.nombre }}</a></span>
+                            <input type="hidden" name="files_from_validation" value="{{ file.pk }}"></br>
+                        {% endfor %}
+                    </section>
                     <div id="frame_div"></div>
-                    <div class="Push-20" style="height: 13.8px;"></div>
-                    <div class="Push-20" style="height: 30px;"></div>
-                    <div class="col-7 mx-auto"><button class="btn-lg btn-primary border rounded col" type="submit">Submit</button></div>
                 </div>
             </div>
         </div>
@@ -145,7 +152,7 @@
     $('#description').on('keyup', progress);
     $('#date').on('change', progress);
     $('#archivos').on('change', progress);
-    $('#precio').on('keyup', progress);
+    $('#price').on('keyup', progress);
 
     function readURL(input) {
         files = input.files
@@ -161,7 +168,7 @@
                     (function(file) {
                         var reader = new FileReader();
                         console.log(file.name)
-                        $('#frame_div').append(` <span class="m-3">+&nbsp` + file.name + `</span><br>`);
+                        $('#frame_div').append(`<span class="m-3">+&nbsp` + file.name + `</span><br>`);
                         reader.onload = function (r) {
                             console.log(r)
                             $('#frame_div').append(
@@ -178,10 +185,6 @@
                     `);
                 }
             }
-        }else{
-            console.log('else')
-            //$('#frame').hide();
-            //$('#file_text').html("Unable to display a file preview.");
         }
     }
 
@@ -191,7 +194,7 @@
         var description = $.trim($('#description').val());
         var date = $.trim($('#date').val());
         var archivos = $.trim($('#archivos').val());
-        var precio = $.trim($('#precio').val());
+        var precio = $.trim($('#price').val());
 
         var components = [area, title, description, date, precio]
 
@@ -207,7 +210,7 @@
         $('#progress_bar').html(percent + '%');
 
         if(title != "" || area != "" ){
-            $('#title_area').html(title + ' - ' + area);
+            $('#title_area').html(title + ' - <small>' + area + '</small>');
         }else{
             $('#title_area').html("");
         }
@@ -228,27 +231,29 @@
         }
         if(description != ""){
             $('#description_title').show();
+            $('#description2').show();
             $('#description2').html(description.replace(/\r\n|\r|\n/g,"</br>"));
         }else{
             $('#description_title').hide();
+            $('#description2').hide();
             $('#description2').html("");
         }
 
         if(archivos){
             $('#archivos_title').show();
-            //var nombre_archivo = archivos.split('\\')[2];
-            //$('#archivos2').html('+ ' + nombre_archivo);
-            //$('#archivos_title_2').hide();
-            //$('#file_text_2').hide();
+            $('#archivo_validation').html('');
+            $('#archivo_validation_edit').html('');
         }else{
             $('#archivos_title').hide();
-            //$('#archivos2').html("");
-            //$('#frame').hide();
         }
+        console.log(precio)
         if (precio != "") {
-
-        } else {
+            $('#price_badge').show()
+            $('#price_badge_2').html(`$ ` + precio)
             
+        } else {
+            $('#price_badge_2').html('')
+
         }
     }
 

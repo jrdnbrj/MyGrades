@@ -82,12 +82,16 @@ def post_assignment(request):
             trabajo.publicador = Usuario.objects.get(username = request.user)
             trabajo.save()
             if 'files_from_validation' in request.POST:
+                for archivo in trabajo.archivos.all():
+                    trabajo.archivos.remove(archivo)
+                    # pendiente por eliminar archivos del modelo
                 for file in request.POST.getlist('files_from_validation'):
                     trabajo.archivos.add(Archivo.objects.get(id = file))
 
             if request.FILES:
                 for archivo in trabajo.archivos.all():
                     trabajo.archivos.remove(archivo)
+                    # pendiente por eliminar archivos del modelo
 
             for file in request.FILES.getlist('archivos'):
                 archivo = Archivo.objects.create(nombre=file.name, archivo=file)
@@ -99,7 +103,10 @@ def post_assignment(request):
         else:
             print(form.errors)
             context['form'] = form
-            files = [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos')]
+            if 'files_from_validation' in request.POST:
+                files = [ Archivo.objects.get(id=file) for file in request.POST.getlist('files_from_validation') ]
+            else:
+                files = [ Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos') ]
             context['files'] = files
             
     return render(request, 'post/post_assignment.html', context)
@@ -294,6 +301,7 @@ def user_assignments(request):
 
 @login_required
 def edit_post_assignment(request, id):
+    context = { 'title': 'Edit' }
     trabajo = Trabajo.objects.get(id = id)
     if request.method == 'POST':
         form = PostAssignmentForm(request.POST)
@@ -304,12 +312,14 @@ def edit_post_assignment(request, id):
             if 'files_from_validation' in request.POST:
                 for archivo in trabajo.archivos.all():
                     trabajo.archivos.remove(archivo)
+                    # pendiente por eliminar archivos del modelo
                 for file in request.POST.getlist('files_from_validation'):
                     trabajo.archivos.add(Archivo.objects.get(id = file))
 
             if request.FILES:
                 for archivo in trabajo.archivos.all():
                     trabajo.archivos.remove(archivo)
+                    # pendiente por eliminar archivos del modelo
 
             for file in request.FILES.getlist('archivos'):
                 archivo = Archivo.objects.create(nombre=file.name, archivo=file)
@@ -320,9 +330,14 @@ def edit_post_assignment(request, id):
             return redirect('post_assignment_3')
         else:
             print(form.errors)
-            context = {}
             context['form'] = form
-            files = [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos')]
+            print(request.POST)
+            if 'files_from_validation' in request.POST:
+                files = [ Archivo.objects.get(id=file) for file in request.POST.getlist('files_from_validation') ]
+                print('1')
+            else:
+                files = [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos')]
+                print('2')
             context['files'] = files
             context['trabajo_id'] = trabajo.id
     else:

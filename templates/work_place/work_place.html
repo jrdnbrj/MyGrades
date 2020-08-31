@@ -32,7 +32,7 @@
                             <option value="Psychology">Psychology</option>
                             <option value="Other">Other...</option>
                         </select>
-                        <input placeholder="e.g Chemical Reactions Essay" name="words" id="title" class="title col"></input><br>
+                        <input placeholder="e.g Chemical Reactions Essay" name="words" id="title" class="title col" type="text"></input><br>
                         <div class="form-row">
                             <div class="form-group col">
                                 <label for="date_from" class="label">Date From:</label>
@@ -88,7 +88,7 @@
         function page(option) { getTrabajos(option) }
         
         function getTrabajos(page) {
-            var title = $('#title').val();
+            var title = $.trim($('#title').val());
             var area = $('#area').val();
             var date_from = $('#date_from').val();
             var date_to = $('#date_to').val();
