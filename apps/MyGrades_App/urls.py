@@ -11,7 +11,7 @@ urlpatterns = [
     path('signout', signout, name='signout'),
 
     path('post_assignment', post_assignment, name='post_assignment'),
-    path('post_assignment/<str:trabajo>', post_assignment_payment, name = 'post_assignment_payment'),
+    path('post_assignment/<int:trabajo>', post_assignment_payment, name = 'post_assignment_payment'),
     path('post_assignment_complete/<str:trabajo>', post_assignment_complete, name = 'post_assignment_complete'),
 
     path('work_place/', work_place, name='work_place'),

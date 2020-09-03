@@ -143,7 +143,7 @@ class PostAssignmentForm(forms.Form):
         trabajo = Trabajo.objects.filter(Q(titulo__iexact=titulo), Q(publicador__username=user))
 
         if user and trabajo:
-            raise forms.ValidationError('You have already published an Assignment with the same title.')
+            raise forms.ValidationError('You have already created an Assignment with the same title.')
 
         return titulo
 

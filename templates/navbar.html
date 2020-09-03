@@ -1,8 +1,15 @@
-<nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
-    <div class="container"><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"></button>
+{% comment %} <nav class="navbar navbar-light navbar-expand-lg bg-light navigation-clean">
+    <div class="container">
         <div class="collapse navbar-collapse" id="navcol-1" style="height: 40px;">
             <nav class="navbar navbar-light navbar-expand-md" style="height: 40px;">
-                <div class="container"><a class="navbar-brand h1" href="{% url 'landing_page' %}"><strong>MyGrades</strong></a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button></div>
+                <div class="container">
+                    <a class="navbar-brand h1" href="{% url 'landing_page' %}">
+                        <strong>MyGrades</strong>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
                 {% if user.is_authenticated %}
                     <div class="collapse navbar-collapse" id="navcol-1">
                         <ul class="navbar-nav">
@@ -12,15 +19,59 @@
                     </div>
                 {% endif %}
             </nav>
-        {% if user.is_authenticated %}
-            </div>
-                <span>Hi, <a href="{% url 'user_profile' %}">{{ user.username | title }}</a></span>
-                <a class=" btn-sm btn-info ml-3 rounded" href="{% url 'signout' %}">Sign Out</a>
-            </div>
-        {% else %}
-            </div>
-                <a class="btn-sm btn-outline-success ml-3 rounded" href="{% url 'signin' %}">Sign In</a>
-                <a class="btn-sm btn-primary ml-3 rounded" href="{% url 'register' %}">Register</a>
-            </div>
-        {% endif %}
+            {% if user.is_authenticated %}
+                </div>
+                    <span>Hi, <a href="{% url 'user_profile' %}">{{ user.username | title }}</a></span>
+                    <a class=" btn-sm btn-info ml-3 rounded" href="{% url 'signout' %}">Sign Out</a>
+                </div>
+            {% else %}
+                </div>
+                    <a class="btn-sm btn-outline-success ml-3 rounded" href="{% url 'signin' %}">Sign In</a>
+                    <a class="btn-sm btn-primary ml-3 rounded" href="{% url 'register' %}">Register</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav> {% endcomment %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light navigation-clean">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="{% url 'landing_page' %}">
+            <strong>MyGrades</strong>
+        </a>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'post_assignment' %}">Post Assignment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'work_place' %}">WorkPlace</a>
+                </li>
+            </ul>
+            {% if user.is_authenticated %}
+                </div>
+                    {% comment %} <a href="{% url 'user_profile' %}">{{ user.username }}</a> {% endcomment %}
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <h6 class="dropdown-header text-center" href="#">{{ user.username }}</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'user_profile' %}">Profile</a>
+                            <a class="dropdown-item" href="{% url 'user_assignments' %}">Assignments</a>
+                        </div>
+                    </div>
+                    <a class=" btn-sm btn-info ml-3 rounded" href="{% url 'signout' %}">Sign Out</a>
+                </div>
+            {% else %}
+                </div>
+                    <a class="btn-sm btn-outline-success ml-3 rounded" href="{% url 'signin' %}">Sign In</a>
+                    <a class="btn-sm btn-primary ml-3 rounded" href="{% url 'register' %}">Register</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 </nav>

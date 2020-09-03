@@ -105,7 +105,7 @@ def post_assignment(request):
                     archivo = Archivo.objects.create(nombre=file.name, archivo=file)
                     trabajo.archivos.add(archivo)
 
-            return redirect('post_assignment_payment', trabajo=trabajo.titulo)
+            return redirect('post_assignment_payment', trabajo=trabajo.id)
         else:
             print(form.errors)
             context['form'] = form
@@ -134,7 +134,7 @@ def post_assignment_payment(request, trabajo):
     else:
         # validar si el trabajo ya ha sido pagado o no
         print('Trabajo:', trabajo)
-        trabajo = Trabajo.objects.get(Q(titulo=trabajo), Q(publicador__username=request.user))
+        trabajo = Trabajo.objects.get(Q(id=trabajo), Q(publicador__username=request.user))
         context = { 'precio': trabajo.precio, 'trabajo_id': trabajo.id }
         return render(request, 'post/post_assignment_payment.html', context)
     # return render(request, 'post/post_assignment_payment.html', context)
@@ -163,7 +163,7 @@ def wp_ajax(request):
             trabajos = trabajos.exclude(fecha_expiracion__lt=request.POST['date_from'])
         if request.POST['date_to']:
             trabajos = trabajos.exclude(fecha_publicacion__gt=request.POST['date_to'])
-        trabajos = trabajos.order_by('fecha_expiracion')
+        trabajos = trabajos.order_by('-fecha_publicacion')
 
         # len_trabajos = len(trabajos)
         page = request.POST['page']

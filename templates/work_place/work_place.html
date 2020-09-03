@@ -8,7 +8,7 @@
 
     <div>
         <div class="container">
-            <div class="col-xl-8 mx-auto">
+            <div class="col-lg-7 mx-auto">
                 <form>
                     <div class="filter">
                         <select name="area" id="area">
@@ -48,9 +48,9 @@
             </div>
         </div>
     </div>
-    <div>
+    <div class="mt-3">
         <div class="container">{% csrf_token %}
-            <div class="col-xl-8 mx-auto">
+            <div class="col-xl-9 mx-auto">
                 <small class="form-text text-muted" style="margin: 0px;">
                     Choose any assignment from the list below
                     <span class="float-right" id="len_list">{{ trabajos | length }} results</span>
@@ -132,9 +132,9 @@
                 var pk = trabajos[i].pk
                 $('#list').append(`
                     <li class='list-group-item'>` + `
-                        <span><a href="/work_place_2/` + pk + `">`+trabajos[i]['fields'].titulo+` - <small>`+trabajos[i]['fields'].area+`</small></a></span>
+                        <span><a href="/work_place_2/` + pk + `"><span class="h4">` + trabajos[i]['fields'].titulo+`</span> - <small>` + trabajos[i]['fields'].area + `</small></a></span>
                         <span style="float: right" class='badge badge-secondary'>$ ` + trabajos[i]['fields'].precio + `</span>
-                        <small class='form-text text-muted' style='margin: 0px;'>` + trabajos[i]['fields'].descripcion.substring(0, 350) + `...` + `<br></small>
+                        <small class='form-text text-muted' style='margin: 0px;'>` + trabajos[i]['fields'].descripcion.substring(0, 265) + ` ...` + `<br></small>
                     </li>
                 `);
             }
@@ -145,13 +145,13 @@
             /*if (data.has_previous) {
                 $('#pagination').append(`
                     <li class="page-item ">
-                        <button class="page-link" onclick="page('previous')">Previous</button>
+                        <button class="page-link" onclick="">Previous</button>
                     </li>
                 `)
             } else {
                 $('#pagination').append(`
                     <li class="page-item disabled">
-                        <button class="page-link" onclick="page('previous')">Previous</button>
+                        <button class="page-link" onclick="">Previous</button>
                     </li>
                 `)
             }*/
@@ -178,13 +178,13 @@
             /*if (data.has_next) {
                 $('#pagination').append(`
                     <li class="page-item ">
-                        <button class="page-link" onclick="page('next')">Next</button>
+                        <button class="page-link" onclick="">Next</button>
                     </li>
                 `)
             } else {
                 $('#pagination').append(`
                     <li class="page-item disabled">
-                        <button class="page-link" onclick="page('next')">Next</button>
+                        <button class="page-link" onclick="">Next</button>
                     </li>
                 `)
             }*/

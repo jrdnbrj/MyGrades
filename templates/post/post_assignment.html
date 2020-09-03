@@ -58,7 +58,7 @@
                 <br>
                 <h4 class="text-left">Assignment Description</h4>
                 <small class="form-text text-muted">Describe in detail your assignment, include requirements, complexity, format and related topics.</small>
-                <textarea class="row form-control" style="height:229px" name="descripcion" id="description" placeholder="Type the assignment description..." required>{% if form.errors %}{{ form.descripcion.value }}{% else %}{{ trabajo.descripcion }}{% endif %}</textarea>
+                <textarea class="row form-control" style="height:202px" name="descripcion" id="description" placeholder="Type the assignment description..." required>{% if form.errors %}{{ form.descripcion.value }}{% else %}{{ trabajo.descripcion }}{% endif %}</textarea>
                 {% for error in form.descripcion.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}

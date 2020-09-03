@@ -48,8 +48,8 @@
   pointer-events: none;
   width: 100%;
   right: 0;
-  height: 70px;
-  content: "drag it here.";
+  height: 35px;
+  content: "or drag it here.";
   display: block;
   margin: 0 auto;
   color: #2ea591;
