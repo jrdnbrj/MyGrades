@@ -36,7 +36,7 @@ MEDIA_URL = '/media/'
 SECRET_KEY = '(w+b%a@=lubxw5ksd_$fk#vz36=2ojzgc(+zpt6jz%ul(z_gbd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['64.227.48.115', 'mygrades.works', 'localhost']
 
