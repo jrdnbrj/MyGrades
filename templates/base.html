@@ -5,42 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>{% block title %} MyGrades {% endblock %} - MyGrades</title>
     <link rel="icon" href="/static/images/MyGrades.png">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/css/Registration-Form-with-Photo.css">
-    <link rel="stylesheet" href="/static/fonts/simple-line-icons.min.css">
-    <link rel="stylesheet" href="/static/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/css/Navigation-with-Search.css">
-    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/Drag-Drop-File-Input-Upload.css">
-    <link rel="stylesheet" href="/static/css/Juvi---Push-Empty-Space-20px.css">
-    <link rel="stylesheet" href="/static/css/Login-Form-Dark.css">
-    <link rel="stylesheet" href="/static/css/Bootstrap-Calendar.css">
-    <link rel="stylesheet" href="/static/fonts/ionicons.min.css">
-    <link rel="stylesheet" href="/static/css/List-item.css">
-    <link rel="stylesheet" href="/static/css/Filter.css">
-    <link rel="stylesheet" href="/static/css/Tabbed-Panel.css">
-    <link rel="stylesheet" href="/static/css/Profile-Edit-Form-1.css">
-    <link rel="stylesheet" href="/static/css/Profile-Edit-Form.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/Registration-Form-with-Photo.css">
+    <link rel="stylesheet" type="text/css" href="/static/fonts/simple-line-icons.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/fonts/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/Navigation-with-Search.css">
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/Drag-Drop-File-Input-Upload.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/Juvi---Push-Empty-Space-20px.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/Login-Form-Dark.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/Bootstrap-Calendar.css">
+    <link rel="stylesheet" type="text/css" href="/static/fonts/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/List-item.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/Filter.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/Tabbed-Panel.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/Profile-Edit-Form-1.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/Profile-Edit-Form.css">
 </head>
 <body>
 
+    {% block navbar %} {% include "navbar.html" %} {% endblock %} 
 
+    {% block content %} {% endblock %}
 
-    {% include "navbar.html" %}
-
-    {% block content %}
-    {% endblock %}
-
-    {% include "footer.html" %}
+    {% block footer %} {% include "footer.html" %} {% endblock %} 
 
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     <script src="/static/js/bs-init.js"></script>
     <script src="/static/js/Profile-Edit-Form.js"></script>
 
-    {% block js %}
-    {% endblock js %}
+    {% block js %} {% endblock js %}
 
 </body>
 </html>

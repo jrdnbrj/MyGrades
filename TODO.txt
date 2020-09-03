@@ -7,9 +7,12 @@ Añadir validaciones
 ...
 
 POST ASSIGNMENT.-
-Agregar Precio
-Arreglar Titulos Preview
+// Agregar Precio
+// Arreglar Titulos Preview
 // agregar recaptcha
+// validar que un usuario no tenga dos trabajos con el mismo nombre
+// pantalla de payment redirect con parametros
+validar si el pago se ha efectuado o no
 
 WORKPLACE.-
 Mensaje si no existenn resultados
@@ -44,13 +47,13 @@ Cambiar color de error de credenciales
 Agregar recaptcha
 
 VIEW ASSIGNMENTS.-
-Corregir diseños del precio y status
+// Corregir diseños del precio y status
 Agregar opcion de ver y hacer pago
 Explicacion de las fechas pasando el mouse por encima
 Mejorar diseño en general
 Si es sent, editar a 'Resend'
 Desactivar botones si el tiempo acabo o se elimino o algo
-Errores Edit Assignment
+// Errores Edit Assignment
 ...
 
 SERVIDOR.-

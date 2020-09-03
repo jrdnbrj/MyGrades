@@ -20,3 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.MyGrades_App.urls')),
 ]
+
+handler404 = 'apps.MyGrades_App.views.handler404'
+handler500 = 'apps.MyGrades_App.views.handler500'

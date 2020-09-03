@@ -20,6 +20,12 @@ from .forms import *
 from .models import *
 
 
+def handler404(request, *args, **argv):
+    return render(request, 'error/404.html')
+
+def handler500(request, *args, **argv):
+    return render(request, 'error/500.html')
+
 def landing_page(request):
     return render(request, 'home/landing_page.html', {})
 
@@ -66,6 +72,7 @@ def signin(request):
             context['username'] = username
     return render(request, 'home/signin.html', context)
 
+@login_required
 def signout(request):
     logout(request)
     return redirect('landing_page')
@@ -76,7 +83,7 @@ def signout(request):
 def post_assignment(request):
     context = {}
     if request.method == 'POST':
-        form = PostAssignmentForm(request.POST)
+        form = PostAssignmentForm(request.POST, user=request.user)
         if form.is_valid():
             trabajo = form.save(commit=False)
             trabajo.publicador = Usuario.objects.get(username = request.user)
@@ -94,47 +101,48 @@ def post_assignment(request):
                     # pendiente por eliminar archivos del modelo
 
             for file in request.FILES.getlist('archivos'):
-                archivo = Archivo.objects.create(nombre=file.name, archivo=file)
-                trabajo.archivos.add(archivo)
+                if file.size < 10000000:
+                    archivo = Archivo.objects.create(nombre=file.name, archivo=file)
+                    trabajo.archivos.add(archivo)
 
-            request.session['id'] = trabajo.id
-            print('id_pa1:',request.session['id'])
-            return redirect('post_assignment_3')
+            return redirect('post_assignment_payment', trabajo=trabajo.titulo)
         else:
             print(form.errors)
             context['form'] = form
             if 'files_from_validation' in request.POST:
                 files = [ Archivo.objects.get(id=file) for file in request.POST.getlist('files_from_validation') ]
             else:
-                files = [ Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos') ]
+                files = []
+                for file in request.FILES.getlist('archivos'):
+                    if file.size < 10000000:
+                        files += Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file)
+                # files = [ Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos') ]
             context['files'] = files
             
     return render(request, 'post/post_assignment.html', context)
 
 @login_required
-def post_assignment_2(request):
-    pass
-
-@login_required
-def post_assignment_3(request):
-    context = {}
-    if 'precio' in request.session:
-        context['precio'] = request.session.pop('precio')
+def post_assignment_payment(request, trabajo):
 
     if request.method == 'POST':
-        #print(request.session['id'], request.POST['price'])
-        print('id_pa3:', request.session['id'])
-        trabajo = Trabajo.objects.get(id = request.session['id'])
-        trabajo.precio = request.POST['price']
+        # validar si el pago se efectuo con exito
+        print('Trabajo ID:', trabajo)
+        trabajo = Trabajo.objects.get(id=trabajo)
         trabajo.estado = 'published'
         trabajo.save()
-        return redirect('post_assignment_4')
-    return render(request, 'post/post_assignment_3.html', context)
+        return redirect('post_assignment_complete', trabajo=trabajo.id)
+    else:
+        # validar si el trabajo ya ha sido pagado o no
+        print('Trabajo:', trabajo)
+        trabajo = Trabajo.objects.get(Q(titulo=trabajo), Q(publicador__username=request.user))
+        context = { 'precio': trabajo.precio, 'trabajo_id': trabajo.id }
+        return render(request, 'post/post_assignment_payment.html', context)
+    # return render(request, 'post/post_assignment_payment.html', context)
 
 @login_required
-def post_assignment_4(request):
-    trabajo = Trabajo.objects.get(id = request.session.pop('id'))
-    return render(request, 'post/post_assignment_4.html', {'trabajo': trabajo})
+def post_assignment_complete(request, trabajo):
+    trabajo = Trabajo.objects.get(id=trabajo)
+    return render(request, 'post/post_assignment_complete.html', { 'trabajo': trabajo })
 
 #___________________________WORK PLACE_____________________________
 
@@ -322,22 +330,22 @@ def edit_post_assignment(request, id):
                     # pendiente por eliminar archivos del modelo
 
             for file in request.FILES.getlist('archivos'):
-                archivo = Archivo.objects.create(nombre=file.name, archivo=file)
-                trabajo.archivos.add(archivo)
+                if file.size < 10000000:
+                    archivo = Archivo.objects.create(nombre=file.name, archivo=file)
+                    trabajo.archivos.add(archivo)
 
-            request.session['id'] = trabajo.id
-            request.session['precio'] = str(trabajo.precio)
-            return redirect('post_assignment_3')
+            return redirect('post_assignment_payment', trabajo=trabajo.titulo)
         else:
             print(form.errors)
             context['form'] = form
             print(request.POST)
             if 'files_from_validation' in request.POST:
                 files = [ Archivo.objects.get(id=file) for file in request.POST.getlist('files_from_validation') ]
-                print('1')
             else:
-                files = [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos')]
-                print('2')
+                files = []
+                for file in request.FILES.getlist('archivos'):
+                    if file.size < 10000000:
+                        files += Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file)
             context['files'] = files
             context['trabajo_id'] = trabajo.id
     else:
@@ -386,6 +394,9 @@ def send_assignment(request):
     return redirect('user_assignments')
 
 #___________________________PAYPAL_____________________________
+
+def verificar_pago(request):
+    pass
 
 def pago(request):
     trabajo = Trabajo.objects.get(pk=43)
@@ -472,6 +483,128 @@ class PayPalClient:
 
     def is_primittive(self, data):
         return isinstance(data, str) or isinstance(data, unicode) or isinstance(data, int)
+
+class CreateOrder(PayPalClient):
+
+    #2. Set up your server to receive a call from the client
+    """ This is the sample function to create an order. It uses the
+        JSON body returned by buildRequestBody() to create an order."""
+
+    def create_order(self, debug=False):
+        request = OrdersCreateRequest()
+        request.prefer('return=representation')
+        #3. Call PayPal to set up a transaction
+        request.request_body(self.build_request_body())
+        response = self.client.execute(request)
+        if debug:
+            print ('Status Code: ', response.status_code)
+            print ('Status: ', response.result.status)
+            print ('Order ID: ', response.result.id)
+            print ('Intent: ', response.result.intent)
+            print ('Links:')
+        for link in response.result.links:
+            print('\t{}: {}\tCall Type: {}'.format(link.rel, link.href, link.method))
+        print ('Total Amount: {} {}'.format(response.result.purchase_units[0].amount.currency_code,
+                            response.result.purchase_units[0].amount.value))
+
+        return response
+
+        """Setting up the JSON request body for creating the order. Set the intent in the
+        request body to "CAPTURE" for capture intent flow."""
+    @staticmethod
+    def build_request_body():
+        """Method to create body with CAPTURE intent"""
+        return {
+            "intent": "CAPTURE",
+            "application_context": {
+                "brand_name": "EXAMPLE INC",
+                "landing_page": "BILLING",
+                "shipping_preference": "SET_PROVIDED_ADDRESS",
+                "user_action": "CONTINUE"
+            },
+            "purchase_units": [
+                {
+                    "reference_id": "PUHF",
+                    "description": "Sporting Goods",
+
+                    "custom_id": "CUST-HighFashions",
+                    "soft_descriptor": "HighFashions",
+                    "amount": {
+                        "currency_code": "USD",
+                        "value": "230.00",
+                        "breakdown": {
+                            "item_total": {
+                                "currency_code": "USD",
+                                "value": "180.00"
+                            },
+                            "shipping": {
+                                "currency_code": "USD",
+                                "value": "30.00"
+                            },
+                            "handling": {
+                                "currency_code": "USD",
+                                "value": "10.00"
+                            },
+                            "tax_total": {
+                                "currency_code": "USD",
+                                "value": "20.00"
+                            },
+                            "shipping_discount": {
+                                "currency_code": "USD",
+                                "value": "10"
+                            }
+                        }
+                        },
+                        "items": [
+                        {
+                            "name": "T-Shirt",
+                            "description": "Green XL",
+                            "sku": "sku01",
+                            "unit_amount": {
+                                "currency_code": "USD",
+                                "value": "90.00"
+                            },
+                            "tax": {
+                                "currency_code": "USD",
+                                "value": "10.00"
+                            },
+                            "quantity": "1",
+                            "category": "PHYSICAL_GOODS"
+                        },
+                        {
+                            "name": "Shoes",
+                            "description": "Running, Size 10.5",
+                            "sku": "sku02",
+                            "unit_amount": {
+                                "currency_code": "USD",
+                                "value": "45.00"
+                            },
+                            "tax": {
+                                "currency_code": "USD",
+                                "value": "5.00"
+                            },
+                            "quantity": "2",
+                            "category": "PHYSICAL_GOODS"
+                        }
+                        ],
+                        "shipping": {
+                        "method": "United States Postal Service",
+                        "address": {
+                            "name": {
+                                "full_name":"John",
+                                "surname":"Doe"
+                            },
+                            "address_line_1": "123 Townsend St",
+                            "address_line_2": "Floor 6",
+                            "admin_area_2": "San Francisco",
+                            "admin_area_1": "CA",
+                            "postal_code": "94107",
+                            "country_code": "US"
+                        }
+                    }
+                }
+            ]
+        }
 
 class GetOrder(PayPalClient):
 

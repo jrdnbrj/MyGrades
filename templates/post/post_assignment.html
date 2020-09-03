@@ -96,15 +96,14 @@
     </div>
 </div>
 
-<div class="Push-20" style="height: 14.4px;"></div>
-<div class="col-4 mx-auto"><button class="btn-lg btn-primary border rounded col" type="submit">Submit</button></div>
+<div class="col-4 mx-auto mt-3"><button class="btn-lg btn-primary border rounded col" type="submit">SUBMIT</button></div>
 <hr>
     <div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mx-auto">
-                    <h1 class="text-center">PREVIEW</h1><br>
-                    <h2 id="price-badge"><span class="badge badge-pill badge-secondary float-right mr-5" id="price_badge_2"></span></h2>
+                    <h1 class="text-center" id="preview_title">Post Assignment Preview</h1><br>
+                    <h2 id="price_badge"><span class="badge badge-pill badge-secondary float-right mr-5" id="price_badge_2"></span></h2>
                     <h4 class="text-left" id="title_area"></h4>
                     <small class="form-text text-muted ml-3" id="date2"><br></small>
                     {% comment %} <div class="Push-20"></div> {% endcomment %}
@@ -159,36 +158,42 @@
         console.log(files)
         
         if(files){
-            $('#frame_div').show();
             $('#frame_div').html("");
+            $('#frame_div').show();
             for(var i = 0; i < files.length; i++){
-                
-                //console.log(files[i].name)
-                if (/\.(jpe?g|png|gif|pdf|md|txt|py|html|css|js|ts|php)$/i.test(files[i].name) ) {
-                    (function(file) {
-                        var reader = new FileReader();
-                        console.log(file.name)
-                        $('#frame_div').append(`<span class="m-3">+&nbsp` + file.name + `</span><br>`);
-                        reader.onload = function (r) {
-                            console.log(r)
-                            $('#frame_div').append(
-                            `   <div class="embed-responsive embed-responsive-21by9 shadow my-3" id="frame">
-                                    <iframe src="` + r.target.result + `" id="file_iframe" class="embed-responsive-item"></iframe>
-                                </div>                    
-                            `);
-                        };
-                        reader.readAsDataURL(file);
-                    })(files[i]);
-                }else{
+                console.log(files[i].size + ' ' + files[i].name)
+                if (files[i].size > 10000000) {
                     $('#frame_div').append(`
-                        <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">Unable to display a file preview.</span><br>
+                        <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">This file size exceeds the maximum allowed. Will be not upload.</span><br>
                     `);
+                } else {
+                    //console.log(files[i].name)
+                    if (/\.(jpe?g|png|gif|pdf|md|txt|py|html|css|js|ts|php)$/i.test(files[i].name) ) {
+                        (function(file) {
+                            var reader = new FileReader();
+                            console.log(file.name)
+                            $('#frame_div').append(`<span class="m-3">+&nbsp` + file.name + `</span><br>`);
+                            reader.onload = function (r) {
+                                console.log(r)
+                                $('#frame_div').append(
+                                `   <div class="embed-responsive embed-responsive-21by9 shadow my-3" id="frame">
+                                        <iframe src="` + r.target.result + `" id="file_iframe" class="embed-responsive-item"></iframe>
+                                    </div>                    
+                                `);
+                            };
+                            reader.readAsDataURL(file);
+                        })(files[i]);
+                    }else{
+                        $('#frame_div').append(`
+                            <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">Unable to display a file preview.</span><br>
+                        `);
+                    }
                 }
             }
         }
     }
 
-    function progress(){
+    function progress(e){
         var area = $.trim($('#area').val());
         var title = $.trim($('#title').val());
         var description = $.trim($('#description').val());
@@ -200,21 +205,20 @@
 
         var cont = 0;
         for(var i=0; i<components.length; i++){
-            if(components[i] != ""){
-                cont = cont + 1;
-            }
+            if(components[i] != "") cont = cont + 1;
         }
 
         var percent = (cont / components.length) * 100;
         $('#progress_bar').css('width', percent + '%');
         $('#progress_bar').html(percent + '%');
 
-        if(title != "" || area != "" ){
-            $('#title_area').html(title + ' - <small>' + area + '</small>');
-        }else{
-            $('#title_area').html("");
-        }
-        if(date != ""){
+        if (percent == 0) $('#preview_title').hide()
+        else $('#preview_title').show()
+
+        if (title != "" || area != "" ) $('#title_area').html(title + ' - <small>' + area + '</small>');
+        else $('#title_area').html("")
+
+        if (date != "") {
             var datetime = new Date(date);
             var mes = datetime.getMonth();
             var dia = datetime.getDate();
@@ -226,35 +230,30 @@
                 (mes > 8) ? (mes + 1) : '0' + (mes + 1)  + '/' + ((dia > 9) ? dia : '0' + dia)  + '/' + año + ' ' + 
                 ((horas > 9) ? horas : '0' + horas)  + ':' + ((minutos > 9) ? minutos : '0' + minutos)
             )
-        }else{
-            $('#date2').hide();
-        }
-        if(description != ""){
+        } else $('#date2').hide();
+
+        if (description != "") {
             $('#description_title').show();
             $('#description2').show();
             $('#description2').html(description.replace(/\r\n|\r|\n/g,"</br>"));
-        }else{
+        } else {
             $('#description_title').hide();
             $('#description2').hide();
             $('#description2').html("");
         }
 
-        if(archivos){
+        if (archivos) {
             $('#archivos_title').show();
             $('#archivo_validation').html('');
             $('#archivo_validation_edit').html('');
-        }else{
-            $('#archivos_title').hide();
-        }
-        console.log(precio)
-        if (precio != "") {
+            
+        } else $('#archivos_title').hide();
+
+        precio = Number(precio).toFixed(2)
+        if (precio != 'NaN' && precio != 0) {
             $('#price_badge').show()
             $('#price_badge_2').html(`$ ` + precio)
-            
-        } else {
-            $('#price_badge_2').html('')
-
-        }
+        } else $('#price_badge_2').html('')
     }
 
     

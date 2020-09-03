@@ -1,5 +1,6 @@
 from django import forms
 from django.utils import timezone
+from django.db.models import Q
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 
@@ -9,6 +10,7 @@ import datetime
 import pytz
 
 utc = pytz.UTC
+
 
 class UsuarioForm(forms.Form):
 
@@ -80,7 +82,9 @@ class EditUserForm(forms.ModelForm):
 
         return username
 
+
 class EditUserInfoForm(forms.ModelForm):
+
     class Meta:
         model = Usuario
         fields = ('foto', 'info_about')
@@ -116,6 +120,7 @@ class EditPasswordForm(forms.ModelForm):
 
         return data
 
+
 class PostAssignmentForm(forms.Form):
 
     titulo = forms.CharField(min_length=1, max_length=50)
@@ -125,7 +130,22 @@ class PostAssignmentForm(forms.Form):
         input_formats = ['%Y-%m-%dT%H:%M'],
         widget = forms.DateTimeInput(attrs={ 'type': 'datetime-local' }, format='%Y-%m-%dT%H:%M')
     )
-    precio = forms.DecimalField(max_digits=5, decimal_places=2)
+    precio = forms.DecimalField(max_digits=5, decimal_places=2, min_value=3.00)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(PostAssignmentForm, self).__init__(*args, **kwargs)
+
+    def clean_titulo(self):
+        titulo = self.cleaned_data['titulo']
+        user = self.user
+
+        trabajo = Trabajo.objects.filter(Q(titulo__iexact=titulo), Q(publicador__username=user))
+
+        if user and trabajo:
+            raise forms.ValidationError('You have already published an Assignment with the same title.')
+
+        return titulo
 
     def clean_fecha_expiracion(self):
         data = self.cleaned_data
@@ -133,18 +153,9 @@ class PostAssignmentForm(forms.Form):
         date_time = utc.localize(datetime.datetime.now())
 
         if date_time >= fecha_expiracion:
-            raise forms.ValidationError('The DeadLine must be greater than '+ str(date_time)[:-16])
+            raise forms.ValidationError('The Dead Line must be greater than '+ str(date_time)[:-16])
 
         return fecha_expiracion
-
-    def clean_precio(self):
-        precio = self.cleaned_data['precio']
-
-        try: float(precio)
-        except: 
-            raise forms.ValidationError("The input must be a valid price. Don't forget to use the point as a decimal separator.")
-
-        return precio
 
     def save(self, instance=None, commit=False):
         
@@ -155,6 +166,7 @@ class PostAssignmentForm(forms.Form):
         instance.area = post_assignment['area']
         instance.descripcion = post_assignment['descripcion']
         instance.fecha_expiracion = post_assignment['fecha_expiracion']
+        instance.precio = post_assignment['precio']
         
         if commit: instance.save()
             

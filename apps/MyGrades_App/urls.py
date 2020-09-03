@@ -11,8 +11,8 @@ urlpatterns = [
     path('signout', signout, name='signout'),
 
     path('post_assignment', post_assignment, name='post_assignment'),
-    path('post_assignment_3', post_assignment_3, name = 'post_assignment_3'),
-    path('post_assignment_4', post_assignment_4, name = 'post_assignment_4'),
+    path('post_assignment/<str:trabajo>', post_assignment_payment, name = 'post_assignment_payment'),
+    path('post_assignment_complete/<str:trabajo>', post_assignment_complete, name = 'post_assignment_complete'),
 
     path('work_place/', work_place, name='work_place'),
     path('wp_ajax', wp_ajax, name='wp_ajax'),
@@ -34,4 +34,5 @@ urlpatterns = [
     path('send_assignment/', send_assignment, name='send_assignment'),
 
     path('pago/', pago, name='pago'),
+    path('verificar_pago/', verificar_pago, name='verificar_pago'),
 ]

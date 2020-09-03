@@ -32,13 +32,13 @@
                                                     <h5 class="col">
                                                         <a data-toggle="collapse" class="align-middle" aria-expanded="false" aria-controls="accordion-1 .item-{{ trabajo.id }}" href="#accordion-1 .item-{{ trabajo.id }}">{{ trabajo.titulo }}</a>
                                                     </h5>
-                                                    <button type="button" class="btn-sm btn-success rounded border d-flex align-items-center" disabled>
-                                                        Cost<span class="badge badge-light ml-1">${{ trabajo.precio }}</span>
-                                                    </button>
+                                                    <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
                                                     <button type="button" class="btn-sm btn-primary rounded border d-flex align-items-center ml-1" disabled>
                                                         Status <span class="badge badge-light ml-1">{{ trabajo.estado }}</span>
                                                     </button>
-                                                    <small class="align-middle d-flex align-items-center ml-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
+                                                    <button type="button" class="btn-sm btn-success rounded border d-flex align-items-center ml-1" disabled>
+                                                        Cost<span class="badge badge-light ml-1">${{ trabajo.precio }}</span>
+                                                    </button>
                                                 </div>
                                                 <div class="collapse item-{{ trabajo.id }}" role="tabpanel" data-parent="#accordion-1">
                                                     <div class="card-body">
@@ -114,13 +114,13 @@
                                             <div class="card">
                                                 <div class="card-header row py-2" style="margin: 0" role="tab">
                                                     <h5 class="col"><a data-toggle="collapse" class="align-middle" aria-expanded="false" aria-controls="accordion-2 .item-{{ trabajo.id }}" href="#accordion-2 .item-{{ trabajo.id }}"><strong>{{ trabajo.titulo }}</strong><br></a></h5>
-                                                    <button type="button" class="btn-sm btn-success rounded border d-flex align-items-center" disabled>
+                                                    <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
+                                                    <button type="button" class="btn-sm btn-primary rounded border d-flex align-items-center ml-1" disabled>
+                                                        Status <span class="badge badge-light mx-1">{{ trabajo.estado }}</span>
+                                                    </button>
+                                                    <button type="button" class="btn-sm btn-success rounded border d-flex align-items-center ml-1" disabled>
                                                         Payment<span class="badge badge-light ml-1">${{ trabajo.precio }}</span>
                                                     </button>
-                                                    <button type="button" class="btn-sm btn-primary rounded border d-flex align-items-center ml-1" disabled>
-                                                        Status <span class="badge badge-light ml-1">{{ trabajo.estado }}</span>
-                                                    </button>
-                                                    <small class="align-middle d-flex align-items-center ml-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
                                                 </div>
                                                 <div class="collapse item-{{ trabajo.id }}" role="tabpanel" data-parent="#accordion-2">
                                                     <div class="card-body">

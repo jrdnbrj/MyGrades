@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-{% block title %} {{ title }} Post Assignment {% endblock %}
+{% block title %} Post Assignment {% endblock %}
 {% block content %}
 {% load static %}
-<section class="call-to-action text-white text-center" style="background:url(static/images/WorkPlace-2.jpg) no-repeat center center;background-size:cover;">
+<section class="call-to-action text-white text-center" style="background:url('{% static 'images/WorkPlace-2.jpg'%}') no-repeat center center;background-size:cover;">
     <div class="overlay"></div>
 </section>
 <div class="Push-20" style="height: 14.4px;"></div>
@@ -11,17 +11,11 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6 mx-auto">
-                <form method="POST" action="{% url 'post_assignment_3' %}">
-                {% csrf_token %}
-                    <h2 class="text-center my-4">Assignment price and payment</h2>
-                    <div class="form-group input-group mt-4">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">$</div>
-                        </div>
-                        <input class="form-control" type="text" name="price" placeholder="Enter a price" value="{{ precio }}" required>
-                    </div>
+                <span>Please hacer el pago vea de {{ trabajo_id }} de {{ precio }}</span>
+                <form method="POST" action="{% url 'post_assignment_payment' trabajo_id %}">{% csrf_token %}
+                    <h2 class="text-center my-4">Assignment Payment</h2>
                     <div class="form-group"><div id="paypal-button-container"></div></div>
-                    <div class="form-group"><button class="btn-lg btn-primary rounded btn-block" type="submit">Submit</button></div>
+                    <div class="form-group"><button class="btn-lg btn-primary rounded btn-block" type="submit">Ready</button></div>
                 </form>
             </div>
         </div>
@@ -30,7 +24,7 @@
 <div></div>
 <div class="Push-20" style="height: 14.4px;"></div>
 <section class="showcase"></section>
-<section class="call-to-action text-white text-center" style="background:url(static/images/Desk-1.jpg) no-repeat center center;background-size:cover;">
+<section class="call-to-action text-white text-center" style="background:url({% static 'images/Desk-1.jpg' %}) no-repeat center center;background-size:cover;">
     <div class="overlay"></div>
 </section>
 {% endblock %}
@@ -40,6 +34,8 @@
     <script>
         
         const csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+        const price = {{ precio }} || 0
+        const trabajo_id = {{ trabajo_id }} || 0
 
         paypal.Buttons({
             style: {
@@ -49,29 +45,37 @@
                 height: 40
             },
             createOrder: function(data, actions) {
+                console.log('Trabajo ID: ' + trabajo_id )
+                fetch('{% url 'verificar_pago' %}', {
+                    method: 'GET',
+                    body: JSON.stringify({ orderID: data.orderID })
+                }).then(function(res) {
+                    return res.json();
+                }).then(function(details) {
+                    alert(details.message);
+                })
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
-                            value: '25'
+                            value: price.toFixed(2)
                         }
                     }]
                 });
             },
             onError: function(err) {
-                console.log("EERRRROORRR!!!!!")
                 alert('EERRRROORRR!!!!!')
                 console.log(err)
             },
             onCancel: function (data) {
-                console.log("CANCEL!!!!!")
                 alert('CANCEL!!!!!')
+                console.log(data)
             },
             onApprove: function(data) {
                 return fetch('{% url 'pago' %}', {
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json',
-                        'X-CSRFToken': csrftoken
+                        'X-CSRFToken': csrfToken
                     },
                     body: JSON.stringify({ orderID: data.orderID })
                 }).then(function(res) {
