@@ -15,13 +15,14 @@ POST ASSIGNMENT.-
 validar si el pago se ha efectuado o no
 
 WORKPLACE.-
-Mensaje si no existenn resultados
-Eliminar paginacion si solo hay una pantalla
+// Mensaje si no existenn resultados
+// Eliminar paginacion si solo hay una pantalla
+Ver usuario al abrir un Assignment, poder acceder a su informacion publica
 
 LANDING PAGE.-
-Iconos del inicio
-Fotos de personas de reseñas
-Texto de reseñas
+// Iconos del inicio
+// Fotos de personas de reseñas
+// Texto de reseñas
 
 NAVBAR.-
 Arreglar Navbar responsive
@@ -48,6 +49,7 @@ Agregar recaptcha
 
 VIEW ASSIGNMENTS.-
 // Corregir diseños del precio y status
+Opciones de borrar y desactivar Assignment
 Agregar opcion de ver y hacer pago
 Explicacion de las fechas pasando el mouse por encima
 Mejorar diseño en general
@@ -58,22 +60,22 @@ Desactivar botones si el tiempo acabo o se elimino o algo
 
 SERVIDOR.-
 Arreglar hora del servidor, adelantado por 5 horas en local y digital ocean
-Middleware para seguridad de assignments, archivos e inf de otros usuarios
+// Middleware para seguridad de assignments, archivos e inf de otros usuarios
 Verificar urls correctas y seguras
 Verificar SEO
 Migrar a postgres (investigar la mejor BDD)
-Validar tamaño maximo de archivos a 10MB
+-- Validar tamaño maximo de archivos a 10MB
 Validar maximo de 5 archivos por trabajo
 Actualizar trabajos si la fecha terminó
-Ventana de error 404 personalizada
-Ventana de errores que no sean 404 personalizada
+-- Ventana de error 404 personalizada
+-- Ventana de errores que no sean 404 personalizada
 Corregir error de id despues de publicar y tomar un trabajo
 Investigar como hacer mas seguro a Django
 
 OTROS.-
 Pantalla terminos y condiciones
 Accesos a terminos y condiciones al crear usuario
-Verificar la utilidad de tener foto, keywords y about you
+// Verificar la utilidad de tener foto, keywords y about you
 Analizar la posibilidad de enviar mails con herramientas github
 Pantalla formulario de soporte
 Tamaños de letras de toda las paginas, principalmente las pantallas despues de tomar o publicar un trabajo

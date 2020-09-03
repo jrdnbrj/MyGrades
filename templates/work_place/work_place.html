@@ -120,7 +120,15 @@
         function showList(trabajos) {
             console.log(trabajos)
             $('#list').html("");
-            for(var i = 0; i < trabajos.length; i++){
+            if (trabajos.length == 0) {
+                $('#list').append(`
+                    <li class='list-group-item'>` + `
+                        <h6>No search results.</h6>
+                        <small>Do you want to post an Assignment? <a href="{% url 'post_assignment' %}">Go For It</small></a>
+                    </li>
+                `);
+            }
+            for (var i = 0; i < trabajos.length; i++) {
                 var pk = trabajos[i].pk
                 $('#list').append(`
                     <li class='list-group-item'>` + `
@@ -150,18 +158,20 @@
 
             for (i = 0; i < data.num_pages; i++) {
                 let j = i + 1
-                if (j == data.page) {
-                    $('#pagination').append(`
-                        <li class="page-item active">
-                            <button class="page-link" id="active" onclick="page(`+j+`)">`+j+`</button>
-                        </li>
-                    `)    
-                } else {
-                    $('#pagination').append(`
-                        <li class="page-item">
-                            <button class="page-link" onclick="page(`+j+`)">`+j+`</button>
-                        </li>
-                    `)    
+                if(data.num_pages != 1) {
+                    if (j == data.page) {
+                        $('#pagination').append(`
+                            <li class="page-item active">
+                                <button class="page-link" id="active" onclick="page(`+j+`)">`+j+`</button>
+                            </li>
+                        `)    
+                    } else {
+                        $('#pagination').append(`
+                            <li class="page-item">
+                                <button class="page-link" onclick="page(`+j+`)">`+j+`</button>
+                            </li>
+                        `)    
+                    }
                 }
             }
             
