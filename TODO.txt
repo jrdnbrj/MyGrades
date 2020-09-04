@@ -47,6 +47,8 @@ Agergar SignIn with Google and Facebook
 Cambiar diseño signin
 Cambiar color de error de credenciales
 Agregar recaptcha
+Recuperar contraseña
+Logo MyGrades
 
 VIEW ASSIGNMENTS.-
 // Corregir diseños del precio y status

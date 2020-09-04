@@ -148,4 +148,4 @@ STATICFILES_FINDER = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-LOGIN_URL = ''
+LOGIN_URL = '/signin'
