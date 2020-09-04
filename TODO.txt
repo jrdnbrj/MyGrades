@@ -18,6 +18,7 @@ WORKPLACE.-
 // Mensaje si no existenn resultados
 // Eliminar paginacion si solo hay una pantalla
 Ver usuario al abrir un Assignment, poder acceder a su informacion publica
+Arreglar diseño después de escoger un trabajo Wokrplace2
 
 LANDING PAGE.-
 // Iconos del inicio
@@ -25,12 +26,12 @@ LANDING PAGE.-
 // Texto de reseñas
 
 NAVBAR.-
-Arreglar Navbar responsive
-Agregar opcion View Assignments
+// Arreglar Navbar responsive
+// Agregar opcion View Assignments
 Agregar opcion ver Terminos y Condiciones
 Agregar opcion pantalla de soporte
-Alinear elementos
-Hacerle mas bonito en general
+// Alinear elementos
+-- Hacerle mas bonito en general
 
 PERFIL.-
 KeyWords sin comas y placeholder

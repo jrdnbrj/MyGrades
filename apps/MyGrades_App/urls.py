@@ -5,8 +5,9 @@ from .views import *
 
 urlpatterns = [
     path('', landing_page, name='landing_page'),
+    path('customer_support', customer_support, name='customer_support'),
+
     path('register', register, name='register'),
-    # path('register_verification', register_verification, name='register_verification'),
     path('signin', signin, name='signin'),
     path('signout', signout, name='signout'),
 

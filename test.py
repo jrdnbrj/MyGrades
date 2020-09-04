@@ -1,5 +1,5 @@
 try:
-    number = '+123'.isnumeric()
+    number = ''.isnumeric()
     print(number)
 except:
     print('error')

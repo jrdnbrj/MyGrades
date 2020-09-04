@@ -25,7 +25,7 @@ class UsuarioForm(forms.Form):
         mail_taken = Usuario.objects.filter(mail=mail)
 
         if mail_taken:
-            raise forms.ValidationError('The email already belongs to an account')
+            raise forms.ValidationError('The email already belongs to an account.')
 
         return mail
     
@@ -34,7 +34,7 @@ class UsuarioForm(forms.Form):
         username_taken = Usuario.objects.filter(username=username)
 
         if username_taken:
-            raise forms.ValidationError('A user with that username already exists')
+            raise forms.ValidationError('A user with that username already exists.')
 
         return username
 
@@ -54,7 +54,7 @@ class UsuarioForm(forms.Form):
             password_repeat = data['password_repeat']
 
             if password != password_repeat:
-                raise forms.ValidationError({'password_repeat':'Passwords do not match.'})
+                raise forms.ValidationError({ 'password_repeat': 'Passwords do not match.' })
 
         return data
 
@@ -104,7 +104,7 @@ class EditPasswordForm(forms.ModelForm):
         actual_password_clean = self.cleaned_data['actual_password']
 
         if not self.instance.check_password(actual_password_clean):
-            raise forms.ValidationError('Does not match current password')
+            raise forms.ValidationError('Does not match current password.')
 
         return actual_password_clean
     
@@ -171,3 +171,18 @@ class PostAssignmentForm(forms.Form):
         if commit: instance.save()
             
         return instance
+
+
+class CustomerSupportForm(forms.ModelForm):
+
+    class Meta:
+        model = CustomerSupport
+        fields = ('title', 'name', 'email', 'phone_number', 'description')
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data['phone_number']
+
+        if phone_number and not phone_number.isnumeric():
+            raise forms.ValidationError("The input must be a valid phone number. Don't add special characters.")
+
+        return phone_number

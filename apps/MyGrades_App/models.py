@@ -55,7 +55,7 @@ class Trabajo(models.Model):
     fecha_asignacion_trabajador = models.DateTimeField( auto_now_add=False, null=True, blank=True)
     fecha_entrega = models.DateTimeField( auto_now_add=False, null=True, blank=True)
     estado = models.CharField(max_length=10, default='hidden')
-    descripcion = models.TextField(max_length=None)
+    descripcion = models.TextField(max_length=5000)
     archivos = models.ManyToManyField(Archivo, blank=True, related_name='archivos')
     trabajador = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL, related_name='trabajador')
     archivos_trabajador = models.ManyToManyField(Archivo, blank=True, related_name='archivos_trabajador')
@@ -81,3 +81,18 @@ class Order(models.Model):
 
     def __str__(self):
         return self.trabajo.titulo
+
+class CustomerSupport(models.Model):
+    id = models.AutoField(primary_key=True)
+    date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=10, default='sent')
+    user = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL)
+    title = models.CharField(max_length=60)
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+    phone_number = models.CharField(max_length=25, null=True, blank=True)
+    description = models.TextField(max_length=5000)
+    files = models.ManyToManyField(Archivo, blank=True)
+
+    def __str__(self):
+        return self.title

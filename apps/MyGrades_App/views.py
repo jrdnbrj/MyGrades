@@ -372,8 +372,6 @@ def edit_post_assignment(request, id):
         context = {'trabajo': trabajo, 'option': options[trabajo.area]}
     return render(request, 'post/post_assignment.html', context)
 
-#___________________________SEND ASSIGNMENT_____________________________
-
 def send_assignment(request):
     pk = request.POST['pk']
     trabajo = Trabajo.objects.get(pk=pk)
@@ -392,6 +390,26 @@ def send_assignment(request):
             trabajo.fecha_entrega = datetime.datetime.now()
             trabajo.save()
     return redirect('user_assignments')
+
+
+#___________________________CUSTOMER SUPPORT_____________________________
+
+def customer_support(request):
+    context = {}
+    if request.method == 'POST':
+        form = CustomerSupportForm(request.POST, request.FILES)
+        if form.is_valid():
+            form = form.save(commit=False)
+            if request.user.is_authenticated:
+                user = Usuario.objects.get(username=request.user)
+                form.user = user
+            form.save()
+            context['response'] = 'success'
+        else:
+            print(form.errors)
+            context['form'] = form
+
+    return render(request, 'home/customer_support.html', context)
 
 #___________________________PAYPAL_____________________________
 
