@@ -42,16 +42,16 @@
             <strong>MyGrades</strong>
         </a>
         <div class="collapse navbar-collapse" id="navbarText">
-            {% if user.is_authenticated %}
-                <ul class="navbar-nav mr-auto ml-5">
+            <ul class="navbar-nav mr-auto ml-5">
+                {% if user.is_authenticated %}
                     <li class="nav-item border-right">
                         <a class="nav-link" href="{% url 'post_assignment' %}">Post Assignment</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'work_place' %}">WorkPlace</a>
                     </li>
-                </ul>
-            {% endif %}
+                {% endif %}
+            </ul>
             {% if user.is_authenticated %}
                 <div class="float-right">
                     <div class="nav-item dropleft">
@@ -69,7 +69,7 @@
                     </div>
                 </div>
             {% else %}
-                <div>
+                <div class="float-right">
                     <a class="btn-sm btn-outline-success ml-3 rounded" href="{% url 'signin' %}">Sign In</a>
                     <a class="btn-sm btn-primary ml-3 rounded" href="{% url 'register' %}">Register</a>
                 </div>

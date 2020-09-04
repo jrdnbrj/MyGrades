@@ -61,10 +61,14 @@
                 >Next</button>
             <span class="already mt-4" href="#">You already have an account? <a class="already" href="{% url 'signin' %}">Sign In here</a></span>
         </form>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
     </div>
 </div>
 {% endblock %}
 {% block js %}
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<meta name="google-signin-client_id" content="mygrades-288516.apps.googleusercontent.com">
+
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
     $('#form').submit(event => {
