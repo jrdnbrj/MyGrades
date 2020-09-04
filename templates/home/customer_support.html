@@ -51,22 +51,27 @@
                 {% for error in form.description.errors %}
                     <br><small class="text-danger">{{ error }}</small>
                 {% endfor %}
-                <textarea type="text" style="height: 100px" maxlength="5000" class="form-control" name="description" placeholder="Description" required>{% if form.errors %}{{ form.phone_number.value }}{% endif %}</textarea>
+                <textarea type="text" style="height: 100px" maxlength="5000" class="form-control" name="description" placeholder="Description" required>{% if form.errors %}{{ form.description.value }}{% endif %}</textarea>
                 <small class="form-text text-muted">Explain us your problem or suggestion.</small>
             </div>
             <div class="form-group">
                 <label for="inputAddres2">Related Files</label>
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="files" multiple>
+                    <input type="file" style="cursor: pointer" class="custom-file-input" name="files" onchange="showFiles(this);" multiple>
                     <label class="custom-file-label" for="customFile">Choose file</label>
                 </div>
                 <small class="form-text text-muted">If necessary add some file, it can be a screenshot.</small>
+                <div id="files">
+                    {% for file in files %}
+                        <span class="m-3">+&nbsp{{ file.nombre }}</span>
+                        <input type="hidden" name="files_from_validation" value="{{ file.pk }}"></br>
+                    {% endfor %}
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Send Form</button>
         </form>
     </div>
 </div>
-{% comment %} <input type="hidden" name="alert" value="{{ response }}" readonly> {% endcomment %}
 <section class="call-to-action text-white text-center" style="background:url(/static/images/Desk-1.jpg) no-repeat center center;background-size:cover;">
     <div class="overlay"></div>
 </section>
@@ -78,5 +83,29 @@
             alert('Form sent correctly, we will contact you as soon as possible with a response.')
         }, 100)
     {% endif %}
+
+
+    function showFiles(input) {
+        files = input.files
+        console.log(files)
+
+        if(files){
+            $('#files').html("");
+            $('#files').show();
+            for(var i = 0; i < files.length; i++){
+                console.log(files[i].size + ' ' + files[i].name)
+                if (files[i].size > 10000000) {
+                    $('#files').append(`
+                        <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">This file size exceeds the maximum allowed.</span><br>
+                    `);
+                } else {
+                    $('#files').append(`
+                        <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;"></span><br>
+                    `);
+                }
+            }
+        }
+    }
+
 </script>
 {% endblock js %}

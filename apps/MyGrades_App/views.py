@@ -115,7 +115,7 @@ def post_assignment(request):
                 files = []
                 for file in request.FILES.getlist('archivos'):
                     if file.size < 10000000:
-                        files += Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file)
+                        files += [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file)]
                 # files = [ Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos') ]
             context['files'] = files
             
@@ -345,7 +345,7 @@ def edit_post_assignment(request, id):
                 files = []
                 for file in request.FILES.getlist('archivos'):
                     if file.size < 10000000:
-                        files += Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file)
+                        files += [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file)]
             context['files'] = files
             context['trabajo_id'] = trabajo.id
     else:
@@ -404,11 +404,36 @@ def customer_support(request):
                 user = Usuario.objects.get(username=request.user)
                 form.user = user
             form.save()
+
+            if 'files_from_validation' in request.POST:
+                for archivo in form.files.all():
+                    form.files.remove(archivo)
+                    # pendiente por eliminar archivos del modelo
+                for file in request.POST.getlist('files_from_validation'):
+                    form.files.add(Archivo.objects.get(id = file))
+
+            if request.FILES:
+                for archivo in form.files.all():
+                    form.files.remove(archivo)
+                    # pendiente por eliminar archivos del modelo
+
+            for file in request.FILES.getlist('files'):
+                if file.size < 10000000:
+                    archivo = Archivo.objects.create(nombre=file.name, archivo=file)
+                    form.files.add(archivo)
+
             context['response'] = 'success'
         else:
             print(form.errors)
             context['form'] = form
-
+            if 'files_from_validation' in request.POST:
+                files = [ Archivo.objects.get(id=file) for file in request.POST.getlist('files_from_validation') ]
+            else:
+                files = []
+                for file in request.FILES.getlist('files'):
+                    if file.size < 10000000:
+                        files += [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file)]
+            context['files'] = files
     return render(request, 'home/customer_support.html', context)
 
 #___________________________PAYPAL_____________________________
