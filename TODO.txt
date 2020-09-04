@@ -44,7 +44,7 @@ mensaje de confirmacion de informacion guardada, alert
 REGISTER and SIGNIN.-
 Agregar Register with Google and Facebook
 Agergar SignIn with Google and Facebook
-Cambiar diseño signin
+// Cambiar diseño signin
 Cambiar color de error de credenciales
 Agregar recaptcha
 Recuperar contraseña

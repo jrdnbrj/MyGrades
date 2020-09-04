@@ -1,1 +1,16 @@
-<h1>Server error 500 //</h1>
+{% extends 'base.html' %}
+{% block navbar %} {% endblock %}
+{% block content %}
+<div class="container h-100 d-flex">
+    <div class="my-auto align-middle">
+        <div class="jumbotron">
+            <h1 class="display-4">Ups! It seems that an error has occurred on the server.</h1>
+            <p>You have a problem? Do not hesitate to contact us <a href="{% url 'customer_support' %}">here</a>.</p>
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="{% url 'post_assignment' %}" role="button">Post Assignment</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block footer %} {% endblock %}
