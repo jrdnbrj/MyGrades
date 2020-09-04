@@ -1,5 +1,5 @@
 PAYPAL.-
-Pantalla de pago independiente
+// Pantalla de pago independiente
 validar que el precio sea correcto antes de hacer el cobro
 Solicitar Business
 Pruebas
@@ -29,7 +29,7 @@ NAVBAR.-
 // Arreglar Navbar responsive
 // Agregar opcion View Assignments
 Agregar opcion ver Terminos y Condiciones
-Agregar opcion pantalla de soporte
+// Agregar opcion pantalla de soporte
 // Alinear elementos
 -- Hacerle mas bonito en general
 
@@ -59,6 +59,9 @@ Desactivar botones si el tiempo acabo o se elimino o algo
 // Errores Edit Assignment
 ...
 
+CUSTOMER SUPPORT.-
+Agregar texto explicativo
+
 SERVIDOR.-
 Arreglar hora del servidor, adelantado por 5 horas en local y digital ocean
 // Middleware para seguridad de assignments, archivos e inf de otros usuarios
@@ -78,7 +81,7 @@ Pantalla terminos y condiciones
 Accesos a terminos y condiciones al crear usuario
 // Verificar la utilidad de tener foto, keywords y about you
 Analizar la posibilidad de enviar mails con herramientas github
-Pantalla formulario de soporte
+// Pantalla formulario de soporte
 Tamaños de letras de toda las paginas, principalmente las pantallas despues de tomar o publicar un trabajo
 Verificar diseño responsive en toda la aplicacion
 

@@ -52,21 +52,19 @@
             </ul>
             {% if user.is_authenticated %}
                 </div>
-                    {% comment %} <a href="{% url 'user_profile' %}">{{ user.username }}</a> {% endcomment %}
-                    <div class="dropdown">
-                        <a class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            
+                    <div class="dropleft">
+                        <a class="btn-sm btn-info rounded text-light px-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ user.username }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <h6 class="dropdown-header text-center" href="#">{{ user.username }}</h6>
-                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{% url 'user_profile' %}">Profile</a>
                             <a class="dropdown-item" href="{% url 'user_assignments' %}">Assignments</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{% url 'customer_support' %}">Customer Support</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'signout' %}">Sign Out</a>
                         </div>
                     </div>
-                    <a class=" btn-sm btn-info ml-3 rounded" href="{% url 'signout' %}">Sign Out</a>
                 </div>
             {% else %}
                 </div>
