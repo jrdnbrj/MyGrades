@@ -13,12 +13,14 @@ POST ASSIGNMENT.-
 // validar que un usuario no tenga dos trabajos con el mismo nombre
 // pantalla de payment redirect con parametros
 validar si el pago se ha efectuado o no
+Texto explicativo ventana de pago PAYPAL
+-- Arreglar diseño después de publicar un trabajo
 
 WORKPLACE.-
 // Mensaje si no existenn resultados
 // Eliminar paginacion si solo hay una pantalla
-Ver usuario al abrir un Assignment, poder acceder a su informacion publica
-Arreglar diseño después de escoger un trabajo Wokrplace2
+-- Ver usuario al abrir un Assignment, poder acceder a su informacion publica
+-- Arreglar diseño después de escoger un trabajo Wokrplace2v
 
 LANDING PAGE.-
 // Iconos del inicio
@@ -40,6 +42,7 @@ Agregar informacion bancaria para transferencias
 historial de pagos y cobros
 Actualizacion de foto con ajax
 mensaje de confirmacion de informacion guardada, alert
+Perfil con informacion publica
 
 REGISTER and SIGNIN.-
 Agregar Register with Google and Facebook

@@ -3,46 +3,40 @@
 {% block content %}
 {% load static %}
 <section class="call-to-action text-white text-center" style="background:url(/static/images/WorkPlace-2.jpg) no-repeat center center;background-size:cover;">
-        <div class="overlay"></div>
-    </section>
-   <div>
-        <div class="Push-20" style="height: 14.4px;"></div>
+    <div class="overlay"></div>
+</section>
+
+<div class="container">
+    <div class="col-lg-8 mx-auto my-5">
+        <section class="row">
+            <section class="col">
+                <h2 class="text-left">{{ trabajo.titulo }}&nbsp;<small>-&nbsp;{{ trabajo.area }}</small></h2>
+                <small class="form-text text-muted">{{ trabajo.publicador }}</small>
+                <small class="form-text text-muted"><strong>Started:</strong> {{ trabajo.fecha_publicacion }}</small>
+                <small class="form-text text-muted"><strong>Finish:</strong> {{ trabajo.fecha_expiracion }}</small>
+            </section>
+            <h2><span class="badge badge-pill badge-secondary float-right">${{ trabajo.precio }}</span></h2>
+        </section>
+        <section class="my-4">
+            <h4 class="">Assignment Description</h4>
+            <section class="ml-4"><p class="text-justify">{{ trabajo.descripcion|linebreaks }}</p></section>
+        </section>
+        {% if trabajo.archivos.all %}
+            <section>
+                <h5 class="text-left">Related Documents</h5>
+                {% for archivo in trabajo.archivos.all %}
+                    <span class="ml-3">+&nbsp<a href="{% url 'media/' archivo %}">{{ archivo }}</a></span><br>
+                {% endfor %}
+            </section>
+        {% endif %}
+        <section class="row mx-auto mt-4 d-flex flex-row-reverse">
+            <button class="btn btn-success rounded border mx-1" type="button" onclick="location.href='{% url 'work_place_3' trabajo.id %}'">Next</button>
+            <button class="btn btn-outline-info rounded border mx-1" type="button" onclick="location.href='{% url 'work_place' %}'">Back to Work Place</button>
+        </section>
     </div>
-    <div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mx-auto my-4">
-                    <h4 class="text-left">{{ trabajo.titulo }}&nbsp;-&nbsp;{{ trabajo.area }}</h4>
-                    <small class="form-text text-muted" style="margin: 0px;">{{ trabajo.fecha_publicacion }} - {{ trabajo.fecha_expiracion }}<br></small>
-                    <h2><span class="badge badge-pill badge-secondary float-right">${{ trabajo.precio }}</span></h2>
-                    <div class="Push-20" style="height: 8.8px;"></div>
-                    <h4 class="text-left">Assignment Description</h4><p class="form-control-plaintext ml-3">{{ trabajo.descripcion|linebreaks }}</p>
-                    <div class="Push-20" style="height: 28.8px;"></div>
-                    {% if trabajo.archivos.all %}
-                        <h5 class="text-left">Related Documents List</h5>
-                        {% for archivo in trabajo.archivos.all %}
-                            <span class="ml-3">+&nbsp<a href="{% url 'media/' archivo %}">{{ archivo }}</a></span><br>
-                        {% endfor %}
-                        <div class="Push-20" style="height: 30px;"></div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-    <div></div>
-    <div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 col-lg-3"></div>
-                <div class="col-md-4 col-lg-3"></div>
-                <div class="col-md-4 col-lg-3"></div>
-                <div class="col-md-4 col-lg-3"><button class="btn-lg btn-primary rounded border" type="button" onclick="location.href='{% url 'work_place_3' trabajo.id %}'">Next</button></div>
-            </div>
-        </div>
-    </div>
-    <div class="Push-20" style="height: 14.4px;"></div>
-    <section class="showcase"></section>
-    <section class="call-to-action text-white text-center" style="background:url(/static/images/Desk-1.jpg) no-repeat center center;background-size:cover;">
-        <div class="overlay"></div>
-    </section>
+</div>
+
+<section class="call-to-action text-white text-center" style="background:url(/static/images/Desk-1.jpg) no-repeat center center;background-size:cover;">
+    <div class="overlay"></div>
+</section>
 {% endblock %}
