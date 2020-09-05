@@ -5,25 +5,32 @@
 <section class="call-to-action text-white text-center" style="background:url('{% static 'images/WorkPlace-2.jpg'%}') no-repeat center center;background-size:cover;">
     <div class="overlay"></div>
 </section>
-<div class="Push-20" style="height: 14.4px;"></div>
-<div></div>
-<div>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 mx-auto">
-                <span>Please hacer el pago vea de {{ trabajo_id }} de {{ precio }}</span>
-                <form method="POST" action="{% url 'post_assignment_payment' trabajo_id %}">{% csrf_token %}
-                    <h2 class="text-center my-4">Assignment Payment</h2>
-                    <div class="form-group"><div id="paypal-button-container"></div></div>
-                    <div class="form-group"><button class="btn-lg btn-primary rounded btn-block" type="submit">Ready</button></div>
-                </form>
-            </div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-7 mx-auto">
+            <h2 class="text-center my-5">Assignment Payment</h2>
+            <section class="mb-4 mx-5">
+                <p class="text-justify">You are about to publish <strong>"{{ trabajo.titulo }}"</strong> to improve YourGrades!!!</p>
+                <p class="text-justify">
+                    Once you make the payment, your assignment will be public and someone can take it, meanwhile it will remain with a hidden status. 
+                    If you want to pay later or continue editing it, you can do it from your <a href="{% url 'user_assignments' %}">Assignments</a> page.
+                </p>
+                <p class="text-right text-muted"><small>Amount to be paid: ${{ trabajo.precio }}</small></p>
+            </section>
+            <form method="POST" action="{% url 'post_assignment_payment' trabajo.id %}">{% csrf_token %}
+                <div class="form-group"><div id="paypal-button-container"></div></div>
+                {% comment %} <div class="form-group"><button class="btn-lg btn-outline-primary rounded border-primary btn-block col-5 mx-auto" type="submit">Ready</button></div> {% endcomment %}
+            </form>
+        </div>
+        <div class="row mx-auto my-4 d-flex flex-row-reverse">
+            <button class="btn btn-outline-warning rounded border my-2" type="button" onclick="location.href='{% url 'user_assignments' %}'">View Assignments</button>
+            <button class="btn btn-outline-info rounded border mx-2 my-2" type="button" onclick="location.href='{% url 'post_assignment' %}'">Post new Assignment</button>
+            <button class="btn btn-outline-success rounded border my-2" type="button" onclick="location.href='{% url 'work_place' %}'">Go to WorkPlace</button>
         </div>
     </div>
 </div>
-<div></div>
-<div class="Push-20" style="height: 14.4px;"></div>
-<section class="showcase"></section>
+
 <section class="call-to-action text-white text-center" style="background:url({% static 'images/Desk-1.jpg' %}) no-repeat center center;background-size:cover;">
     <div class="overlay"></div>
 </section>
@@ -34,8 +41,10 @@
     <script>
         
         const csrfToken = $('[name="csrfmiddlewaretoken"]').val();
-        const price = {{ precio }} || 0
-        const trabajo_id = {{ trabajo_id }} || 0
+        // const price = {{ trabajo.precio }} || 0
+        const price = 0.01
+        // const trabajo_id = {{ trabajo.id }} || 0
+        const trabajo_id = 2
 
         paypal.Buttons({
             style: {

@@ -13,7 +13,7 @@ POST ASSIGNMENT.-
 // validar que un usuario no tenga dos trabajos con el mismo nombre
 // pantalla de payment redirect con parametros
 validar si el pago se ha efectuado o no
-Texto explicativo ventana de pago PAYPAL
+// Texto explicativo ventana de pago PAYPAL
 -- Arreglar diseño después de publicar un trabajo
 
 WORKPLACE.-
@@ -43,6 +43,8 @@ historial de pagos y cobros
 Actualizacion de foto con ajax
 mensaje de confirmacion de informacion guardada, alert
 // Perfil con informacion publica
+Al editar usuario tambien se debe editar el user de django auth
+verificar si deben estar los estados en View Assignments
 
 REGISTER and SIGNIN.-
 -- Agregar Register with Google and Facebook

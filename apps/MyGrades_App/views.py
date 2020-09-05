@@ -123,25 +123,22 @@ def post_assignment(request):
 
 @login_required
 def post_assignment_payment(request, trabajo):
+    # validar si el pago se efectuo con exito
+    trabajo = Trabajo.objects.get(id=trabajo)
+    if str(trabajo.publicador) != str(request.user): raise Http404()
 
     if request.method == 'POST':
-        # validar si el pago se efectuo con exito
-        print('Trabajo ID:', trabajo)
-        trabajo = Trabajo.objects.get(id=trabajo)
         trabajo.estado = 'published'
         trabajo.save()
         return redirect('post_assignment_complete', trabajo=trabajo.id)
     else:
-        # validar si el trabajo ya ha sido pagado o no
-        print('Trabajo:', trabajo)
-        trabajo = Trabajo.objects.get(Q(id=trabajo), Q(publicador__username=request.user))
-        context = { 'precio': trabajo.precio, 'trabajo_id': trabajo.id }
-        return render(request, 'post/post_assignment_payment.html', context)
-    # return render(request, 'post/post_assignment_payment.html', context)
+        return render(request, 'post/post_assignment_payment.html', { 'trabajo': trabajo })
 
 @login_required
 def post_assignment_complete(request, trabajo):
     trabajo = Trabajo.objects.get(id=trabajo)
+    if str(trabajo.publicador) != str(request.user) or trabajo.estado == 'hidden': raise Http404()
+
     return render(request, 'post/post_assignment_complete.html', { 'trabajo': trabajo })
 
 #___________________________WORK PLACE_____________________________
@@ -181,6 +178,8 @@ def wp_ajax(request):
 @login_required
 def work_place_2(request, pk):
     trabajo = Trabajo.objects.get(pk = pk)
+    # if str(trabajo.publicador) != str(request.user): raise Http404()
+
     return render(request, 'work_place/work_place_2.html', {'trabajo': trabajo})
 
 @login_required
