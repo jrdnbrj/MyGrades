@@ -24,6 +24,7 @@ urlpatterns = [
     path('media/<path>', download_file, name='media/'),
 
     path('profile/', user_profile, name='user_profile'),
+    path('<str:username>', public_profile, name='public_profile'),
     path('edit_profile/', user_profile_2, name='user_profile_2'),
     path('edit_post_assignment/<int:id>', edit_post_assignment, name='edit_post_assignment'),
     path('assignments/', user_assignments, name='user_assignments'),

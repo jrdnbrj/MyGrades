@@ -11,7 +11,7 @@
         <section class="row">
             <section class="col">
                 <h2 class="text-left">{{ trabajo.titulo }}&nbsp;<small>-&nbsp;{{ trabajo.area }}</small></h2>
-                <small class="form-text text-muted">{{ trabajo.publicador }}</small>
+                <small class="form-text text-muted"><a href="{% url 'public_profile' trabajo.publicador %}">{{ trabajo.publicador }}</a></small>
                 <small class="form-text text-muted"><strong>Started:</strong> {{ trabajo.fecha_publicacion }}</small>
                 <small class="form-text text-muted"><strong>Finish:</strong> {{ trabajo.fecha_expiracion }}</small>
             </section>

@@ -42,11 +42,11 @@ Agregar informacion bancaria para transferencias
 historial de pagos y cobros
 Actualizacion de foto con ajax
 mensaje de confirmacion de informacion guardada, alert
-Perfil con informacion publica
+// Perfil con informacion publica
 
 REGISTER and SIGNIN.-
-Agregar Register with Google and Facebook
-Agergar SignIn with Google and Facebook
+-- Agregar Register with Google and Facebook
+-- Agergar SignIn with Google and Facebook
 // Cambiar diseño signin
 Cambiar color de error de credenciales
 Agregar recaptcha
@@ -65,12 +65,12 @@ Desactivar botones si el tiempo acabo o se elimino o algo
 ...
 
 CUSTOMER SUPPORT.-
-Agregar texto explicativo
+-- Agregar texto explicativo
 
 SERVIDOR.-
 Arreglar hora del servidor, adelantado por 5 horas en local y digital ocean
 // Middleware para seguridad de assignments, archivos e inf de otros usuarios
-Verificar urls correctas y seguras
+-- Verificar urls correctas y seguras
 Verificar SEO
 Migrar a postgres (investigar la mejor BDD)
 -- Validar tamaño maximo de archivos a 10MB
@@ -78,7 +78,7 @@ Validar maximo de 5 archivos por trabajo
 Actualizar trabajos si la fecha terminó
 -- Ventana de error 404 personalizada
 -- Ventana de errores que no sean 404 personalizada
-Corregir error de id despues de publicar y tomar un trabajo
+// Corregir error de id despues de publicar y tomar un trabajo
 Investigar como hacer mas seguro a Django
 
 OTROS.-

@@ -9,7 +9,7 @@ class Usuario(models.Model):
     password =      models.CharField(max_length=24)
     celular =       models.CharField(max_length=25, null=True, blank=True)
     key_words =     models.CharField(max_length=100, default=',,', blank=True)
-    info_about =    models.TextField(max_length=50, blank=True)
+    info_about =    models.TextField(max_length=2000, blank=True)
     is_active =     models.BooleanField(default=True)
     fecha_editado = models.DateTimeField(auto_now=True, auto_now_add=False)
 

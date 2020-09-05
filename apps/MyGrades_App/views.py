@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404
 from django.core import serializers
 from django.urls import reverse
 
@@ -220,6 +220,19 @@ def user_profile(request):
     usuario = Usuario.objects.get(username = request.user)
     return render(request, 'user/user_profile.html', {'usuario': usuario})
 
+def public_profile(request, username):
+    try: usuario = Usuario.objects.get(username=username)
+    except: raise Http404()
+
+    assignments = Trabajo.objects.filter(publicador__username=request.user) \
+        .exclude(estado='deleted').exclude(estado='hidden').order_by('-fecha_publicacion')
+    context = {
+        'usuario': usuario,
+        'assignments': assignments
+    }
+    return render(request, 'user/public_profile.html', context)
+    
+
 @login_required
 def user_profile_2(request):
     context = {}
@@ -302,8 +315,8 @@ def user_assignments(request):
     taken_assignments = Trabajo.objects.filter(trabajador__username=request.user).exclude(estado='deleted')
 
     context = {
-        'posted_assignments': posted_assignments,
-        'taken_assignments': taken_assignments,
+        'posted_assignments': posted_assignments.order_by('-fecha_publicacion'),
+        'taken_assignments': taken_assignments.order_by('-fecha_publicacion'),
     }
     return render(request, 'user/user_assignments.html', context)
 

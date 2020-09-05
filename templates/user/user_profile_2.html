@@ -7,7 +7,7 @@
         <div class="overlay"></div>
     </section>
     <div class="container">
-        <div class="form-row profile-row">
+        <div class="form-row profile-row my-5">
             <div class="col-md-4 relative">
                 <form method="POST" action="{% url 'edit_user_info' %}" enctype="multipart/form-data">{% csrf_token %}
                     <div class="avatar">
@@ -46,7 +46,7 @@
                     <div class="form-group">
                         <label><strong>About you</strong></label>
                         <small class="form-text text-muted">Write something about yourself, something for everyone to read.</small>
-                        <textarea class="form-control" placeholder="Type..." style="height: 218px;" name="info_about">{% if form2.errors %}{{ form2.info_about.value }}{% else %}{{ usuario.info_about }}{% endif %}</textarea>
+                        <textarea class="form-control" placeholder="Type..." style="height: 284px;" name="info_about">{% if form2.errors %}{{ form2.info_about.value }}{% else %}{{ usuario.info_about }}{% endif %}</textarea>
                         {% for error in form2.info_about.errors %}
                             <small class="text-danger">{{ error }}</small>
                         {% endfor %}
@@ -56,8 +56,12 @@
             </div>
 
             <div class="col-md-8">
-                <div class="Push-20" style="height: 28.8px;"></div>
-                <h1>User Profile</h1>
+                <section class="row justify-content-between ml-3">
+                    <span class="display-4 font-weight-bold">User Profile</span>
+                    <div class="form-row ">
+                        <div class="col-md-12 content-right"><button class="btn btn-info border rounded form-btn" onclick="location.href='{% url 'user_profile' %}'">Profile</button></div>
+                    </div>
+                </section>
                 <hr>
                 <div>
                     <form method="POST" id="edit_user" action="{% url 'edit_user' %}">{% csrf_token %}
@@ -186,7 +190,6 @@
                         </div>
                     </form>
                 </div>
-                <div class="Push-20" style="height: 28.8px;"></div>
             </div>
         </div>
     </div>
