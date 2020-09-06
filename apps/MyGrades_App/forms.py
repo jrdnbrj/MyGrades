@@ -69,18 +69,22 @@ class UsuarioForm(forms.Form):
 
 
 class EditUserForm(forms.ModelForm):
+    
+    username = forms.CharField(min_length=3, max_length=50)
+    mail = forms.EmailField(min_length=5, max_length=50)
+    celular = forms.CharField(min_length=5, max_length=25, required=False)
+
     class Meta:
         model = Usuario
         fields = ('username', 'mail', 'celular')
+    
+    def clean_celular(self):
+        celular = self.cleaned_data['celular']
 
-    def clean_username(self):
-        username = self.cleaned_data['username']
-        usuario = User.objects.filter(username=username)
+        if not celular.isnumeric():
+            raise forms.ValidationError("The input must be a valid phone number. Don't add special characters.")
 
-        if usuario and not self.instance.username == username:
-            raise forms.ValidationError('User with this Username already exists.')
-
-        return username
+        return celular
 
 
 class EditUserInfoForm(forms.ModelForm):

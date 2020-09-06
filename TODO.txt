@@ -44,7 +44,7 @@ Actualizacion de foto con ajax
 mensaje de confirmacion de informacion guardada, alert
 // Perfil con informacion publica
 Al editar usuario tambien se debe editar el user de django auth
-verificar si deben estar los estados en View Assignments
+verificar si deben estar los estados en View Assignments Public
 
 REGISTER and SIGNIN.-
 -- Agregar Register with Google and Facebook

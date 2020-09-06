@@ -125,7 +125,8 @@ def post_assignment(request):
 def post_assignment_payment(request, trabajo):
     # validar si el pago se efectuo con exito
     trabajo = Trabajo.objects.get(id=trabajo)
-    if str(trabajo.publicador) != str(request.user): raise Http404()
+    if str(trabajo.publicador) != str(request.user): 
+        raise Http404()
 
     if request.method == 'POST':
         trabajo.estado = 'published'
@@ -178,7 +179,7 @@ def wp_ajax(request):
 @login_required
 def work_place_2(request, pk):
     trabajo = Trabajo.objects.get(pk = pk)
-    # if str(trabajo.publicador) != str(request.user): raise Http404()
+    if trabajo.trabajador: raise Http404()
 
     return render(request, 'work_place/work_place_2.html', {'trabajo': trabajo})
 
@@ -186,6 +187,7 @@ def work_place_2(request, pk):
 def work_place_3(request, id):
     trabajo = Trabajo.objects.get(id = id)
     fecha_expiracion = trabajo.fecha_expiracion
+    if trabajo.trabajador: raise Http404()
 
     context = {'fecha_expiracion': fecha_expiracion, 'id': id}
     return render(request, 'work_place/work_place_3.html', context)
@@ -242,15 +244,17 @@ def user_profile_2(request):
 @login_required
 def edit_user(request):
     context = {}
-    user = Usuario.objects.get(username = request.user)
-    context['usuario'] = user
+    usuario = Usuario.objects.get(username = request.user)
+    context['usuario'] = usuario
     if request.method == 'POST':
-        form = EditUserForm(request.POST, instance=user)
+        form = EditUserForm(request.POST, instance=usuario)
         if form.is_valid():
             usuario = form.save()
+            user = User.objects.get(username = request.user)
             user.username = usuario.username
             user.email = usuario.mail
             user.save()
+            context['usuario'] = usuario
         else:
             print(form.errors)
             context['form1'] = form
