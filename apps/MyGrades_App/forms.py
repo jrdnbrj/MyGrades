@@ -41,7 +41,7 @@ class UsuarioForm(forms.Form):
     def clean_celular(self):
         celular = self.cleaned_data['celular']
 
-        if not celular.isnumeric():
+        if celular and not celular.isnumeric():
             raise forms.ValidationError("The input must be a valid phone number. Don't add special characters.")
 
         return celular
@@ -81,7 +81,7 @@ class EditUserForm(forms.ModelForm):
     def clean_celular(self):
         celular = self.cleaned_data['celular']
 
-        if not celular.isnumeric():
+        if celular and not celular.isnumeric():
             raise forms.ValidationError("The input must be a valid phone number. Don't add special characters.")
 
         return celular

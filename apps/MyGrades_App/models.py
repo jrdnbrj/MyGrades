@@ -1,5 +1,7 @@
 from django.db import models
 
+import json
+
 
 class Usuario(models.Model):
     id =            models.AutoField(primary_key=True)
@@ -8,7 +10,7 @@ class Usuario(models.Model):
     mail =          models.EmailField('Email', max_length=50, unique=True)
     password =      models.CharField(max_length=24)
     celular =       models.CharField(max_length=25, null=True, blank=True)
-    key_words =     models.CharField(max_length=100, default=',,', blank=True)
+    key_words =     models.CharField(max_length=100, blank=True, default='["", "", ""]')
     info_about =    models.TextField(max_length=2000, blank=True)
     is_active =     models.BooleanField(default=True)
     fecha_editado = models.DateTimeField(auto_now=True, auto_now_add=False)
@@ -19,11 +21,11 @@ class Usuario(models.Model):
     def __str__(self):
         return self.username
     
-    def key_words_comma(self):
-        return self.key_words.replace(',', ', ')
-    
     def key_words_list(self):
-        return self.key_words.split(',')
+        return json.loads(self.key_words)
+    
+    def key_words_comma(self):
+        return ', '.join([kw for kw in json.loads(self.key_words) if kw])
 
 class Cuenta_Bancaria(models.Model):
     id = models.AutoField(primary_key=True)

@@ -36,9 +36,15 @@ Agregar opcion ver Terminos y Condiciones
 -- Hacerle mas bonito en general
 
 PERFIL.-
-KeyWords sin comas y placeholder
-About You con placeholder
-Agregar informacion bancaria para transferencias
+// KeyWords sin comas y placeholder
+// About You con placeholder
+Agregar informacion bancaria para transferencias {
+    Nombre de la institucion
+    tipo de cuenta
+    nombre y apellido
+    cedula o Recuperar
+    Numero de cuenta
+}
 historial de pagos y cobros
 Actualizacion de foto con ajax
 mensaje de confirmacion de informacion guardada, alert
@@ -63,6 +69,7 @@ Explicacion de las fechas pasando el mouse por encima
 Mejorar diseño en general
 Si es sent, editar a 'Resend'
 Desactivar botones si el tiempo acabo o se elimino o algo
+Eliminar linea inferior en enlaces, el color se queda
 // Errores Edit Assignment
 ...
 

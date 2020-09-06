@@ -2,17 +2,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404
 from django.core import serializers
-from django.urls import reverse
 
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
 from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersGetRequest, OrdersCaptureRequest
 
 import datetime
-import base64
 import sys
 import json
 
@@ -244,20 +242,21 @@ def user_profile_2(request):
 @login_required
 def edit_user(request):
     context = {}
-    usuario = Usuario.objects.get(username = request.user)
-    context['usuario'] = usuario
+    usuario = Usuario.objects.get(username=request.user)
+
     if request.method == 'POST':
         form = EditUserForm(request.POST, instance=usuario)
         if form.is_valid():
             usuario = form.save()
-            user = User.objects.get(username = request.user)
+            user = User.objects.get(username=request.user)
             user.username = usuario.username
             user.email = usuario.mail
             user.save()
-            context['usuario'] = usuario
         else:
             print(form.errors)
             context['form1'] = form
+
+    context['usuario'] = usuario
     return render(request,'user/user_profile_2.html', context)
 
 @login_required
@@ -266,11 +265,13 @@ def edit_user_info(request):
     usuario = Usuario.objects.get(username = request.user)
     context['usuario'] = usuario
     if request.method == 'POST':
-        
         form = EditUserInfoForm(request.POST, request.FILES, instance=usuario)
         if form.is_valid():
             usuario = form.save(commit=False)
-            usuario.key_words = ','.join(request.POST.getlist('key_words'))
+            print(request.POST.getlist('key_words'))
+            print()
+            print(json.dumps(request.POST.getlist('key_words')))
+            usuario.key_words = json.dumps(request.POST.getlist('key_words'))
             usuario.save()
         else:
             print(form.errors)

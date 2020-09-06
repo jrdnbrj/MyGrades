@@ -18,11 +18,19 @@
             </div>
             <div class="form-group mt-5 text-center">
                 <span class="h3 font-weight-bold">KEY WORDS</span>
-                <span class="form-control-plaintext px-5 border border-black rounded mx-auto col-10">{{ usuario.key_words_comma }}</span>
+                {% if usuario.key_words_comma %}
+                    <span class="form-control-plaintext px-4 border border-black rounded mx-auto col-10">{{ usuario.key_words_comma }}</span>
+                {% else %}
+                    <span class="form-control-plaintext px-4 border border-black rounded mx-auto col-10 text-muted">Has not been added yet.</span>
+                {% endif %}
             </div>
             <div class="form-group text-center mt-3">
                 <span class="h3 font-weight-bold">ABOUT ME</span>
-                <span class="form-control-plaintext p-3 border border-black rounded mx-auto col-10">{{ usuario.info_about }}</span>
+                {% if usuario.info_about %}
+                    <span class="form-control-plaintext px-4 border border-black rounded mx-auto col-10">{{ usuario.info_about }}</span>
+                {% else %}
+                    <span class="form-control-plaintext px-4 border border-black rounded mx-auto col-10 text-muted">Has not been added yet.</span>
+                {% endif %}
             </div>
         </div>
         <div class="col-md-7 mx-auto">
