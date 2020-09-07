@@ -7,7 +7,7 @@ class UsuarioAdmin(admin.ModelAdmin):
     list_display = ('username', 'mail')
 
 class CuentaBancariaAdmin(admin.ModelAdmin):
-    list_display = ('usuario', 'nombre_completo', 'nombre_banco', 'numero_cuenta')
+    list_display = ('usuario', 'nombre_apellido', 'nombre_institucion', 'numero_cuenta')
 
 class ArchivoAdmin(admin.ModelAdmin):
     list_display = ('id', 'archivo')

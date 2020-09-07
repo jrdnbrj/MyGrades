@@ -38,6 +38,7 @@ Agregar opcion ver Terminos y Condiciones
 PERFIL.-
 // KeyWords sin comas y placeholder
 // About You con placeholder
+// KeyWords en secciones independientes
 Agregar informacion bancaria para transferencias {
     Nombre de la institucion
     tipo de cuenta

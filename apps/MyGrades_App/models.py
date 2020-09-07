@@ -25,16 +25,16 @@ class Usuario(models.Model):
         return json.loads(self.key_words)
     
     def key_words_comma(self):
-        return ', '.join([kw for kw in json.loads(self.key_words) if kw])
+        return ', '.join( [kw for kw in json.loads(self.key_words) if kw] )
 
 class Cuenta_Bancaria(models.Model):
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey(Usuario, null=True, on_delete=models.CASCADE, related_name='usuario')
-    numero_cuenta = models.CharField(max_length=20, unique=True)
-    nombre_completo = models.CharField(max_length=70)
-    numero_cedula = models.CharField(max_length=15, null=True, blank=True)
-    nombre_banco = models.CharField(max_length=40)
+    nombre_institucion = models.CharField(max_length=100)
     tipo_cuenta = models.CharField(max_length=20)
+    nombre_apellido = models.CharField(max_length=70)
+    cedula_ruc = models.CharField(max_length=15)
+    numero_cuenta = models.CharField(max_length=20)
 
     def __str__(self):
         return self.numero_cuenta
@@ -87,7 +87,7 @@ class Order(models.Model):
 class CustomerSupport(models.Model):
     id = models.AutoField(primary_key=True)
     date = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=10, default='sent')
+    status = models.CharField(max_length=10, default='open')
     user = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=60)
     name = models.CharField(max_length=100)

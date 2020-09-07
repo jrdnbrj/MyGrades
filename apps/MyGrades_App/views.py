@@ -223,7 +223,7 @@ def public_profile(request, username):
     try: usuario = Usuario.objects.get(username=username)
     except: raise Http404()
 
-    assignments = Trabajo.objects.filter(publicador__username=request.user) \
+    assignments = Trabajo.objects.filter(publicador__username=username) \
         .exclude(estado='deleted').exclude(estado='hidden').order_by('-fecha_publicacion')
     context = {
         'usuario': usuario,
@@ -237,6 +237,7 @@ def user_profile_2(request):
     context = {}
     usuario = Usuario.objects.get(username = request.user)
     context['usuario'] = usuario
+    context['payment'] = ''
     return render(request, 'user/user_profile_2.html', context)
 
 @login_required
@@ -244,6 +245,7 @@ def edit_user(request):
     context = {}
     usuario = Usuario.objects.get(username=request.user)
 
+    context['usuario'] = usuario
     if request.method == 'POST':
         form = EditUserForm(request.POST, instance=usuario)
         if form.is_valid():
@@ -252,32 +254,32 @@ def edit_user(request):
             user.username = usuario.username
             user.email = usuario.mail
             user.save()
+            return redirect('user_profile_2')
         else:
             print(form.errors)
             context['form1'] = form
-
-    context['usuario'] = usuario
+    
     return render(request,'user/user_profile_2.html', context)
+
 
 @login_required
 def edit_user_info(request):
     context = {}
     usuario = Usuario.objects.get(username = request.user)
     context['usuario'] = usuario
+
     if request.method == 'POST':
         form = EditUserInfoForm(request.POST, request.FILES, instance=usuario)
         if form.is_valid():
             usuario = form.save(commit=False)
-            print(request.POST.getlist('key_words'))
-            print()
-            print(json.dumps(request.POST.getlist('key_words')))
             usuario.key_words = json.dumps(request.POST.getlist('key_words'))
             usuario.save()
+            return redirect('user_profile_2')
         else:
             print(form.errors)
             context['form2'] = form
             context['key_words_error'] = request.POST.getlist('key_words')
-            return render(request,'user/user_profile_2.html', context)
+
     return render(request,'user/user_profile_2.html', context)
 
 @login_required
@@ -285,12 +287,19 @@ def edit_payment_method(request):
     print('user_payment_method')
     return redirect('user_profile_2')
 
+def user_and_payment(request):
+    user = User.objects.get(username=request.user)
+    usuario = Usuario.objects.get(username=request.user)
+    payment = Cuenta_Bancaria.objects.filter(usuario__username=request.user).first()
+    return user, usuario, payment
+
 @login_required
 def edit_password(request):
     context = {}
     user = User.objects.get(username=request.user)
     usuario = Usuario.objects.get(username=user.username)
     context['usuario'] = usuario
+
     if request.method == 'POST':
         form = EditPasswordForm(request.POST, instance=user)
         if form.is_valid():
@@ -302,6 +311,7 @@ def edit_password(request):
         else:
             print(form.errors)
             context['form4'] = form
+
     return render(request,'user/user_profile_2.html', context)
 
 def verify_assigments(assignments):

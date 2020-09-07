@@ -60,6 +60,7 @@ class UsuarioForm(forms.Form):
 
     def save(self, commit=True):
         data = self.cleaned_data
+        # data.pop('password')
         data.pop('password_repeat')
         usuario = Usuario.objects.create(**data)
 
