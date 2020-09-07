@@ -11,9 +11,24 @@
         <section class="row">
             <section class="col">
                 <h2 class="text-left">{{ trabajo.titulo }}&nbsp;<small>-&nbsp;{{ trabajo.area }}</small></h2>
-                <small class="form-text text-muted"><a href="{% url 'public_profile' trabajo.publicador %}">{{ trabajo.publicador }}</a></small>
-                <small class="form-text text-muted"><strong>Started:</strong> {{ trabajo.fecha_publicacion }}</small>
-                <small class="form-text text-muted"><strong>Finish:</strong> {{ trabajo.fecha_expiracion }}</small>
+                <section class="ml-3">
+                    <section class="float-left">
+                        {% if trabajo.publicador.foto %}
+                            <a href="{% url 'public_profile' trabajo.publicador %}">
+                                <img src="{{ trabajo.publicador.foto.url }}" class="mx-auto d-block" style="width: 30px; height: 30px; border-radius: 50%">
+                            </a>
+                        {% else %}
+                            <div class="avatar-bg center mx-auto d-block" style="width: 30px; height: 30px; border-radius: 50%"></div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            <a href="{% url 'public_profile' trabajo.publicador %}">{{ trabajo.publicador }}</a>
+                        </small>
+                    </section>
+                    <section class="float-left ml-3">
+                        <small class="form-text text-muted"><strong>Started:</strong> {{ trabajo.fecha_publicacion }}</small>
+                        <small class="form-text text-muted"><strong>Finish:</strong> {{ trabajo.fecha_expiracion }}</small>
+                    </section>
+                </section>
             </section>
             <h2><span class="badge badge-pill badge-secondary float-right">${{ trabajo.precio }}</span></h2>
         </section>
