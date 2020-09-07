@@ -39,7 +39,7 @@ PERFIL.-
 // KeyWords sin comas y placeholder
 // About You con placeholder
 // KeyWords en secciones independientes
-Agregar informacion bancaria para transferencias {
+-- Agregar informacion bancaria para transferencias {
     Nombre de la institucion
     tipo de cuenta
     nombre y apellido
@@ -47,18 +47,18 @@ Agregar informacion bancaria para transferencias {
     Numero de cuenta
 }
 historial de pagos y cobros
-Actualizacion de foto con ajax
+// Actualizacion de foto con js
 mensaje de confirmacion de informacion guardada, alert
 // Perfil con informacion publica
-Al editar usuario tambien se debe editar el user de django auth
+// Al editar usuario tambien se debe editar el user de django auth
 verificar si deben estar los estados en View Assignments Public
 
 REGISTER and SIGNIN.-
 -- Agregar Register with Google and Facebook
 -- Agergar SignIn with Google and Facebook
 // Cambiar diseño signin
-Cambiar color de error de credenciales
-Agregar recaptcha
+Cambiar diseño de error de credenciales
+-- Agregar recaptcha
 Recuperar contraseña
 Logo MyGrades
 
