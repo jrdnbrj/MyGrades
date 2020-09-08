@@ -1,0 +1,16 @@
+#assignment_workplace:link {
+    color: #2649B2;
+}
+
+#assignment_workplace:visited {
+    color: #6A4299;
+}
+
+.page_404 {
+    height: 100%;
+    background: url(../images/NightCollege.jpg) no-repeat center center fixed;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+}

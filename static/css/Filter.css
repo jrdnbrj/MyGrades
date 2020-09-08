@@ -1,0 +1,40 @@
+.filter select {
+  width: 250px;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0 0 2px #aaa;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background: #eee;
+}
+
+.filter {
+  text-align: center;
+}
+
+.filter .title {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #eee;
+  box-shadow: 0 0 2px #aaa;
+}
+
+
+.filter .date {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 2px #aaa;
+  background: #eee;
+}
+.filter .label {
+  text-align: left;
+}
+* {
+  outline: none;
+}
+

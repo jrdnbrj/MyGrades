@@ -36,7 +36,7 @@ MEDIA_URL = '/media/'
 SECRET_KEY = '(w+b%a@=lubxw5ksd_$fk#vz36=2ojzgc(+zpt6jz%ul(z_gbd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['64.227.48.115', 'mygrades.works', 'www.mygrades.works', 'localhost']
 
@@ -135,16 +135,20 @@ USE_TZ = True
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 STATIC_URL = '/static/'
-if DEBUG:
-    STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, "static"),
-    )
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# if DEBUG:
+#     STATICFILES_DIRS = (
+#         os.path.join(BASE_DIR, "static"),
+#     )
+# else:
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, "static"),
+# )
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_FINDER = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
+    # 'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
