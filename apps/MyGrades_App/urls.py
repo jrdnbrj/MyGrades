@@ -10,6 +10,7 @@ urlpatterns = [
     path('register', register, name='register'),
     path('signin', signin, name='signin'),
     path('signout', signout, name='signout'),
+    path('404/', handler404),
 
     path('post_assignment', post_assignment, name='post_assignment'),
     path('post_assignment/<int:trabajo>', post_assignment_payment, name = 'post_assignment_payment'),

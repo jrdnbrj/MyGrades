@@ -54,8 +54,8 @@
             </ul>
             {% if user.is_authenticated %}
                 <div class="float-right">
-                    <div class="nav-item dropleft">
-                        <a class="btn-sm btn-info dropdown-toggle rounded text-light px-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="nav-item dropleft" style="color: #3C896D">
+                        <a class="btn-sm btn-primary dropdown-toggle rounded text-light px-3"  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ user.username }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -70,8 +70,8 @@
                 </div>
             {% else %}
                 <div class="float-right">
-                    <a class="btn-sm btn-outline-success ml-3 rounded" href="{% url 'signin' %}">Sign In</a>
-                    <a class="btn-sm btn-primary ml-3 rounded" href="{% url 'register' %}">Register</a>
+                    <a class="btn-sm btn-outline-primary ml-2 rounded px-3" href="{% url 'signin' %}">Sign In</a>
+                    <a class="btn-sm btn-primary ml-1 rounded px-3" href="{% url 'register' %}">Register</a>
                 </div>
             {% endif %}
         </div>

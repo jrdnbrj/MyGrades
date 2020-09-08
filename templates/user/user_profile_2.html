@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <label><strong>About you</strong></label>
                     <small class="form-text text-muted">Write something about yourself, something for everyone to read.</small>
-                    <textarea class="form-control" placeholder="Type..." style="height: 278px;" name="info_about">{% if form2.errors %}{{ form2.info_about.value }}{% else %}{{ usuario.info_about }}{% endif %}</textarea>
+                    <textarea class="form-control" placeholder="Type..." style="height: 365px;" name="info_about">{% if form2.errors %}{{ form2.info_about.value }}{% else %}{{ usuario.info_about }}{% endif %}</textarea>
                     {% for error in form2.info_about.errors %}
                         <small class="text-danger">{{ error }}</small>
                     {% endfor %}
@@ -98,52 +98,86 @@
             <div class="form-group">
                 <form method="POST" id="edit_payment_method" action="{% url 'edit_payment_method' %}">{% csrf_token %}
                     <label><strong>Payment Method</strong></label>
-                    <small class="form-text text-muted">If you choose a bank account, make sure to fulfill every empty space with your bank account data, otherways if you choose an internet account fulfill only the necessary spaces, like:&nbsp; Account Number or User and Key.</small>
+                    <small class="form-text text-muted">
+                        If you choose to receive the payment in your bank account please fill in all the fields ignoring the PayPal Email, 
+                        if you choose to be paid by PayPal you only have to fill in the email field with your PayPal Email. 
+                        Payments will be made on Thursdays of each week. <a href="{% url 'customer_support' %}">Not Sure?</a>
+                    </small>
                     <div class="form-row">
-                        <div class="col-sm-12 col-md-6 col-lg-5">
+                        <div class="col-sm-12 col-md-6 col-lg-3">
                             <div class="form-group">
                                 <label>Payment Type</label>
-                                <select class="form-control">
-                                <optgroup label="Select">
-                                    <option value="12" selected="">Internet</option>
-                                    <option value="12">Bank</option>
-                                </optgroup>
-                            </select>
-                        </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-7">
-                            <div class="form-group">
-                                <label>Institution</label>
-                                <input class="form-control" form="edit_payment_method" type="text" name="institution" placeholder="PayPal, Bank of America..." required>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3">
-                            <div class="form-group">
-                                <label>Account Number or User</label>
-                                <input class="form-control" type="text" name="acount-number" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3">
-                            <div class="form-group">
-                                <label>Account Key</label>
-                                <input class="form-control" type="text" name="account-key" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3">
-                            <div class="form-group">
-                                <label>Type of Account</label>
-                                <select class="form-control" name="account_type" required>
-                                    <optgroup label="Select">
-                                        <option value="12" selected="">Savings</option>
-                                        <option value="12">Credit</option>
-                                    </optgroup>
+                                <select class="form-control" onchange="paymentType(this)" name="tipo_pago">
+                                    <option value>Select...</option>
+                                    <option value="PayPal">PayPal</option>
+                                    <option value="Bank">Bank</option>
                                 </select>
+                                {% for error in form1.tipo_pago.errors %}
+                                    <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3">
+                        <div class="col-sm-12 col-md-6 col-lg-9">
                             <div class="form-group">
-                                <label>ID Number</label>
-                                <input class="form-control" type="text" name="account_id" required>
+                                <label>PayPal Email</label>
+                                <input class="form-control" type="email" name="paypal_email" id="paypal_email" placeholder="bestGPAstudent@example.com"
+                                    value="{% if form3.errors %}{{ form3.paypal_email.value }}{% else %}  {% endif %}">
+                                {% for error in form3.paypal_email.errors %}
+                                    <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Intitution Name</label>
+                                <input class="form-control" type="text" name="institucion" id="institucion" placeholder="Bank of America..."
+                                    value="{% if form3.errors %}{{ form3.institucion.value }}{% else %}  {% endif %}">
+                                {% for error in form3.institucion.errors %}
+                                    <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input class="form-control" type="text" name="nombre_apellido" id="nombre_apellido" placeholder="Sara Kandler"
+                                    value="{% if form3.errors %}{{ form3.nombre_apellido.value }}{% else %}  {% endif %}">
+                                {% for error in form3.nombre_apellido.errors %}
+                                    <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label>DNI (Cédula o RUC)</label>
+                                <input class="form-control" type="text" name="cedula_ruc" id="cedula_ruc" placeholder="1764250582" 
+                                    value="{% if form3.errors %}{{ form3.cedula_ruc.value }}{% else %}  {% endif %}">
+                                {% for error in form3.cedula_ruc.errors %}
+                                    <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label>Account Number</label>
+                                <input class="form-control" type="text" name="numero_cuenta" id="numero_cuenta" placeholder="2254812206"
+                                    value="{% if form3.errors %}{{ form3.numero_cuenta.value }}{% else %}  {% endif %}">
+                                {% for error in form3.numero_cuenta.errors %}
+                                    <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label>Account Type</label>
+                                <select class="form-control" name="tipo_cuenta" id="tipo_cuenta">
+                                    <option value>Select...</option>
+                                    <option value="Savings">Savings (Ahorros)</option>
+                                    <option value="Checking">Checking (Corriente)</option>
+                                </select>
+                                {% for error in form3.tipo_cuenta.errors %}
+                                    <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
                             </div>
                         </div>
                         <button type="submit" form="edit_payment_method" class="btn-sm btn-primary border py-0 mx-auto col">SAVE</button>
@@ -197,6 +231,8 @@
 {% block js %}
 <script>
 
+    $(document).ready(paymentType);
+
     function changePicture(event) {
         const reader = new FileReader()
 
@@ -208,5 +244,31 @@
 
         reader.readAsDataURL(event.files[0])
     }
+
+    function paymentType(event) {
+        if (event.value== 'PayPal') {
+            $('#institucion').prop('disabled', true)
+            $('#tipo_cuenta').prop('disabled', true)
+            $('#nombre_apellido').prop('disabled', true)
+            $('#cedula_ruc').prop('disabled', true)
+            $('#numero_cuenta').prop('disabled', true)
+            $('#paypal_email').prop('disabled', false)
+        } else if (event.value == 'Bank') {
+            $('#institucion').prop('disabled', false)
+            $('#tipo_cuenta').prop('disabled', false)
+            $('#nombre_apellido').prop('disabled', false)
+            $('#cedula_ruc').prop('disabled', false)
+            $('#numero_cuenta').prop('disabled', false)
+            $('#paypal_email').prop('disabled', true)
+        } else {
+            $('#institucion').prop('disabled', true)
+            $('#tipo_cuenta').prop('disabled', true)
+            $('#nombre_apellido').prop('disabled', true)
+            $('#cedula_ruc').prop('disabled', true)
+            $('#numero_cuenta').prop('disabled', true)
+            $('#paypal_email').prop('disabled', true)
+        }
+    }
+
 </script>
 {% endblock js %}

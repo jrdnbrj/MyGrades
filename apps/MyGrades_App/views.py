@@ -286,6 +286,27 @@ def edit_user_info(request):
 @login_required
 def edit_payment_method(request):
     print('user_payment_method')
+    context = {}
+
+    usuario = Usuario.objects.get(username = request.user)
+    context['usuario'] = usuario
+
+    if request.method == 'POST' and request.POST['tipo_pago'] != '':
+        if request.POST['tipo_pago'] == 'PayPal':
+            print('1')
+            print(request.POST)
+            form = PayPalEmailForm(request.POST)
+        elif request.POST['tipo_pago'] == 'Bank':
+            print('2')
+            print(request.POST)
+            form = CuentaBancariaForm(request.POST)
+
+        if form.is_valid():
+            form = form.save()
+        else:
+            print(form.errors)
+            context['form3'] = form
+            return render(request, 'user/user_profile_2.html', context)
     return redirect('user_profile_2')
 
 def user_and_payment(request):

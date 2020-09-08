@@ -94,6 +94,17 @@ class EditUserInfoForm(forms.ModelForm):
         model = Usuario
         fields = ('foto', 'info_about')
 
+class CuentaBancariaForm(forms.ModelForm):
+
+    class Meta:
+        model = Cuenta_Bancaria
+        fields = ('institucion', 'tipo_cuenta', 'nombre_apellido', 'cedula_ruc', 'numero_cuenta', 'tipo_pago')
+
+class PayPalEmailForm(forms.ModelForm):
+
+    class Meta:
+        model = Cuenta_Bancaria
+        fields = ('paypal_email',)
 
 class EditPasswordForm(forms.ModelForm):
         

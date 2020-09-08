@@ -1,3 +1,7 @@
+MyGrades Colors
+#3C896D
+#6AEFB0
+
 PAYPAL.-
 // Pantalla de pago independiente
 validar que el precio sea correcto antes de hacer el cobro
@@ -56,11 +60,11 @@ verificar si deben estar los estados en View Assignments Public
 REGISTER and SIGNIN.-
 -- Agregar Register with Google and Facebook
 -- Agergar SignIn with Google and Facebook
-// Cambiar diseño signin
+Cambiar diseño signin
 Cambiar diseño de error de credenciales
 -- Agregar recaptcha
 Recuperar contraseña
-Logo MyGrades
+-- Logo MyGrades
 
 VIEW ASSIGNMENTS.-
 // Corregir diseños del precio y status
