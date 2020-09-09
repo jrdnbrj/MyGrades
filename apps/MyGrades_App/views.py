@@ -490,7 +490,9 @@ def customer_support(request):
 def verificar_pago(request):
     print('Verificando ando...')
     if request.method == 'POST':
-        order = CreateOrder().create_order(debug=True).array_to_json_array()
+        order = CreateOrder().create_order(debug=True)
+        data = order.result.__dict__['_dict']
+        return JsonResponse(data)
         # environment = SandboxEnvironment(client_id=settings.PAYPAL_CLIENT_ID, client_secret=settings.PAYPAL_SECRET_ID)
         # client = PayPalHttpClient(environment)
 
@@ -517,7 +519,7 @@ def verificar_pago(request):
 
         # response = client.execute()
 
-    return JsonResponse(order, safe=False)
+    return JsonResponse({'details': "invalid request"})
 
 def pago(request):
     trabajo = Trabajo.objects.get(pk=43)
@@ -641,11 +643,11 @@ class CreateOrder(PayPalClient):
                 {
                     "amount": {
                         "currency_code": "USD",
-                        "value": "230.00",
+                        "value": "23.00",
                         "breakdown": {
                             "item_total": {
                                 "currency_code": "USD",
-                                "value": "180.00"
+                                "value": "23.00"
                             },
                         }
                     }
