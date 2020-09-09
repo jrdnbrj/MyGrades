@@ -488,7 +488,36 @@ def customer_support(request):
 #___________________________PAYPAL_____________________________
 
 def verificar_pago(request):
-    pass
+    print('Verificando ando...')
+    if request.method == 'POST':
+        order = CreateOrder().create_order(debug=True).array_to_json_array()
+        # environment = SandboxEnvironment(client_id=settings.PAYPAL_CLIENT_ID, client_secret=settings.PAYPAL_SECRET_ID)
+        # client = PayPalHttpClient(environment)
+
+        # trabajo = Trabajo.objects.get(id=id)
+        # create_order = OrdersCreateRequest()
+
+        # create_order.request_body ({
+        #     "intent": "CAPTURE",
+        #     "purchase_units": [
+        #         {
+        #             "amount": {
+        #                 "currency_code": "USD",
+        #                 "value": trabajo.precio,
+        #                 "breakdown": {
+        #                     "item_total": {
+        #                         "currency_code": "USD",
+        #                         "value": trabajo.precio
+        #                     }
+        #                 },
+        #             },
+        #         }
+        #     ]
+        # })
+
+        # response = client.execute()
+
+    return JsonResponse(order, safe=False)
 
 def pago(request):
     trabajo = Trabajo.objects.get(pk=43)
@@ -608,19 +637,8 @@ class CreateOrder(PayPalClient):
         """Method to create body with CAPTURE intent"""
         return {
             "intent": "CAPTURE",
-            "application_context": {
-                "brand_name": "EXAMPLE INC",
-                "landing_page": "BILLING",
-                "shipping_preference": "SET_PROVIDED_ADDRESS",
-                "user_action": "CONTINUE"
-            },
             "purchase_units": [
                 {
-                    "reference_id": "PUHF",
-                    "description": "Sporting Goods",
-
-                    "custom_id": "CUST-HighFashions",
-                    "soft_descriptor": "HighFashions",
                     "amount": {
                         "currency_code": "USD",
                         "value": "230.00",
@@ -629,69 +647,6 @@ class CreateOrder(PayPalClient):
                                 "currency_code": "USD",
                                 "value": "180.00"
                             },
-                            "shipping": {
-                                "currency_code": "USD",
-                                "value": "30.00"
-                            },
-                            "handling": {
-                                "currency_code": "USD",
-                                "value": "10.00"
-                            },
-                            "tax_total": {
-                                "currency_code": "USD",
-                                "value": "20.00"
-                            },
-                            "shipping_discount": {
-                                "currency_code": "USD",
-                                "value": "10"
-                            }
-                        }
-                        },
-                        "items": [
-                        {
-                            "name": "T-Shirt",
-                            "description": "Green XL",
-                            "sku": "sku01",
-                            "unit_amount": {
-                                "currency_code": "USD",
-                                "value": "90.00"
-                            },
-                            "tax": {
-                                "currency_code": "USD",
-                                "value": "10.00"
-                            },
-                            "quantity": "1",
-                            "category": "PHYSICAL_GOODS"
-                        },
-                        {
-                            "name": "Shoes",
-                            "description": "Running, Size 10.5",
-                            "sku": "sku02",
-                            "unit_amount": {
-                                "currency_code": "USD",
-                                "value": "45.00"
-                            },
-                            "tax": {
-                                "currency_code": "USD",
-                                "value": "5.00"
-                            },
-                            "quantity": "2",
-                            "category": "PHYSICAL_GOODS"
-                        }
-                        ],
-                        "shipping": {
-                        "method": "United States Postal Service",
-                        "address": {
-                            "name": {
-                                "full_name":"John",
-                                "surname":"Doe"
-                            },
-                            "address_line_1": "123 Townsend St",
-                            "address_line_2": "Floor 6",
-                            "admin_area_2": "San Francisco",
-                            "admin_area_1": "CA",
-                            "postal_code": "94107",
-                            "country_code": "US"
                         }
                     }
                 }

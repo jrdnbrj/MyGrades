@@ -47,51 +47,46 @@
         const trabajo_id = 2
 
         paypal.Buttons({
+
             style: {
                 color:  'blue',
                 shape:  'pill',
                 label:  'pay',
                 height: 40
             },
+
             createOrder: function(data, actions) {
                 console.log('Trabajo ID: ' + trabajo_id )
-                fetch('{% url 'verificar_pago' %}', {
-                    method: 'GET',
-                    body: JSON.stringify({ orderID: data.orderID })
+                return fetch('{% url 'verificar_pago' %}', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                    }
                 }).then(function(res) {
+                    console.log('1 createOrder')
+                    console.log(res)
                     return res.json();
-                }).then(function(details) {
-                    alert(details.message);
-                })
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: price.toFixed(2)
-                        }
-                    }]
+                }).then(function(data) {
+                    console.log(data)
+                    console.log('2 cerateOrder')
+                    return data.orderID; // Use the same key name for order ID on the client and server
                 });
+                
+
             },
+            
             onError: function(err) {
                 alert('EERRRROORRR!!!!!')
                 console.log(err)
             },
+
             onCancel: function (data) {
                 alert('CANCEL!!!!!')
                 console.log(data)
             },
+
             onApprove: function(data) {
-                return fetch('{% url 'pago' %}', {
-                    method: 'POST',
-                    headers: {
-                        'content-type': 'application/json',
-                        'X-CSRFToken': csrfToken
-                    },
-                    body: JSON.stringify({ orderID: data.orderID })
-                }).then(function(res) {
-                    return res.json();
-                }).then(function(details) {
-                    alert(details.message);
-                })
             }
 
         }).render('#paypal-button-container');
