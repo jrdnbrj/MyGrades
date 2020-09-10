@@ -18,12 +18,6 @@ from .forms import *
 from .models import *
 
 
-def handler404(request, *args, **argv):
-    return render(request, 'error/404.html')
-
-def handler500(request, *args, **argv):
-    return render(request, 'error/500.html')
-
 def landing_page(request):
     return render(request, 'home/landing_page.html', {})
 
@@ -74,6 +68,14 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('landing_page')
+
+#___________________________ERROR HANDLERS_____________________________
+
+def handler404(request, *args, **argv):
+    return render(request, 'error/404.html')
+
+def handler500(request, *args, **argv):
+    return render(request, 'error/500.html')
 
 #___________________________POST ASSIGNMENT_____________________________
 
@@ -128,13 +130,6 @@ def post_assignment_payment(request, trabajo):
         return render(request, 'post/post_assignment_payment.html', { 'trabajo': trabajo })
     else:
         return render(request, 'post/post_assignment_complete.html', { 'trabajo': trabajo })
-
-# @login_required
-# def post_assignment_complete(request, trabajo):
-#     trabajo = Trabajo.objects.get(id=trabajo)
-#     if str(trabajo.publicador) != str(request.user) or trabajo.estado == 'hidden': raise Http404()
-
-#     return render(request, 'post/post_assignment_complete.html', { 'trabajo': trabajo })
 
 #___________________________WORK PLACE_____________________________
 
@@ -333,7 +328,7 @@ def edit_password(request):
 
     return render(request,'user/user_profile_2.html', context)
 
-def verify_assigments(assignments):
+def verify_assignments(assignments):
     date_time = utc.localize(datetime.datetime.now())
     
     for assignment in assignments:
