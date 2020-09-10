@@ -4,10 +4,10 @@ MyGrades Colors
 
 PAYPAL.-
 // Pantalla de pago independiente
-validar que el precio sea correcto antes de hacer el cobro
-Solicitar Business
-Pruebas
-Añadir validaciones
+// validar que el precio sea correcto antes de hacer el cobro
+-- Solicitar Business
+-- Pruebas
+// Añadir validaciones
 ...
 
 POST ASSIGNMENT.-
@@ -16,14 +16,14 @@ POST ASSIGNMENT.-
 // agregar recaptcha
 // validar que un usuario no tenga dos trabajos con el mismo nombre
 // pantalla de payment redirect con parametros
-validar si el pago se ha efectuado o no
+// validar si el pago se ha efectuado o no
 // Texto explicativo ventana de pago PAYPAL
 -- Arreglar diseño después de publicar un trabajo
 
 WORKPLACE.-
 // Mensaje si no existenn resultados
 // Eliminar paginacion si solo hay una pantalla
--- Ver usuario al abrir un Assignment, poder acceder a su informacion publica
+// Ver usuario al abrir un Assignment, poder acceder a su informacion publica
 -- Arreglar diseño después de escoger un trabajo Wokrplace2v
 
 LANDING PAGE.-
@@ -43,7 +43,7 @@ PERFIL.-
 // KeyWords sin comas y placeholder
 // About You con placeholder
 // KeyWords en secciones independientes
--- Agregar informacion bancaria para transferencias {
+// Agregar informacion bancaria para transferencias {
     Nombre de la institucion
     tipo de cuenta
     nombre y apellido
@@ -60,11 +60,11 @@ verificar si deben estar los estados en View Assignments Public
 REGISTER and SIGNIN.-
 -- Agregar Register with Google and Facebook
 -- Agergar SignIn with Google and Facebook
-Cambiar diseño signin
-Cambiar diseño de error de credenciales
+// Cambiar diseño signin
+// Cambiar diseño de error de credenciales
 -- Agregar recaptcha
 Recuperar contraseña
--- Logo MyGrades
+// Logo MyGrades
 
 VIEW ASSIGNMENTS.-
 // Corregir diseños del precio y status
@@ -74,8 +74,8 @@ Explicacion de las fechas pasando el mouse por encima
 Mejorar diseño en general
 Si es sent, editar a 'Resend'
 Desactivar botones si el tiempo acabo o se elimino o algo
-Eliminar linea inferior en enlaces, el color se queda
-// Errores Edit Assignment
+Eliminar linea subrayada en enlaces, el color se queda
+Pantalla despues de Edit Assignment dependiendo si pago o no
 ...
 
 CUSTOMER SUPPORT.-
@@ -94,6 +94,7 @@ Actualizar trabajos si la fecha terminó
 -- Ventana de errores que no sean 404 personalizada
 // Corregir error de id despues de publicar y tomar un trabajo
 Investigar como hacer mas seguro a Django
+Variables de entorno
 
 OTROS.-
 Pantalla terminos y condiciones
@@ -103,4 +104,5 @@ Analizar la posibilidad de enviar mails con herramientas github
 // Pantalla formulario de soporte
 Tamaños de letras de toda las paginas, principalmente las pantallas despues de tomar o publicar un trabajo
 Verificar diseño responsive en toda la aplicacion
+Calificacion al trabajador por parte de publicador (tal vez siguiente sprint)
 

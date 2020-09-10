@@ -114,31 +114,27 @@ def post_assignment(request):
                 for file in request.FILES.getlist('archivos'):
                     if file.size < 10000000:
                         files += [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file)]
-                # files = [ Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file) for file in request.FILES.getlist('archivos') ]
+
             context['files'] = files
             
     return render(request, 'post/post_assignment.html', context)
 
 @login_required
 def post_assignment_payment(request, trabajo):
-    # validar si el pago se efectuo con exito
     trabajo = Trabajo.objects.get(id=trabajo)
-    if str(trabajo.publicador) != str(request.user): 
-        raise Http404()
+    if str(trabajo.publicador) != str(request.user): raise Http404()
 
-    if request.method == 'POST':
-        trabajo.estado = 'published'
-        trabajo.save()
-        return redirect('post_assignment_complete', trabajo=trabajo.id)
-    else:
+    if trabajo.estado == 'hidden':
         return render(request, 'post/post_assignment_payment.html', { 'trabajo': trabajo })
+    else:
+        return render(request, 'post/post_assignment_complete.html', { 'trabajo': trabajo })
 
-@login_required
-def post_assignment_complete(request, trabajo):
-    trabajo = Trabajo.objects.get(id=trabajo)
-    if str(trabajo.publicador) != str(request.user) or trabajo.estado == 'hidden': raise Http404()
+# @login_required
+# def post_assignment_complete(request, trabajo):
+#     trabajo = Trabajo.objects.get(id=trabajo)
+#     if str(trabajo.publicador) != str(request.user) or trabajo.estado == 'hidden': raise Http404()
 
-    return render(request, 'post/post_assignment_complete.html', { 'trabajo': trabajo })
+#     return render(request, 'post/post_assignment_complete.html', { 'trabajo': trabajo })
 
 #___________________________WORK PLACE_____________________________
 
@@ -508,7 +504,7 @@ def paypal_create(request, id):
                 }
             ]
         }
-        order = CreateOrder().create_order(request_body, debug=True)
+        order = CreateOrder().create_order(request_body)
         data = order.result.__dict__['_dict']
         return JsonResponse(data)
 
@@ -540,6 +536,10 @@ def paypal_capture(request, order_id, trabajo_id):
                 direccion = order['purchase_units'][0]['shipping']['address']['address_line_1'] + ', ' + order['purchase_units'][0]['shipping']['address']['country_code']
             )
             new_order.save()
+
+            if new_order.estado == 'COMPLETED':
+                trabajo.estado = 'published'
+                trabajo.save()
         else:
             print('EL PRECIO PAGADO NO ES EL MISMO QUE EL DEL TRABAJO!!! PILAS WEY')
             print(float(order_amount), float(trabajo.precio))
@@ -563,7 +563,7 @@ class PayPalClient:
 
 class CreateOrder(PayPalClient):
 
-    def create_order(self, request_body, debug=False):
+    def create_order(self, request_body):
         request = OrdersCreateRequest()
         request.prefer('return=representation')
         request.request_body(request_body)
@@ -580,7 +580,7 @@ class GetOrder(PayPalClient):
 
 class CaptureOrder(PayPalClient):
 
-  def capture_order(self, order_id, debug=False):
+  def capture_order(self, order_id):
     request = OrdersCaptureRequest(order_id)
     response = self.client.execute(request)
     return response
