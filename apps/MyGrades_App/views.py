@@ -487,219 +487,100 @@ def customer_support(request):
 
 #___________________________PAYPAL_____________________________
 
-def verificar_pago(request):
+def paypal_create(request, id):
     print('Verificando ando...')
     if request.method == 'POST':
-        order = CreateOrder().create_order(debug=True)
-        data = order.result.__dict__['_dict']
-        return JsonResponse(data)
-        # environment = SandboxEnvironment(client_id=settings.PAYPAL_CLIENT_ID, client_secret=settings.PAYPAL_SECRET_ID)
-        # client = PayPalHttpClient(environment)
-
-        # trabajo = Trabajo.objects.get(id=id)
-        # create_order = OrdersCreateRequest()
-
-        # create_order.request_body ({
-        #     "intent": "CAPTURE",
-        #     "purchase_units": [
-        #         {
-        #             "amount": {
-        #                 "currency_code": "USD",
-        #                 "value": trabajo.precio,
-        #                 "breakdown": {
-        #                     "item_total": {
-        #                         "currency_code": "USD",
-        #                         "value": trabajo.precio
-        #                     }
-        #                 },
-        #             },
-        #         }
-        #     ]
-        # })
-
-        # response = client.execute()
-
-    return JsonResponse({'details': "invalid request"})
-
-def pago(request):
-    trabajo = Trabajo.objects.get(pk=43)
-    data = json.loads(request.body)
-    order_id = data['orderID']
-    
-    detalle = GetOrder().get_order(order_id)
-    detalle_precio = float(detalle.result.purchase_units[0].amount.value)
-    print('detalle', detalle, detalle_precio)
-
-    trx = CaptureOrder().capture_order(order_id, debug=True)
-    # print('???????????????', detalle_precio == float(trabajo.precio), detalle_precio, float(trabajo.precio))
-    if detalle_precio == float(trabajo.precio):
-        order = Order(
-            orderID = trx.result.id,
-            trabajo = trabajo,
-            estado = trx.result.status,
-            codigo_estado = trx.status_code, 
-            precio_total = trx.result.purchase_units[0].payments.captures[0].amount.value,
-            nombre = trx.result.payer.name.given_name,
-            apellido = trx.result.payer.name.surname,
-            email = trx.result.payer.email_address,
-            direccion = trx.result.purchase_units[0].shipping.address.address_line_1
-        )
-        order.save()
-
-        data = {
-            'id': f"{trx.result.id}",
-            'nombre': f"{trx.result.payer.name.given_name}",
-            'success': True,
-            'message': "Succesful Transaction"
-        }
-
-        return JsonResponse(data)
-    else:
-        data = {
-            'id': f"{trx.result.id}",
-            'nombre': trx.result.payer.name.given_name,
-            'success': False,
-            'message': "Wrong Transaction"
-        }
-        return JsonResponse(data)
-
-
-class PayPalClient:
-    def __init__(self):
-        self.client_id = "AWLMBI3BwXhtXFpMZw-BnZLMvw3NjS_52qMjdQPx-e7Oe7Q7_x33nyg4EXcMHVu9ZhdNw_0CNfpgOR2M"
-        self.client_secret = "EIAR_G5gIaS2A2ZDWATudaRzTooP_kkP8PTN4GP11v8RgQfhSiIEiRJNK-k-oESr2lf4cixIp6Tuudci"
-
-        """Set up and return PayPal Python SDK environment with PayPal access credentials.
-           This sample uses SandboxEnvironment. In production, use LiveEnvironment."""
-
-        self.environment = SandboxEnvironment(client_id=self.client_id, client_secret=self.client_secret)
-
-        """ Returns PayPal HTTP client instance with environment that has access
-            credentials context. Use this instance to invoke PayPal APIs, provided the
-            credentials have access. """
-        self.client = PayPalHttpClient(self.environment)
-
-    def object_to_json(self, json_data):
-        """
-        Function to print all json data in an organized readable manner
-        """
-        result = {}
-        if sys.version_info[0] < 3:
-            itr = json_data.__dict__.iteritems()
-        else:
-            itr = json_data.__dict__.items()
-        for key,value in itr:
-            # Skip internal attributes.
-            if key.startswith("__"):
-                continue
-            result[key] = self.array_to_json_array(value) if isinstance(value, list) else\
-                        self.object_to_json(value) if not self.is_primittive(value) else\
-                         value
-        return result
-    def array_to_json_array(self, json_array):
-        result =[]
-        if isinstance(json_array, list):
-            for item in json_array:
-                result.append(self.object_to_json(item) if  not self.is_primittive(item) \
-                              else self.array_to_json_array(item) if isinstance(item, list) else item)
-        return result
-
-    def is_primittive(self, data):
-        return isinstance(data, str) or isinstance(data, unicode) or isinstance(data, int)
-
-class CreateOrder(PayPalClient):
-
-    #2. Set up your server to receive a call from the client
-    """ This is the sample function to create an order. It uses the
-        JSON body returned by buildRequestBody() to create an order."""
-
-    def create_order(self, debug=False):
-        request = OrdersCreateRequest()
-        request.prefer('return=representation')
-        #3. Call PayPal to set up a transaction
-        request.request_body(self.build_request_body())
-        response = self.client.execute(request)
-        if debug:
-            print ('Status Code: ', response.status_code)
-            print ('Status: ', response.result.status)
-            print ('Order ID: ', response.result.id)
-            print ('Intent: ', response.result.intent)
-            print ('Links:')
-        for link in response.result.links:
-            print('\t{}: {}\tCall Type: {}'.format(link.rel, link.href, link.method))
-        print ('Total Amount: {} {}'.format(response.result.purchase_units[0].amount.currency_code,
-                            response.result.purchase_units[0].amount.value))
-
-        return response
-
-        """Setting up the JSON request body for creating the order. Set the intent in the
-        request body to "CAPTURE" for capture intent flow."""
-    @staticmethod
-    def build_request_body():
-        """Method to create body with CAPTURE intent"""
-        return {
+        trabajo = Trabajo.objects.get(id=id)
+        request_body = {
             "intent": "CAPTURE",
             "purchase_units": [
                 {
                     "amount": {
                         "currency_code": "USD",
-                        "value": "23.00",
+                        "value": str(trabajo.precio),
                         "breakdown": {
                             "item_total": {
                                 "currency_code": "USD",
-                                "value": "23.00"
+                                "value": str(trabajo.precio)
                             },
                         }
                     }
                 }
             ]
         }
+        order = CreateOrder().create_order(request_body, debug=True)
+        data = order.result.__dict__['_dict']
+        return JsonResponse(data)
 
+    return JsonResponse({ 'details': 'invalid request' })
+
+def paypal_capture(request, order_id, trabajo_id):
+    print('Capturando ando')
+    if request.method =="POST":
+        trabajo = Trabajo.objects.get(id=trabajo_id)
+        data = CaptureOrder().capture_order(order_id)
+        order = data.result.__dict__['_dict']
+        order_amount = order['purchase_units'][0]['payments']['captures'][0]['amount']['value']
+        
+        if float(order_amount) == float(trabajo.precio):
+            new_order = Order(
+                orderID = order['id'],
+                trabajo = trabajo,
+                user = trabajo.publicador,
+                estado = order['status'],
+                precio_total = order['purchase_units'][0]['payments']['captures'][0]['amount']['value'],
+                nombre = order['payer']['name']['given_name'],
+                apellido = order['payer']['name']['surname'],
+                full_name = order['purchase_units'][0]['shipping']['name']['full_name'],
+                capture_status = order['purchase_units'][0]['payments']['captures'][0]['status'],
+                capture_id = order['purchase_units'][0]['payments']['captures'][0]['id'],
+                payer_id = order['payer']['payer_id'],
+                create_time = order['purchase_units'][0]['payments']['captures'][0]['create_time'],
+                email = order['payer']['email_address'],
+                direccion = order['purchase_units'][0]['shipping']['address']['address_line_1'] + ', ' + order['purchase_units'][0]['shipping']['address']['country_code']
+            )
+            new_order.save()
+        else:
+            print('EL PRECIO PAGADO NO ES EL MISMO QUE EL DEL TRABAJO!!! PILAS WEY')
+            print(float(order_amount), float(trabajo.precio))
+            return JsonResponse({ 
+                'details': "It seems that there was an error with the transaction. It is possible that the charge has been debited from your payment account, if you had any problems please contact us on the Customer Support." 
+            })
+
+        return JsonResponse(order)
+    else:
+        return JsonResponse({ 
+            'details': "It seems that there was an error with the transaction. It is possible that the charge has been debited from your payment account, if you had any problems please contact us on the Customer Support." 
+        })
+
+class PayPalClient:
+    def __init__(self):
+        self.client_id = "AWLMBI3BwXhtXFpMZw-BnZLMvw3NjS_52qMjdQPx-e7Oe7Q7_x33nyg4EXcMHVu9ZhdNw_0CNfpgOR2M"
+        self.client_secret = "EIAR_G5gIaS2A2ZDWATudaRzTooP_kkP8PTN4GP11v8RgQfhSiIEiRJNK-k-oESr2lf4cixIp6Tuudci"
+
+        self.environment = SandboxEnvironment(client_id=self.client_id, client_secret=self.client_secret)
+        self.client = PayPalHttpClient(self.environment)
+
+class CreateOrder(PayPalClient):
+
+    def create_order(self, request_body, debug=False):
+        request = OrdersCreateRequest()
+        request.prefer('return=representation')
+        request.request_body(request_body)
+        response = self.client.execute(request)
+
+        return response
+    
 class GetOrder(PayPalClient):
-
-  #2. Set up your server to receive a call from the client
-  """You can use this function to retrieve an order by passing order ID as an argument"""   
+  
   def get_order(self, order_id):
-    """Method to get order"""
     request = OrdersGetRequest(order_id)
-    #3. Call PayPal to get the transaction
     response = self.client.execute(request)
-    #4. Save the transaction in your database. Implement logic to save transaction to your database for future reference.
-    print ('Status Code: ', response.status_code)
-    print ('Status: ', response.result.status)
-    print ('Order ID: ', response.result.id)
-    print ('Intent: ', response.result.intent)
-    print ('Links:')
-    for link in response.result.links:
-        print('\t{}: {}\tCall Type: {}'.format(link.rel, link.href, link.method))
-    print ('Gross Amount: {} {}'.format(response.result.purchase_units[0].amount.currency_code, response.result.purchase_units[0].amount.value))
     return response
 
 class CaptureOrder(PayPalClient):
 
-  #2. Set up your server to receive a call from the client
-  """this sample function performs payment capture on the order.
-  Approved order ID should be passed as an argument to this function"""
-
   def capture_order(self, order_id, debug=False):
-    """Method to capture order using order_id"""
     request = OrdersCaptureRequest(order_id)
-    #3. Call PayPal to capture an order
     response = self.client.execute(request)
-    #4. Save the capture ID to your database. Implement logic to save capture to your database for future reference.
-    if debug:
-        print ('Status Code: ', response.status_code)
-        print ('Status: ', response.result.status)
-        print ('Order ID: ', response.result.id)
-        print ('Links: ')
-        for link in response.result.links:
-            print('\t{}: {}\tCall Type: {}'.format(link.rel, link.href, link.method))
-        print ('Capture Ids: ')
-        for purchase_unit in response.result.purchase_units:
-            for capture in purchase_unit.payments.captures:
-                print ('\t', capture.id)
-        print ("Buyer:")
-        # print ("\tEmail Address: {}\n\tName: {}\n\tPhone Number: {}".format(response.result.payer.email_address,
-        #     response.result.payer.name.given_name + " " + response.result.payer.name.surname,
-        #     response.result.payer.phone.phone_number.national_number))
     return response

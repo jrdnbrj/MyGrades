@@ -36,6 +36,6 @@ urlpatterns = [
     
     path('send_assignment/', send_assignment, name='send_assignment'),
 
-    path('pago/', pago, name='pago'),
-    path('verificar_pago/', verificar_pago, name='verificar_pago'),
+    path('paypal/create/<int:id>', paypal_create, name='paypal_create'),
+    path('paypal/<str:order_id>/capture/<int:trabajo_id>', paypal_capture, name="paypal_capture")
 ]
