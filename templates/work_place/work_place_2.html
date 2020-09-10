@@ -7,7 +7,7 @@
 </section>
 
 <div class="container">
-    <div class="col-lg-8 mx-auto my-5">
+    <div class="col-lg-10 mx-auto my-5">
         <section class="row">
             <section class="col">
                 <h2 class="text-left">{{ trabajo.titulo }}&nbsp;<small>-&nbsp;{{ trabajo.area }}</small></h2>
@@ -33,7 +33,7 @@
             <h2><span class="badge badge-pill badge-secondary float-right">${{ trabajo.precio }}</span></h2>
         </section>
         <section class="my-4">
-            <h4 class="">Assignment Description</h4>
+            <h5 class="">Assignment Description</h5>
             <section class="ml-4"><p class="text-justify">{{ trabajo.descripcion|linebreaks }}</p></section>
         </section>
         {% if trabajo.archivos.all %}

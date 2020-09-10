@@ -187,6 +187,7 @@ def work_place_3(request, id):
     context = {'fecha_expiracion': fecha_expiracion, 'id': id}
     return render(request, 'work_place/work_place_3.html', context)
 
+@login_required
 def download_file(request, path):
     path = str(path.replace(' ', '_'))
     #print('\npath', path)
@@ -356,12 +357,15 @@ def user_assignments(request):
 def edit_post_assignment(request, id):
     context = { 'title': 'Edit' }
     trabajo = Trabajo.objects.get(id = id)
+
     if request.method == 'POST':
+
         form = PostAssignmentForm(request.POST)
         if form.is_valid():
             trabajo = form.save(commit=False, instance=trabajo)
-            trabajo.publicador = Usuario.objects.get(username = request.user)
+            # trabajo.publicador = Usuario.objects.get(username = request.user)
             trabajo.save()
+
             if 'files_from_validation' in request.POST:
                 for archivo in trabajo.archivos.all():
                     trabajo.archivos.remove(archivo)
@@ -378,12 +382,16 @@ def edit_post_assignment(request, id):
                 if file.size < 10000000:
                     archivo = Archivo.objects.create(nombre=file.name, archivo=file)
                     trabajo.archivos.add(archivo)
-
-            return redirect('post_assignment_payment', trabajo=trabajo.titulo)
+            
+            if trabajo.estado == 'hidden':
+                return redirect('post_assignment_payment', trabajo=trabajo.id)
+            else:
+                return redirect('user_assignments')
         else:
             print(form.errors)
             context['form'] = form
             print(request.POST)
+
             if 'files_from_validation' in request.POST:
                 files = [ Archivo.objects.get(id=file) for file in request.POST.getlist('files_from_validation') ]
             else:
@@ -391,32 +399,22 @@ def edit_post_assignment(request, id):
                 for file in request.FILES.getlist('archivos'):
                     if file.size < 10000000:
                         files += [Archivo.objects.create(nombre=file.name.replace('(', '').replace(')', ''), archivo=file)]
+
             context['files'] = files
             context['trabajo_id'] = trabajo.id
     else:
         options = {
-            'Literature': 0, 
-            'History': 1, 
-            'Social Sciences': 2, 
-            'Nature Sciences': 3,
-            'Biology': 4, 
-            'Chemistry': 5, 
-            'Mathematics': 6,
-            'Physics': 7, 
-            'Engineering': 8,
-            'Languages': 9,
-            'Economics': 10,
-            'Laws': 11,
-            'Arts': 12,
-            'Marketing and Publicity': 13,
-            'Architecture and Design': 14,
-            'Business and Management': 15,
-            'Psychology': 16,
-            'Other...': 17
+            'Literature': 0, 'History': 1, 'Social Sciences': 2, 'Nature Sciences': 3, 'Biology': 4, 
+            'Chemistry': 5, 'Mathematics': 6, 'Physics': 7, 'Engineering': 8, 'Languages': 9,
+            'Economics': 10, 'Laws': 11, 'Arts': 12, 'Marketing and Publicity': 13,
+            'Architecture and Design': 14, 'Business and Management': 15, 'Psychology': 16, 'Other...': 17
         }
-        context = {'trabajo': trabajo, 'option': options[trabajo.area]}
+        context['trabajo'] = trabajo
+        context['option'] = options[trabajo.area]
+
     return render(request, 'post/post_assignment.html', context)
 
+@login_required
 def send_assignment(request):
     pk = request.POST['pk']
     trabajo = Trabajo.objects.get(pk=pk)
@@ -483,6 +481,7 @@ def customer_support(request):
 
 #___________________________PAYPAL_____________________________
 
+@login_required
 def paypal_create(request, id):
     print('Verificando ando...')
     if request.method == 'POST':
@@ -510,6 +509,7 @@ def paypal_create(request, id):
 
     return JsonResponse({ 'details': 'invalid request' })
 
+@login_required
 def paypal_capture(request, order_id, trabajo_id):
     print('Capturando ando')
     if request.method =="POST":

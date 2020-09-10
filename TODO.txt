@@ -18,7 +18,7 @@ POST ASSIGNMENT.-
 // pantalla de payment redirect con parametros
 // validar si el pago se ha efectuado o no
 // Texto explicativo ventana de pago PAYPAL
--- Arreglar diseño después de publicar un trabajo
+// Arreglar diseño después de publicar un trabajo
 
 WORKPLACE.-
 // Mensaje si no existenn resultados
@@ -75,7 +75,7 @@ Mejorar diseño en general
 Si es sent, editar a 'Resend'
 Desactivar botones si el tiempo acabo o se elimino o algo
 Eliminar linea subrayada en enlaces, el color se queda
-Pantalla despues de Edit Assignment dependiendo si pago o no
+// Pantalla despues de Edit Assignment dependiendo si pago o no
 ...
 
 CUSTOMER SUPPORT.-

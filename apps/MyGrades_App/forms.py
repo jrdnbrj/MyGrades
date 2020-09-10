@@ -146,7 +146,7 @@ class PostAssignmentForm(forms.Form):
         input_formats = ['%Y-%m-%dT%H:%M'],
         widget = forms.DateTimeInput(attrs={ 'type': 'datetime-local' }, format='%Y-%m-%dT%H:%M')
     )
-    precio = forms.DecimalField(max_digits=5, decimal_places=2, min_value=3.00)
+    precio = forms.DecimalField(max_digits=5, decimal_places=3, min_value=3.00)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
