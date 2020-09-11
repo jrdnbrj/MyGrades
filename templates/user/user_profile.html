@@ -40,7 +40,7 @@
                 <span class="display-4 font-weight-bold">User Profile</span>
                 <section>
                     <button class="btn btn-outline-secondary border rounded form-btn" onclick="location.href='{% url 'public_profile' usuario.username %}'">View Public Profile</button>
-                    <button class="btn btn-secondary border rounded form-btn" onclick="location.href='{% url 'user_profile_2' %}'">Edit Profile</button>
+                    <button class="btn btn-secondary border rounded form-btn" onclick="location.href='{% url 'user_profile_2' 'edit' %}'">Edit Profile</button>
                 </section>
             </section>
             <hr>

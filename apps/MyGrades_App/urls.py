@@ -28,7 +28,7 @@ urlpatterns = [
     path('media/<path>', download_file, name='media/'),
 
     path('profile', user_profile, name='user_profile'),
-    path('edit_profile', user_profile_2, name='user_profile_2'),
+    path('profile/<status>', user_profile_2, name='user_profile_2'),
     path('post_assignment/edit/<int:id>', edit_post_assignment, name='edit_post_assignment'),
     path('assignments', user_assignments, name='user_assignments'),
     path('edit_user/', edit_user, name='edit_user'),

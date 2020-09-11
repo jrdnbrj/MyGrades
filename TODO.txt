@@ -107,6 +107,7 @@ Actualizar trabajos si la fecha terminó
 Investigar como hacer mas seguro a Django
 Variables de entorno
 Llaves SSL
+Permisos de escritura bdd y media en produccion
 
 OTROS.-
 -- Pantalla terminos y condiciones

@@ -227,11 +227,21 @@ def public_profile(request, username):
     }
     return render(request, 'user/public_profile.html', context)
     
+def user_and_payment(request):
+    user = User.objects.get(username=request.user)
+    usuario = Usuario.objects.get(username=request.user)
+    payment = Cuenta_Bancaria.objects.filter(usuario__username=request.user).first()
+    return user, usuario, payment
 
 @login_required
-def user_profile_2(request):
+def user_profile_2(request, status):
     _, usuario, payment = user_and_payment(request)
-    return render(request, 'user/user_profile_2.html', { 'usuario': usuario, 'payment': payment })
+    if status == 'edited':
+        return render(request, 'user/user_profile_2.html', { 'usuario': usuario, 'payment': payment, 'edit': True })
+    elif status == 'edit':
+        return render(request, 'user/user_profile_2.html', { 'usuario': usuario, 'payment': payment })
+    else: raise Http404()
+
 
 @login_required
 def edit_user(request):
@@ -246,14 +256,14 @@ def edit_user(request):
             user.username = usuario.username
             user.email = usuario.mail
             user.save()
-            return redirect('user_profile_2')
         else:
             print(form.errors)
             context['form1'] = form
             context['usuario'] = usuario
             context['payment'] = payment
+            return render(request,'user/user_profile_2.html', context)
     
-    return render(request,'user/user_profile_2.html', context)
+    return redirect('user_profile_2', status='edited')
 
 
 @login_required
@@ -267,15 +277,15 @@ def edit_user_info(request):
             usuario = form.save(commit=False)
             usuario.key_words = json.dumps(request.POST.getlist('key_words'))
             usuario.save()
-            return redirect('user_profile_2')
         else:
             print(form.errors)
             context['form2'] = form
             context['key_words_error'] = request.POST.getlist('key_words')
             context['payment'] = payment
             context['usuario'] = usuario
+            return render(request,'user/user_profile_2.html', context)
 
-    return render(request,'user/user_profile_2.html', context)
+    return redirect('user_profile_2', status='edited')
 
 @login_required
 def edit_payment_method(request):
@@ -284,6 +294,7 @@ def edit_payment_method(request):
     user, usuario, payment = user_and_payment(request)
 
     if request.method == 'POST' and request.POST['tipo_pago'] != '':
+
         if request.POST['tipo_pago'] == 'PayPal':
             form = PayPalEmailForm(request.POST, instance=payment)
         elif request.POST['tipo_pago'] == 'Bank':
@@ -295,20 +306,12 @@ def edit_payment_method(request):
             payment.save()
         else:
             print(form.errors)
-            context = { 
-                'usuario': usuario, 
-                # 'payment': payment,
-                'form3': form 
-            }
-            return render(request, 'user/user_profile_2.html', context)
-    elif request.POST['tipo_pago'] == '' and payment: payment.delete()
-    return redirect('user_profile_2')
+            return render(request, 'user/user_profile_2.html', { 'usuario': usuario, 'form3': form })
 
-def user_and_payment(request):
-    user = User.objects.get(username=request.user)
-    usuario = Usuario.objects.get(username=request.user)
-    payment = Cuenta_Bancaria.objects.filter(usuario__username=request.user).first()
-    return user, usuario, payment
+    elif request.POST['tipo_pago'] == '' and payment: payment.delete()
+
+    return redirect('user_profile_2', status='edited')
+
 
 @login_required
 def edit_password(request):
@@ -330,8 +333,9 @@ def edit_password(request):
             context['form4'] = form
             context['usuario'] = usuario
             context['payment'] = payment
+            return render(request,'user/user_profile_2.html', context)
 
-    return render(request,'user/user_profile_2.html', context)
+    return redirect('user_profile_2', status='edited')
 
 def verify_assignments(assignments):
     date_time = utc.localize(datetime.datetime.now())
