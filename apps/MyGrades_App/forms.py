@@ -198,11 +198,15 @@ class PostAssignmentForm(forms.Form):
         input_formats = ['%Y-%m-%dT%H:%M'],
         widget = forms.DateTimeInput(attrs={ 'type': 'datetime-local' }, format='%Y-%m-%dT%H:%M')
     )
-    precio = forms.DecimalField(max_digits=5, decimal_places=3, min_value=3.00)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
+        self.status = kwargs.pop('status', 'hidden')
+        
         super(PostAssignmentForm, self).__init__(*args, **kwargs)
+
+        if self.status == 'hidden':
+            self.fields['precio'] = forms.DecimalField(max_digits=5, decimal_places=3, min_value=3.00)
 
     def clean_titulo(self):
         titulo = self.cleaned_data['titulo']
@@ -234,7 +238,7 @@ class PostAssignmentForm(forms.Form):
         instance.area = post_assignment['area']
         instance.descripcion = post_assignment['descripcion']
         instance.fecha_expiracion = post_assignment['fecha_expiracion']
-        instance.precio = post_assignment['precio']
+        if instance.estado == 'hidden': instance.precio = post_assignment['precio']
         
         if commit: instance.save()
             

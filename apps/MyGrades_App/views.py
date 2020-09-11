@@ -360,11 +360,13 @@ def user_assignments(request):
 @login_required
 def edit_post_assignment(request, id):
     context = { 'title': 'Edit' }
-    trabajo = Trabajo.objects.get(id = id)
 
+    trabajo = Trabajo.objects.get(id = id)
+    if str(trabajo.publicador) != str(request.user): raise Http404()
+    
     if request.method == 'POST':
 
-        form = PostAssignmentForm(request.POST)
+        form = PostAssignmentForm(request.POST, status=trabajo.estado)
         if form.is_valid():
             trabajo = form.save(commit=False, instance=trabajo)
             # trabajo.publicador = Usuario.objects.get(username = request.user)

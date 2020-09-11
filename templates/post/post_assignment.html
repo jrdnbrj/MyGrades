@@ -81,22 +81,32 @@
                     <input type="file" multiple onchange="readURL(this);" class="custom-file-input" style="cursor: pointer" name="archivos" id="archivos"
                         value="{{ files }}">
                 </div>
-                <h4 class="text-left">Assignment Price</h4>
-                <div class="row input-group mr-0">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">$</div>
+                {% if trabajo and trabajo.estado != 'hidden' %}
+                    <h4 class="text-left">Assignment Price</h4>
+                    <div class="row input-group mr-0">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">$</div>
+                        </div>
+                        <input class="form-control col" type="text" name="precio" id="price" value="{{ trabajo.precio }}" disabled>
                     </div>
-                    <input class="form-control col" type="text" name="precio" id="price" placeholder="24.20" maxlength="6" value="{% if form.errors %}{{ form.precio.value }}{% elif trabajo.precio %}{{ trabajo.precio }}{% endif %}" required>
-                </div>
-                {% for error in form.precio.errors %}
-                    <small class="text-danger">{{ error }}</small>
-                {% endfor %}
+                {% else %}
+                    <h4 class="text-left">Assignment Price</h4>
+                    <div class="row input-group mr-0">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">$</div>
+                        </div>
+                        <input class="form-control col" type="text" name="precio" id="price" placeholder="24.20" maxlength="6" value="{% if form.errors %}{{ form.precio.value }}{% elif trabajo.precio %}{{ trabajo.precio }}{% endif %}" required>
+                    </div>
+                    {% for error in form.precio.errors %}
+                        <small class="text-danger">{{ error }}</small>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
 
-<div class="col-4 mx-auto mt-3"><button class="btn-lg btn-primary border rounded col" type="submit">SUBMIT</button></div>
+<div class="col-4 mx-auto mt-3"><button class="btn-lg btn-primary border rounded col" type="submit" data-toggle="tooltip" data-placement="top" title="Tooltip on top">SUBMIT</button></div>
 <hr>
     <div>
         <div class="container">
@@ -194,6 +204,7 @@
     }
 
     function progress(e){
+        $('#price').tooltip();
         var area = $.trim($('#area').val());
         var title = $.trim($('#title').val());
         var description = $.trim($('#description').val());

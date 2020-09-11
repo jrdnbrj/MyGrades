@@ -23,7 +23,7 @@ POST ASSIGNMENT.-
 // validar si el pago se ha efectuado o no
 // Texto explicativo ventana de pago PAYPAL
 // Arreglar diseño después de publicar un trabajo
-Desactivar poder cambiar el precio cuando ya se ha pagado
+// Desactivar poder cambiar el precio cuando ya se ha pagado
 
 WORKPLACE.-
 // Mensaje si no existenn resultados
@@ -43,7 +43,7 @@ Contenido Privacy Policy
 NAVBAR.-
 // Arreglar Navbar responsive
 // Agregar opcion View Assignments
--- Agregar opcion ver Terminos y Condiciones
+// Agregar opcion ver Terminos y Condiciones
 // Agregar opcion pantalla de soporte
 // Alinear elementos
 -- Hacerle mas bonito en general
@@ -61,11 +61,11 @@ PERFIL.-
 }
 historial de pagos y cobros
 // Actualizacion de foto con js
-mensaje de confirmacion de informacion guardada, alert
+// mensaje de confirmacion de informacion guardada, alert
 // Perfil con informacion publica
 // Al editar usuario tambien se debe editar el user de django auth
 verificar si deben estar los estados en View Assignments Public
-Guardar informacion de pago
+// Guardar informacion de pago
 
 REGISTER and SIGNIN.-
 -- Agregar Register with Google and Facebook
