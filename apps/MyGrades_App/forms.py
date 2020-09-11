@@ -107,6 +107,24 @@ class CuentaBancariaForm(forms.ModelForm):
         model = Cuenta_Bancaria
         fields = ('institucion', 'tipo_cuenta', 'nombre_apellido', 'cedula_ruc', 'numero_cuenta', 'tipo_pago')
 
+    def save(self, commit=True):
+
+        if self.instance:
+            self.instance.paypal_email = ''
+
+            if commit:
+                self.instance.save()
+
+            return self.instance
+        else:
+            instance = Cuenta_Bancaria(**self.cleaned_data)
+
+            if commit:
+                instance.save()
+
+            return instance
+
+
 class PayPalEmailForm(forms.ModelForm):
 
     tipo_pago = forms.CharField(max_length=20)
@@ -115,6 +133,27 @@ class PayPalEmailForm(forms.ModelForm):
     class Meta:
         model = Cuenta_Bancaria
         fields = ('paypal_email', 'tipo_pago')
+    
+    def save(self, commit=True):
+
+        if self.instance:
+            self.instance.institucion = ''
+            self.instance.tipo_cuenta = ''
+            self.instance.nombre_apellido = ''
+            self.instance.cedula_ruc = ''
+            self.instance.numero_cuenta = ''
+
+            if commit:
+                self.instance.save()
+
+            return self.instance
+        else:
+            instance = Cuenta_Bancaria(**self.cleaned_data)
+
+            if commit:
+                instance.save()
+
+            return instance
 
 class EditPasswordForm(forms.ModelForm):
         
@@ -129,8 +168,11 @@ class EditPasswordForm(forms.ModelForm):
     def clean_actual_password(self):
         actual_password_clean = self.cleaned_data['actual_password']
 
-        if not self.instance.check_password(actual_password_clean):
+        if not self.instance.password == actual_password_clean:
             raise forms.ValidationError('Does not match current password.')
+
+        # if not self.instance.check_password(actual_password_clean):
+        #     raise forms.ValidationError('Does not match current password.')
 
         return actual_password_clean
     

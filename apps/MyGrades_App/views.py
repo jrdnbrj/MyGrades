@@ -236,14 +236,13 @@ def user_profile_2(request):
 @login_required
 def edit_user(request):
     context = {}
-    usuario = Usuario.objects.get(username=request.user)
+    user, usuario, payment = user_and_payment(request)
 
-    context['usuario'] = usuario
     if request.method == 'POST':
         form = EditUserForm(request.POST, instance=usuario)
         if form.is_valid():
             usuario = form.save()
-            user = User.objects.get(username=request.user)
+            # user = User.objects.get(username=request.user)
             user.username = usuario.username
             user.email = usuario.mail
             user.save()
@@ -251,6 +250,8 @@ def edit_user(request):
         else:
             print(form.errors)
             context['form1'] = form
+            context['usuario'] = usuario
+            context['payment'] = payment
     
     return render(request,'user/user_profile_2.html', context)
 
@@ -258,8 +259,7 @@ def edit_user(request):
 @login_required
 def edit_user_info(request):
     context = {}
-    usuario = Usuario.objects.get(username = request.user)
-    context['usuario'] = usuario
+    user, usuario, payment = user_and_payment(request)
 
     if request.method == 'POST':
         form = EditUserInfoForm(request.POST, request.FILES, instance=usuario)
@@ -272,6 +272,8 @@ def edit_user_info(request):
             print(form.errors)
             context['form2'] = form
             context['key_words_error'] = request.POST.getlist('key_words')
+            context['payment'] = payment
+            context['usuario'] = usuario
 
     return render(request,'user/user_profile_2.html', context)
 
@@ -281,21 +283,10 @@ def edit_payment_method(request):
 
     user, usuario, payment = user_and_payment(request)
 
-    if payment != None:
-        payment.institucion = ''
-        payment.tipo_cuenta = ''
-        payment.nombre_apellido = ''
-        payment.cedula_ruc = ''
-        payment.numero_cuenta = ''
-        payment.paypal_email = ''
-        payment.save()
-
     if request.method == 'POST' and request.POST['tipo_pago'] != '':
         if request.POST['tipo_pago'] == 'PayPal':
-            print('1')
             form = PayPalEmailForm(request.POST, instance=payment)
         elif request.POST['tipo_pago'] == 'Bank':
-            print('2')
             form = CuentaBancariaForm(request.POST, instance=payment)
 
         if form.is_valid():
@@ -310,6 +301,7 @@ def edit_payment_method(request):
                 'form3': form 
             }
             return render(request, 'user/user_profile_2.html', context)
+    elif request.POST['tipo_pago'] == '' and payment: payment.delete()
     return redirect('user_profile_2')
 
 def user_and_payment(request):
@@ -321,21 +313,23 @@ def user_and_payment(request):
 @login_required
 def edit_password(request):
     context = {}
+    user, usuario, payment = user_and_payment(request)
     user = User.objects.get(username=request.user)
     usuario = Usuario.objects.get(username=user.username)
-    context['usuario'] = usuario
 
     if request.method == 'POST':
-        form = EditPasswordForm(request.POST, instance=user)
+        form = EditPasswordForm(request.POST, instance=usuario)
         if form.is_valid():
-            user = form.save(commit=False)
-            usuario.password = user.password
-            user.set_password(user.password)
+            usuario = form.save(commit=False)
+            # usuario.password = user.password
+            user.set_password(usuario.password)
             user.save(); usuario.save()
             return redirect('signin')
         else:
             print(form.errors)
             context['form4'] = form
+            context['usuario'] = usuario
+            context['payment'] = payment
 
     return render(request,'user/user_profile_2.html', context)
 
