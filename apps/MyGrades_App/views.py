@@ -69,6 +69,15 @@ def signout(request):
     logout(request)
     return redirect('landing_page')
 
+def about(request):
+    return render(request, 'home/about.html')
+
+def contact(request):
+    return render(request, 'home/contact.html')
+
+def privacy_policy(request):
+    return render(request, 'home/privacy_policy.html')
+
 #___________________________ERROR HANDLERS_____________________________
 
 def handler404(request, *args, **argv):
