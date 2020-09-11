@@ -18,8 +18,7 @@ from .forms import *
 from .models import *
 
 
-def landing_page(request):
-    return render(request, 'home/landing_page.html', {})
+def landing_page(request): return render(request, 'home/landing_page.html', {})
 
 def register(request):
 
@@ -69,22 +68,17 @@ def signout(request):
     logout(request)
     return redirect('landing_page')
 
-def about(request):
-    return render(request, 'home/about.html')
+def about(request): return render(request, 'home/about.html')
 
-def contact(request):
-    return render(request, 'home/contact.html')
+def contact(request): return render(request, 'home/contact.html')
 
-def privacy_policy(request):
-    return render(request, 'home/privacy_policy.html')
+def privacy_policy(request): return render(request, 'home/privacy_policy.html')
 
 #___________________________ERROR HANDLERS_____________________________
 
-def handler404(request, *args, **argv):
-    return render(request, 'error/404.html')
+def handler404(request, *args, **argv): return render(request, 'error/404.html')
 
-def handler500(request, *args, **argv):
-    return render(request, 'error/500.html')
+def handler500(request, *args, **argv): return render(request, 'error/500.html')
 
 #___________________________POST ASSIGNMENT_____________________________
 
@@ -236,11 +230,8 @@ def public_profile(request, username):
 
 @login_required
 def user_profile_2(request):
-    context = {}
-    usuario = Usuario.objects.get(username = request.user)
-    context['usuario'] = usuario
-    context['payment'] = ''
-    return render(request, 'user/user_profile_2.html', context)
+    _, usuario, payment = user_and_payment(request)
+    return render(request, 'user/user_profile_2.html', { 'usuario': usuario, 'payment': payment })
 
 @login_required
 def edit_user(request):
@@ -287,26 +278,37 @@ def edit_user_info(request):
 @login_required
 def edit_payment_method(request):
     print('user_payment_method')
-    context = {}
 
-    usuario = Usuario.objects.get(username = request.user)
-    context['usuario'] = usuario
+    user, usuario, payment = user_and_payment(request)
+
+    if payment != None:
+        payment.institucion = ''
+        payment.tipo_cuenta = ''
+        payment.nombre_apellido = ''
+        payment.cedula_ruc = ''
+        payment.numero_cuenta = ''
+        payment.paypal_email = ''
+        payment.save()
 
     if request.method == 'POST' and request.POST['tipo_pago'] != '':
         if request.POST['tipo_pago'] == 'PayPal':
             print('1')
-            print(request.POST)
-            form = PayPalEmailForm(request.POST)
+            form = PayPalEmailForm(request.POST, instance=payment)
         elif request.POST['tipo_pago'] == 'Bank':
             print('2')
-            print(request.POST)
-            form = CuentaBancariaForm(request.POST)
+            form = CuentaBancariaForm(request.POST, instance=payment)
 
         if form.is_valid():
-            form = form.save()
+            payment = form.save(commit=False)
+            payment.usuario = usuario
+            payment.save()
         else:
             print(form.errors)
-            context['form3'] = form
+            context = { 
+                'usuario': usuario, 
+                # 'payment': payment,
+                'form3': form 
+            }
             return render(request, 'user/user_profile_2.html', context)
     return redirect('user_profile_2')
 

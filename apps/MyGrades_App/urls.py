@@ -28,9 +28,8 @@ urlpatterns = [
     path('media/<path>', download_file, name='media/'),
 
     path('profile', user_profile, name='user_profile'),
-    path('<str:username>', public_profile, name='public_profile'),
     path('edit_profile', user_profile_2, name='user_profile_2'),
-    path('edit_post_assignment/<int:id>', edit_post_assignment, name='edit_post_assignment'),
+    path('post_assignment/edit/<int:id>', edit_post_assignment, name='edit_post_assignment'),
     path('assignments', user_assignments, name='user_assignments'),
     path('edit_user/', edit_user, name='edit_user'),
     path('edit_user_info/', edit_user_info, name='edit_user_info'),
@@ -40,5 +39,9 @@ urlpatterns = [
     path('send_assignment/', send_assignment, name='send_assignment'),
 
     path('paypal/create/<int:id>', paypal_create, name='paypal_create'),
-    path('paypal/<str:order_id>/capture/<int:trabajo_id>', paypal_capture, name="paypal_capture")
+    path('paypal/<str:order_id>/capture/<int:trabajo_id>', paypal_capture, name="paypal_capture"),
+
+
+
+    path('<str:username>', public_profile, name='public_profile'),
 ]

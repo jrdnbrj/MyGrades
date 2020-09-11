@@ -99,6 +99,7 @@
                 <form method="POST" id="edit_payment_method" action="{% url 'edit_payment_method' %}">{% csrf_token %}
                     <label><strong>Payment Method</strong></label>
                     <small class="form-text text-muted">
+                        You can choose to receive the payment by bank transfer or be credited to your personal paypal account. 
                         If you choose to receive the payment in your bank account please fill in all the fields ignoring the PayPal Email, 
                         if you choose to be paid by PayPal you only have to fill in the email field with your PayPal Email. 
                         Payments will be made on Thursdays of each week. <a href="{% url 'customer_support' %}">Not Sure?</a>
@@ -107,10 +108,10 @@
                         <div class="col-sm-12 col-md-6 col-lg-3">
                             <div class="form-group">
                                 <label>Payment Type</label>
-                                <select class="form-control" onchange="paymentType(this)" name="tipo_pago">
+                                <select class="form-control" onchange="paymentType(this)" name="tipo_pago" id="tipo_pago">
                                     <option value>Select...</option>
-                                    <option value="PayPal">PayPal</option>
-                                    <option value="Bank">Bank</option>
+                                    <option {% if form3.errors %}{% if form3.tipo_pago.value == 'PayPal' %}selected{% endif %} {% else %}{% if payment.tipo_pago == 'PayPal' %}selected{% endif %}{% endif %} value="PayPal">PayPal</option>
+                                    <option {% if form3.errors %}{% if form3.tipo_pago.value == 'Bank' %}selected{% endif %} {% else %}{% if payment.tipo_pago == 'Bank' %}selected{% endif %}{% endif %} value="Bank">Bank</option>
                                 </select>
                                 {% for error in form1.tipo_pago.errors %}
                                     <small class="text-danger">{{ error }}</small>
@@ -121,7 +122,7 @@
                             <div class="form-group">
                                 <label>PayPal Email</label>
                                 <input class="form-control" type="email" name="paypal_email" id="paypal_email" placeholder="bestGPAstudent@example.com"
-                                    value="{% if form3.errors %}{{ form3.paypal_email.value }}{% else %}  {% endif %}">
+                                    value="{% if form3.errors %}{{ form3.paypal_email.value }}{% else %}{{ payment.paypal_email }}{% endif %}">
                                 {% for error in form3.paypal_email.errors %}
                                     <small class="text-danger">{{ error }}</small>
                                 {% endfor %}
@@ -131,7 +132,7 @@
                             <div class="form-group">
                                 <label>Intitution Name</label>
                                 <input class="form-control" type="text" name="institucion" id="institucion" placeholder="Bank of America..."
-                                    value="{% if form3.errors %}{{ form3.institucion.value }}{% else %}  {% endif %}">
+                                    value="{% if form3.errors %}{{ form3.institucion.value }}{% else %}{{ payment.institucion }}{% endif %}">
                                 {% for error in form3.institucion.errors %}
                                     <small class="text-danger">{{ error }}</small>
                                 {% endfor %}
@@ -141,7 +142,7 @@
                             <div class="form-group">
                                 <label>Full Name</label>
                                 <input class="form-control" type="text" name="nombre_apellido" id="nombre_apellido" placeholder="Sara Kandler"
-                                    value="{% if form3.errors %}{{ form3.nombre_apellido.value }}{% else %}  {% endif %}">
+                                    value="{% if form3.errors %}{{ form3.nombre_apellido.value }}{% else %}{{ payment.nombre_apellido }}{% endif %}">
                                 {% for error in form3.nombre_apellido.errors %}
                                     <small class="text-danger">{{ error }}</small>
                                 {% endfor %}
@@ -151,7 +152,7 @@
                             <div class="form-group">
                                 <label>DNI (Cédula o RUC)</label>
                                 <input class="form-control" type="text" name="cedula_ruc" id="cedula_ruc" placeholder="1764250582" 
-                                    value="{% if form3.errors %}{{ form3.cedula_ruc.value }}{% else %}  {% endif %}">
+                                    value="{% if form3.errors %}{{ form3.cedula_ruc.value }}{% else %}{{ payment.cedula_ruc }}{% endif %}">
                                 {% for error in form3.cedula_ruc.errors %}
                                     <small class="text-danger">{{ error }}</small>
                                 {% endfor %}
@@ -161,7 +162,7 @@
                             <div class="form-group">
                                 <label>Account Number</label>
                                 <input class="form-control" type="text" name="numero_cuenta" id="numero_cuenta" placeholder="2254812206"
-                                    value="{% if form3.errors %}{{ form3.numero_cuenta.value }}{% else %}  {% endif %}">
+                                    value="{% if form3.errors %}{{ form3.numero_cuenta.value }}{% else %}{{ payment.numero_cuenta }}{% endif %}">
                                 {% for error in form3.numero_cuenta.errors %}
                                     <small class="text-danger">{{ error }}</small>
                                 {% endfor %}
@@ -172,8 +173,8 @@
                                 <label>Account Type</label>
                                 <select class="form-control" name="tipo_cuenta" id="tipo_cuenta">
                                     <option value>Select...</option>
-                                    <option value="Savings">Savings (Ahorros)</option>
-                                    <option value="Checking">Checking (Corriente)</option>
+                                    <option {% if form3.errors %}{% if form3.tipo_cuenta.value == 'Savings' %}selected{% endif %} {% else %}{% if payment.tipo_cuenta == 'Savings' %}selected{% endif %}{% endif %} value="Savings">Savings (Ahorros)</option>
+                                    <option {% if form3.errors %}{% if form3.tipo_cuenta.value == 'Checking' %}selected{% endif %} {% else %}{% if payment.tipo_cuenta == 'Checking' %}selected{% endif %}{% endif %} value="Checking">Checking (Corriente)</option>
                                 </select>
                                 {% for error in form3.tipo_cuenta.errors %}
                                     <small class="text-danger">{{ error }}</small>
@@ -232,6 +233,8 @@
 <script>
 
     $(document).ready(paymentType);
+    $('#tipo_pago').on('change', paymentType);
+
 
     function changePicture(event) {
         const reader = new FileReader()
@@ -245,15 +248,17 @@
         reader.readAsDataURL(event.files[0])
     }
 
-    function paymentType(event) {
-        if (event.value== 'PayPal') {
+    function paymentType() {
+        console.log('1')
+        console.log($('#tipo_pago').val())
+        if ($('#tipo_pago').val() == 'PayPal') {
             $('#institucion').prop('disabled', true)
             $('#tipo_cuenta').prop('disabled', true)
             $('#nombre_apellido').prop('disabled', true)
             $('#cedula_ruc').prop('disabled', true)
             $('#numero_cuenta').prop('disabled', true)
             $('#paypal_email').prop('disabled', false)
-        } else if (event.value == 'Bank') {
+        } else if ($('#tipo_pago').val() == 'Bank') {
             $('#institucion').prop('disabled', false)
             $('#tipo_cuenta').prop('disabled', false)
             $('#nombre_apellido').prop('disabled', false)

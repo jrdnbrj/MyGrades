@@ -96,15 +96,25 @@ class EditUserInfoForm(forms.ModelForm):
 
 class CuentaBancariaForm(forms.ModelForm):
 
+    institucion = forms.CharField(max_length=100)
+    tipo_cuenta = forms.CharField(max_length=20)
+    nombre_apellido = forms.CharField(max_length=70)
+    cedula_ruc = forms.CharField(max_length=15)
+    numero_cuenta = forms.CharField(max_length=20)
+    tipo_pago = forms.CharField(max_length=20)
+    
     class Meta:
         model = Cuenta_Bancaria
         fields = ('institucion', 'tipo_cuenta', 'nombre_apellido', 'cedula_ruc', 'numero_cuenta', 'tipo_pago')
 
 class PayPalEmailForm(forms.ModelForm):
 
+    tipo_pago = forms.CharField(max_length=20)
+    paypal_email = forms.EmailField(max_length=50)
+
     class Meta:
         model = Cuenta_Bancaria
-        fields = ('paypal_email',)
+        fields = ('paypal_email', 'tipo_pago')
 
 class EditPasswordForm(forms.ModelForm):
         

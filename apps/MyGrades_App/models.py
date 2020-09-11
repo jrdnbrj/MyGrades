@@ -30,16 +30,16 @@ class Usuario(models.Model):
 class Cuenta_Bancaria(models.Model):
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey(Usuario, null=True, on_delete=models.CASCADE, related_name='usuario')
-    institucion = models.CharField(max_length=100, null=True)
-    tipo_cuenta = models.CharField(max_length=20, null=True)
-    nombre_apellido = models.CharField(max_length=70, null=True)
-    cedula_ruc = models.CharField(max_length=15, null=True)
-    numero_cuenta = models.CharField(max_length=20, null=True)
+    institucion = models.CharField(max_length=100, null=True, blank=True)
+    tipo_cuenta = models.CharField(max_length=20, null=True, blank=True)
+    nombre_apellido = models.CharField(max_length=70, null=True, blank=True)
+    cedula_ruc = models.CharField(max_length=15, null=True, blank=True)
+    numero_cuenta = models.CharField(max_length=20, null=True, blank=True)
     tipo_pago = models.CharField(max_length=20)
-    paypal_email = models.EmailField(max_length=50, null=True)
+    paypal_email = models.EmailField(max_length=50, null=True, blank=True)
 
     def __str__(self):
-        return self.numero_cuenta
+        return self.usuario.username
 
 class Archivo(models.Model):
     id = models.AutoField(primary_key=True)
