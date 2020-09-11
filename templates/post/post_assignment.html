@@ -83,7 +83,7 @@
                 </div>
                 {% if trabajo and trabajo.estado != 'hidden' %}
                     <h4 class="text-left">Assignment Price</h4>
-                    <div class="row input-group mr-0">
+                    <div class="row input-group mr-0" rel="tooltip" data-toggle="tooltip" data-placement="top" title="Once the payment is made it is not possible to change the price. Do you want to change it anyway? Write us on the Customer Support.">
                         <div class="input-group-prepend">
                             <div class="input-group-text">$</div>
                         </div>
@@ -106,7 +106,7 @@
     </div>
 </div>
 
-<div class="col-4 mx-auto mt-3"><button class="btn-lg btn-primary border rounded col" type="submit" data-toggle="tooltip" data-placement="top" title="Tooltip on top">SUBMIT</button></div>
+<div class="col-4 mx-auto mt-3"><button class="btn-lg btn-primary border rounded col" type="submit">SUBMIT</button></div>
 <hr>
     <div>
         <div class="container">
@@ -151,6 +151,7 @@
 </section>
 
 </body>
+
 {% endblock %}
 
 {% block js %}
@@ -204,7 +205,7 @@
     }
 
     function progress(e){
-        $('#price').tooltip();
+        $("[rel='tooltip']").tooltip({ 'trigger': 'hover', 'title': 'asdasd' });
         var area = $.trim($('#area').val());
         var title = $.trim($('#title').val());
         var description = $.trim($('#description').val());
