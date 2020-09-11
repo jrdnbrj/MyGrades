@@ -2,6 +2,10 @@ MyGrades Colors
 #3C896D
 #6AEFB0
 
+ipv4: 64.227.48.115
+ipv6: 2604:a880:2:d1::f6:6001
+private ip: 10.120.0.2
+
 PAYPAL.-
 // Pantalla de pago independiente
 // validar que el precio sea correcto antes de hacer el cobro

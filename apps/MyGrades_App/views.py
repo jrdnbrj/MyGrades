@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404
 from django.core import serializers
 
-from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
+from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment, LiveEnvironment
 from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersGetRequest, OrdersCaptureRequest
 
 import datetime
@@ -402,7 +402,7 @@ def edit_post_assignment(request, id):
             'Literature': 0, 'History': 1, 'Social Sciences': 2, 'Nature Sciences': 3, 'Biology': 4, 
             'Chemistry': 5, 'Mathematics': 6, 'Physics': 7, 'Engineering': 8, 'Languages': 9,
             'Economics': 10, 'Laws': 11, 'Arts': 12, 'Marketing and Publicity': 13,
-            'Architecture and Design': 14, 'Business and Management': 15, 'Psychology': 16, 'Other...': 17
+            'Architecture and Design': 14, 'Business and Management': 15, 'Psychology': 16, 'Other': 17
         }
         context['trabajo'] = trabajo
         context['option'] = options[trabajo.area]
@@ -512,7 +512,8 @@ def paypal_capture(request, order_id, trabajo_id):
         data = CaptureOrder().capture_order(order_id)
         order = data.result.__dict__['_dict']
         order_amount = order['purchase_units'][0]['payments']['captures'][0]['amount']['value']
-        
+        print('ORDER:', order)
+
         if float(order_amount) == float(trabajo.precio):
             new_order = Order(
                 orderID = order['id'],
@@ -550,10 +551,12 @@ def paypal_capture(request, order_id, trabajo_id):
 
 class PayPalClient:
     def __init__(self):
-        self.client_id = "AWLMBI3BwXhtXFpMZw-BnZLMvw3NjS_52qMjdQPx-e7Oe7Q7_x33nyg4EXcMHVu9ZhdNw_0CNfpgOR2M"
-        self.client_secret = "EIAR_G5gIaS2A2ZDWATudaRzTooP_kkP8PTN4GP11v8RgQfhSiIEiRJNK-k-oESr2lf4cixIp6Tuudci"
+        # self.client_id = "AWLMBI3BwXhtXFpMZw-BnZLMvw3NjS_52qMjdQPx-e7Oe7Q7_x33nyg4EXcMHVu9ZhdNw_0CNfpgOR2M"
+        # self.client_secret = "EIAR_G5gIaS2A2ZDWATudaRzTooP_kkP8PTN4GP11v8RgQfhSiIEiRJNK-k-oESr2lf4cixIp6Tuudci"
+        self.client_id = "AUfE4lMYpalZDXKaXrU-OBU3EpQkEqK8TlpiYplZ3mdJAjtaeSkrt1iktz0GFlMgdPKviucsr5F8BD0G"
+        self.client_secret = "EBGppM5pfBWp-VsvUWeV72-vQUNbvReUimfmPmYfzsqoWM8QpR-gUSTVHythyaXv8B--2ghja28Gu2xb"
 
-        self.environment = SandboxEnvironment(client_id=self.client_id, client_secret=self.client_secret)
+        self.environment = LiveEnvironment(client_id=self.client_id, client_secret=self.client_secret)
         self.client = PayPalHttpClient(self.environment)
 
 class CreateOrder(PayPalClient):
