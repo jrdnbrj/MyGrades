@@ -9,10 +9,10 @@ private ip: 10.120.0.2
 PAYPAL.-
 // Pantalla de pago independiente
 // validar que el precio sea correcto antes de hacer el cobro
--- Solicitar Business
--- Pruebas
+// Solicitar Business
+-- Pruebas Finales
 // Añadir validaciones
-...
+Mensajes de espera
 
 POST ASSIGNMENT.-
 // Agregar Precio
@@ -23,6 +23,7 @@ POST ASSIGNMENT.-
 // validar si el pago se ha efectuado o no
 // Texto explicativo ventana de pago PAYPAL
 // Arreglar diseño después de publicar un trabajo
+Desactivar poder cambiar el precio cuando ya se ha pagado
 
 WORKPLACE.-
 // Mensaje si no existenn resultados
@@ -34,11 +35,15 @@ LANDING PAGE.-
 // Iconos del inicio
 // Fotos de personas de reseñas
 // Texto de reseñas
+Diseño Contact
+Contenido Contact
+Diseño Privacy Policy
+Contenido Privacy Policy
 
 NAVBAR.-
 // Arreglar Navbar responsive
 // Agregar opcion View Assignments
-Agregar opcion ver Terminos y Condiciones
+-- Agregar opcion ver Terminos y Condiciones
 // Agregar opcion pantalla de soporte
 // Alinear elementos
 -- Hacerle mas bonito en general
@@ -60,6 +65,7 @@ mensaje de confirmacion de informacion guardada, alert
 // Perfil con informacion publica
 // Al editar usuario tambien se debe editar el user de django auth
 verificar si deben estar los estados en View Assignments Public
+Guardar informacion de pago
 
 REGISTER and SIGNIN.-
 -- Agregar Register with Google and Facebook
@@ -69,6 +75,7 @@ REGISTER and SIGNIN.-
 -- Agregar recaptcha
 Recuperar contraseña
 // Logo MyGrades
+Mensaje de confirmacion despues de crear cuenta, en el signin
 
 VIEW ASSIGNMENTS.-
 // Corregir diseños del precio y status
@@ -99,14 +106,15 @@ Actualizar trabajos si la fecha terminó
 // Corregir error de id despues de publicar y tomar un trabajo
 Investigar como hacer mas seguro a Django
 Variables de entorno
+Llaves SSL
 
 OTROS.-
-Pantalla terminos y condiciones
-Accesos a terminos y condiciones al crear usuario
+-- Pantalla terminos y condiciones
+// Accesos a terminos y condiciones al crear usuario
 // Verificar la utilidad de tener foto, keywords y about you
 Analizar la posibilidad de enviar mails con herramientas github
 // Pantalla formulario de soporte
-Tamaños de letras de toda las paginas, principalmente las pantallas despues de tomar o publicar un trabajo
-Verificar diseño responsive en toda la aplicacion
+-- Tamaños de letras de toda las paginas, principalmente las pantallas despues de tomar o publicar un trabajo
+-- Verificar diseño responsive en toda la aplicacion
 Calificacion al trabajador por parte de publicador (tal vez siguiente sprint)
 
