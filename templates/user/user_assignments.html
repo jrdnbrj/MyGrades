@@ -52,8 +52,7 @@
                                                 <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
                                             {% endif %}
                                             <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
-                                                <span>Status</span>
-                                                <span class="badge {% if trabajo.estado == 'posted' %} badge-success {% elif trabajo.estado == 'taken' %} badge-info {% elif trabajo.estado == 'sent' %} badge-primary {% elif trabajo.estado == 'closed' %} badge-danger {% else %} badge-light {% endif %} ml-1">{{ trabajo.estado }}</span>
+                                                Status<span class="badge {% if trabajo.estado == 'posted' %} badge-success {% elif trabajo.estado == 'taken' %} badge-info {% elif trabajo.estado == 'sent' %} badge-primary {% elif trabajo.estado == 'closed' %} badge-danger {% else %} badge-light {% endif %} ml-1">{{ trabajo.estado }}</span>
                                             </button>
                                             <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
                                                 Cost<span class="badge badge-light ml-1">${{ trabajo.precio }}</span>
@@ -79,8 +78,9 @@
                                                     </section>
                                                 </section>
                                                 <h5 class="mt-3 ml-3"><strong>Assignment Description</strong></h5>
-                                                <p class="card-text text-truncate">{{ trabajo.descripcion }}</p>
-                                                <div class="row mt-4">
+                                                <span class="card-text text-truncate">{{ trabajo.descripcion }}</span>
+                                                {% if trabajo.archivos.all or trabajo.archivos_trabajador.all %}<hr>{% endif %}
+                                                <div class="row">
                                                     <div class="col">
                                                         {% if trabajo.archivos.all %}
                                                             <h5 class="text-left ml-3" id="archivos_title">Related Documents</h5>
@@ -129,11 +129,13 @@
                                     <div class="card">
                                         <div class="card-header row py-2" style="margin: 0" role="tab">
                                             <h5 class="col"><a data-toggle="collapse" class="align-middle" id="assignment_workplace" aria-expanded="false" aria-controls="accordion-2 .item-{{ trabajo.id }}" href="#accordion-2 .item-{{ trabajo.id }}"><strong>{{ trabajo.titulo }}</strong><br></a></h5>
-                                            <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
-                                            <button type="button" class="btn-sm btn-primary rounded border d-flex align-items-center ml-1" disabled>
-                                                Status <span class="badge badge-light mx-1">{{ trabajo.estado }}</span>
+                                            {% if trabajo.estado != 'closed' %}
+                                                <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
+                                            {% endif %}
+                                            <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
+                                                Status<span class="badge {% if trabajo.estado == 'posted' %} badge-success {% elif trabajo.estado == 'taken' %} badge-info {% elif trabajo.estado == 'sent' %} badge-primary {% elif trabajo.estado == 'closed' %} badge-danger {% else %} badge-light {% endif %} ml-1">{{ trabajo.estado }}</span>
                                             </button>
-                                            <button type="button" class="btn-sm btn-success rounded border d-flex align-items-center ml-1" disabled>
+                                            <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
                                                 Payment<span class="badge badge-light ml-1">${{ trabajo.precio }}</span>
                                             </button>
                                         </div>
@@ -142,12 +144,13 @@
                                                 <div class="row">
                                                     <div class="col-lg-9">
                                                         <small><strong>{{ trabajo.area }}</strong> - {{ trabajo.fecha_expiracion }}</small><br>
-                                                        <h5 class="mt-4"><strong>Assignment Description</strong></h5>
-                                                        <p class="card-text text-justify">{{ trabajo.descripcion }}</p>
+                                                        <h5 class="mt-3 ml-3"><strong>Assignment Description</strong></h5>
+                                                        <span class="card-text text-justify">{{ trabajo.descripcion }}</span>
+                                                        {% if trabajo.archivos.all or trabajo.archivos_trabajador.all %}<hr>{% endif %}
                                                         <div class="row">
                                                             <div class="col">
                                                                 {% if trabajo.archivos.all %}
-                                                                    <h5 class="text-left" id="archivos_title">Related Documents</h5>
+                                                                    <h5 class="text-left ml-3" id="archivos_title">Related Documents</h5>
                                                                     {% for archivo in trabajo.archivos.all %}
                                                                         <div id="file_text_2">
                                                                             +&nbsp<a class="" href="{% url 'media/' archivo %}">{{ archivo }}</a>
@@ -157,7 +160,7 @@
                                                             </div>
                                                             <div class="col">
                                                                 {% if trabajo.archivos_trabajador.all %}
-                                                                    <h5 class="text-left" id="archivos_title">Sent Documents</h5>
+                                                                    <h5 class="text-left ml-3" id="archivos_title">Sent Documents</h5>
                                                                     {% for archivo in trabajo.archivos_trabajador.all %}
                                                                         <div id="file_text_2">
                                                                             +&nbsp<a class="" href="{% url 'media/' archivo %}">{{ archivo }}</a>
@@ -168,10 +171,33 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3">
-                                                        {% if trabajo.estado == 'hidden' or trabajo.estado == 'closed' %}
-                                                            <button class="btn btn-secondary rounded p-2 mx-auto col" type="button">
+                                                        {% if trabajo.estado == 'closed' %}
+                                                            <button class="btn btn-dark rounded p-2 mx-auto col">
                                                                 {{ trabajo.estado }}
                                                             </button>
+                                                        {% elif trabajo.estado == 'sent' %}
+                                                            <div role="tablist" id="accordion-3">
+                                                                <div class="">
+                                                                    <div class="py-0" role="tab">
+                                                                        <h5 class="mx-auto text-center">
+                                                                            <a class="btn btn-warning rounded p-2 mx-auto col" data-toggle="collapse" aria-expanded="true" aria-controls="accordion-3 .item-77" href="#accordion-3 .item-77">
+                                                                                Resend
+                                                                            </a>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div class="collapse item-77" role="tabpanel" data-parent="#accordion-3">
+                                                                        <div class="card-body py-1">
+                                                                            <form method="POST" action="{% url 'send_assignment' %}" enctype="multipart/form-data">{% csrf_token %}
+                                                                                <input type="hidden" name="pk" value="{{ trabajo.pk }}">
+                                                                                <div class="files">
+                                                                                    <input type="file" multiple onchange="readURL(this);" class="custom-file-input py-6" name="archivos" id="archvios" style="cursor: pointer;">
+                                                                                </div>
+                                                                                <button class="btn btn-primary d-block rounded col-5 mx-auto ml-auto p-2" type="submit">Resend</button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         {% else %}
                                                             <div role="tablist" id="accordion-3">
                                                                 <div class="">
@@ -189,7 +215,7 @@
                                                                                 <div class="files">
                                                                                     <input type="file" multiple onchange="readURL(this);" class="custom-file-input py-6" name="archivos" id="archvios" style="cursor: pointer;">
                                                                                 </div>
-                                                                                <button class="btn btn-primary rounded col ml-auto p-2" type="submit">Send</button>
+                                                                                <button class="btn btn-primary d-block rounded col-5 mx-auto ml-auto p-2" type="submit">Send</button>
                                                                             </form>
                                                                         </div>
                                                                     </div>

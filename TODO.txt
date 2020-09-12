@@ -81,18 +81,22 @@ Mensaje de confirmacion despues de crear cuenta, en el signin
 VIEW ASSIGNMENTS.-
 // Corregir diseños del precio y status
 Opciones de borrar y desactivar Assignment
-Agregar opcion de ver y hacer pago
+// Agregar opcion de ver y hacer pago
 Explicacion de las fechas pasando el mouse por encima
-Mejorar diseño en general
-Si es sent, editar a 'Resend'
-Desactivar botones si el tiempo acabo o se elimino o algo
+-- Mejorar diseño en general
+// Si es sent, editar a 'Resend'
+-- Desactivar botones si el tiempo acabo o se elimino o algo
 Eliminar linea subrayada en enlaces, el color se queda
 // Pantalla despues de Edit Assignment dependiendo si pago o no
-Validaciones send assignments
-...
+Validaciones archivos send assignments
+Validacion de entreda send assignments
+Poder ver trabajos eliminados en Taken
+Poder eliminar un taken assignment cuando es closed o cuando el publicador lo ha eliminado
+Poder eliminar un taken assignments en la primera hora
+Que pasa si publique un trabajo y nadie lo tomo y ya se temrino el tiempo? Y el dinero?
 
 CUSTOMER SUPPORT.-
--- Agregar texto explicativo
+// Agregar texto explicativo
 
 SERVIDOR.-
 Arreglar hora del servidor, adelantado por 5 horas en local y digital ocean
