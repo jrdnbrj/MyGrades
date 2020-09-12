@@ -193,7 +193,7 @@ class PostAssignmentForm(forms.Form):
 
     titulo = forms.CharField(min_length=1, max_length=50)
     area = forms.CharField(min_length=1, max_length=50)
-    descripcion = forms.CharField(min_length=0, max_length=2000)
+    descripcion = forms.CharField(min_length=0, max_length=10000)
     fecha_expiracion = forms.DateTimeField(
         input_formats = ['%Y-%m-%dT%H:%M'],
         widget = forms.DateTimeInput(attrs={ 'type': 'datetime-local' }, format='%Y-%m-%dT%H:%M')

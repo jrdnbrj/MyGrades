@@ -59,7 +59,7 @@ class Trabajo(models.Model):
     fecha_asignacion_trabajador = models.DateTimeField( auto_now_add=False, null=True, blank=True)
     fecha_entrega = models.DateTimeField( auto_now_add=False, null=True, blank=True)
     estado = models.CharField(max_length=10, default='hidden')
-    descripcion = models.TextField(max_length=5000)
+    descripcion = models.TextField(max_length=10000)
     archivos = models.ManyToManyField(Archivo, blank=True, related_name='archivos')
     trabajador = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL, related_name='trabajador')
     archivos_trabajador = models.ManyToManyField(Archivo, blank=True, related_name='archivos_trabajador')

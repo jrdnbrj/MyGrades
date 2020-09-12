@@ -106,19 +106,19 @@
     </div>
 </div>
 
-<div class="col-4 mx-auto mt-3"><button class="btn-lg btn-primary border rounded col" type="submit">SUBMIT</button></div>
+<div class="col-4 mx-auto mt-3"><button class="btn-lg btn-success border rounded col" type="submit">SUBMIT</button></div>
 <hr>
     <div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mx-auto">
                     <h1 class="text-center" id="preview_title">Post Assignment Preview</h1><br>
-                    <h2 id="price_badge"><span class="badge badge-pill badge-secondary float-right mr-5" id="price_badge_2"></span></h2>
+                    <h2 id="price_badge"><span class="badge badge-pill badge-primary float-right mr-3" id="price_badge_2"></span></h2>
                     <h4 class="text-left" id="title_area"></h4>
-                    <small class="form-text text-muted ml-3" id="date2"><br></small>
+                    <small class="form-text text-muted ml-3" id="date2"></small>
                     {% comment %} <div class="Push-20"></div> {% endcomment %}
-                    <h4 class="text-left mt-4" id="description_title">Assignment Description</h4>
-                    <p class="form-control-plaintext ml-3 mb-4" id="description2"></p>
+                    <h4 class="text-left mt-4 ml-3" id="description_title">Assignment Description</h4>
+                    <p class="form-control-plaintext mb-4 text-justify" id="description2"></p>
                     {% comment %} <div class="Push-20" style="height: 8.8px;"></div> {% endcomment %}
                     <h4 class="text-left mt-3" id="archivos_title">Related Documents List</h4>
                     <div id="archivos2"></div>
@@ -239,8 +239,8 @@
             var minutos = datetime.getMinutes();
             $('#date2').show();
             $('#date2').html(
-                (mes > 8) ? (mes + 1) : '0' + (mes + 1)  + '/' + ((dia > 9) ? dia : '0' + dia)  + '/' + año + ' ' + 
-                ((horas > 9) ? horas : '0' + horas)  + ':' + ((minutos > 9) ? minutos : '0' + minutos)
+                "<strong>Finish: </strong>" + ((mes > 8) ? (mes + 1) : '0' + (mes + 1)  + '/' + ((dia > 9) ? dia : '0' + dia)  + '/' + año + ' ' + 
+                ((horas > 9) ? horas : '0' + horas)  + ':' + ((minutos > 9) ? minutos : '0' + minutos))
             )
         } else $('#date2').hide();
 

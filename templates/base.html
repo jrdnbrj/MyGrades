@@ -24,22 +24,24 @@
     <link rel="stylesheet" type="text/css" href="{% static '/css/Profile-Edit-Form-1.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/Profile-Edit-Form.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/me.css' %}">
-    <script data-ad-client="ca-pub-3570191339731574" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
-
+    
     {% block navbar %} {% include "navbar.html" %} {% endblock %} 
 
     {% block content %} {% endblock %}
-
-    {% block footer %} {% include "footer.html" %} {% endblock %} 
 
     <script src="{% static '/js/jquery.min.js' %}"></script>
     <script src="{% static '/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static '/js/bs-init.js' %}"></script>
     <script src="{% static '/js/Profile-Edit-Form.js' %}"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AUfE4lMYpalZDXKaXrU-OBU3EpQkEqK8TlpiYplZ3mdJAjtaeSkrt1iktz0GFlMgdPKviucsr5F8BD0G&currency=USD"></script>
+    <script data-ad-client="ca-pub-3570191339731574" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
     {% block js %} {% endblock js %}
 
 </body>
+
+{% block footer %} {% include "footer.html" %} {% endblock %} 
+
 </html>

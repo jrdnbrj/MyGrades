@@ -31,6 +31,8 @@ urlpatterns = [
     path('profile/<status>', user_profile_2, name='user_profile_2'),
     path('post_assignment/edit/<int:id>', edit_post_assignment, name='edit_post_assignment'),
     path('assignments', user_assignments, name='user_assignments'),
+    path('delete_assignment/<int:id>', delete_assignment, name='delete_assignment'),
+    
     path('edit_user/', edit_user, name='edit_user'),
     path('edit_user_info/', edit_user_info, name='edit_user_info'),
     path('edit_payment_method/', edit_payment_method, name='edit_payment_method'),

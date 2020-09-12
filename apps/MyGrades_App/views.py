@@ -59,7 +59,7 @@ def signin(request):
             return redirect('work_place')
         else:
             print('Credenciales incorrectas')
-            context['error'] = 'Incorrect username or password.'
+            context['error'] = 'Incorrect username or password. Please try again.'
             context['username'] = username
     return render(request, 'home/signin.html', context)
 
@@ -144,7 +144,7 @@ def wp_ajax(request):
     if request.is_ajax and request.method == "POST":
         print(request.POST['title'], request.POST['area'], request.POST['date_from'], request.POST['date_to'])
 
-        trabajos = Trabajo.objects.filter(estado='published')
+        trabajos = Trabajo.objects.filter(estado='posted')
         if request.POST['title']:
             trabajos = trabajos.filter(Q(titulo__icontains=request.POST['title']) | Q(descripcion__icontains=request.POST['title']))
         if request.POST['area']:
@@ -172,7 +172,7 @@ def wp_ajax(request):
 def work_place_2(request, pk):
     # trabajo = Trabajo.objects.get(pk = pk)
     trabajo = get_object_or_404(Trabajo, pk=pk)
-    if trabajo.estado != 'published': raise Http404('Que fue veeeee')
+    if trabajo.estado != 'posted': raise Http404('Que fue veeeee')
 
     return render(request, 'work_place/work_place_2.html', {'trabajo': trabajo})
 
@@ -356,6 +356,15 @@ def user_assignments(request):
         'taken_assignments': taken_assignments.order_by('-fecha_publicacion'),
     }
     return render(request, 'user/user_assignments.html', context)
+
+@login_required
+def delete_assignment(request, id):
+    trabajo = Trabajo.objects.get(id=id)
+    if str(trabajo.publicador) != str(request.user) or trabajo.estado == 'taken': raise Http404()
+
+    if request.method == 'POST': trabajo.estado = 'deleted'; trabajo.save()
+    
+    return redirect('user_assignments')
 
 @login_required
 def edit_post_assignment(request, id):
@@ -545,7 +554,7 @@ def paypal_capture(request, order_id, trabajo_id):
             new_order.save()
 
             if new_order.estado == 'COMPLETED':
-                trabajo.estado = 'published'
+                trabajo.estado = 'posted'
                 trabajo.save()
         else:
             print('EL PRECIO PAGADO NO ES EL MISMO QUE EL DEL TRABAJO!!! PILAS WEY')
