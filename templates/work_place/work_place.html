@@ -134,7 +134,7 @@
                     <li class='list-group-item'>` + `
                         <span><a id="assignment_workplace" href="/work_place/` + pk + `"><span class="h4">` + trabajos[i]['fields'].titulo+`</span> - <small>` + trabajos[i]['fields'].area + `</small></a></span>
                         <span style="float: right;" class="badge badge-primary">$ ` + trabajos[i]['fields'].precio + `</span>
-                        <small class="form-text text-muted text-truncate" style='margin: 0px;'>` + trabajos[i]['fields'].descripcion.substring(0, 265) + `<br></small>
+                        <small class="form-text text-muted text-truncate" style='margin: 0px;'>` + trabajos[i]['fields'].descripcion + `<br></small>
                     </li>
                 `);
             }

@@ -1,51 +1,32 @@
 {% extends 'base.html' %}
-{% block title %} {{ title }} WorkPlace {% endblock %}
+{% block title %} WorkPlace {% endblock %}
 {% block content %}
 {% load static %}
 <section class="call-to-action text-white text-center" style="background:url(/static/images/WorkPlace-2.jpg) no-repeat center center;background-size:cover;">
-        <div class="overlay"></div>
-    </section>
-<div>
-        <div class="Push-20" style="height: 14.4px;"></div>
-    </div>
-    <div>
-        <div class="container">
-            <div class="col-lg-7 mx-auto mt-5">
-                    <h1 class="text-left" style="width: 450px;"><strong>Congratulations, the assignment is yours!<strong></h1>
-                    <div class="Push-20" style="height: 20px;"></div>
-                        <small class="form-text text-muted">
-                            We remind you will have until {{ fecha_expiracion }} to submit 
-                             <strong>"{{ titulo }}"</strong> already completed.
-                        </small>
-                    <div class="Push-20" style="height: 7px;"></div>
-                        <small class="form-text text-muted">
-                            We appreciate your time and interest for taking this assignment, also we'd like 
-                            to thank you for using our plataform and trusting our services. Please feel free 
-                            to comment about our services with your friends and in our main page.
-                        </small>
-                    <div class="Push-20" style="height: 50px;"></div>
-                <h4 class="text-left" style="width: 450px;">Best of lucks,&nbsp;</h4>
-                <h4 class="text-left" style="width: 450px;">MyGrades Group</h4>
-                <div class="Push-20" style="height: 28.8px;"></div>
-            </div>
-            <div class="col-md-4 col-lg-3"></div>
+    <div class="overlay"></div>
+</section>
+
+<div class="container">
+    <div class="col-lg-9 mx-auto mt-5">
+        <p class="h2 text-justify">Congratulations, the assignment is yours!</p>
+        <section class="mx-4 mt-4 mb-5">
+            <p class="text-justify">
+                We remind you that you have until <strong>{{ fecha_expiracion }}</strong> to submit "<strong>{{ titulo }}</strong>" already completed.
+            </p>
+            <p class="text-justify">
+                We appreciate your time and interest for taking this assignment, also we'd like to thank you for using our plataform and for trusting in our services. Please feel free to comment about our services with your friends and in our <a href="{% url 'contact' %}" target="_blank">social networks</a>.
+            </p>
+        </section>
+        <p class="h4">Best of lucks,<br>MyGrades Group</p>
+        <div class="row mx-auto mt-4 d-flex flex-row-reverse">
+            <button class="btn btn-primary rounded border my-2 mx-2" type="button" onclick="location.href='{% url 'user_assignments' %}'">View Taken Assignments</button>
+            <button class="btn btn-info rounded border my-2" type="button" onclick="location.href='{% url 'work_place' %}'">Go to Work Place</button>
         </div>
     </div>
-    </div>
-    <div></div>
-    <div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 col-lg-3"></div>
-                <div class="col-md-4 col-lg-3"></div>
-                <div class="col-md-4 col-lg-3"></div>
-                <div class="col-md-4 col-lg-3"><button class="btn btn-primary rounded border" type="button" onclick="location.href='{% url 'work_place' %}'">Back to content</button></div>
-            </div>
-        </div>
-    </div>
-    <div class="Push-20" style="height: 14.4px;"></div>
-    <section class="showcase"></section>
-    <section class="call-to-action text-white text-center" style="background:url(/static/images/Desk-1.jpg) no-repeat center center;background-size:cover;">
-        <div class="overlay"></div>
-    </section>
+</div>
+
+
+<section class="call-to-action text-white text-center" style="background:url(/static/images/Desk-1.jpg) no-repeat center center;background-size:cover;">
+    <div class="overlay"></div>
+</section>
 {% endblock %}

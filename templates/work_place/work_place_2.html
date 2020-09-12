@@ -34,18 +34,18 @@
         </section>
         <section class="my-4">
             <h5 class="">Assignment Description</h5>
-            <section class="ml-4"><p class="text-justify">{{ trabajo.descripcion|linebreaks }}</p></section>
+            <section class="ml-4"><p class="text-justify">{{ trabajo.descripcion|linebreaksbr }}</p></section>
         </section>
         {% if trabajo.archivos.all %}
             <section>
                 <h5 class="text-left">Related Documents</h5>
                 {% for archivo in trabajo.archivos.all %}
-                    <span class="ml-3">+&nbsp<a href="{% url 'media/' archivo %}">{{ archivo }}</a></span><br>
+                    <span class="ml-3" title="You can dowload the files once you take the Assignment.">+&nbsp{{ archivo }}</span><br>
                 {% endfor %}
             </section>
         {% endif %}
         <section class="row mx-auto mt-4 d-flex flex-row-reverse">
-            <button class="btn btn-success rounded border mx-1" type="button" onclick="location.href='{% url 'work_place_3' trabajo.id %}'">Next</button>
+            <button class="btn btn-success rounded border mx-1" type="button" onclick="location.href='{% url 'work_place_3' trabajo.id %}'">Take</button>
             <button class="btn btn-outline-info rounded border mx-1" type="button" onclick="location.href='{% url 'work_place' %}'">Back to Work Place</button>
         </section>
     </div>

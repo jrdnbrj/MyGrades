@@ -17,7 +17,6 @@ Mensajes de espera
 POST ASSIGNMENT.-
 // Agregar Precio
 // Arreglar Titulos Preview
-// agregar recaptcha
 // validar que un usuario no tenga dos trabajos con el mismo nombre
 // pantalla de payment redirect con parametros
 // validar si el pago se ha efectuado o no
@@ -25,12 +24,19 @@ POST ASSIGNMENT.-
 // Arreglar diseño después de publicar un trabajo
 // Desactivar poder cambiar el precio cuando ya se ha pagado
 Que un usuario no pueda coger un trabajo que publico el mismo
+Al ingresar codigo html en descripcion se renderiza en html en post assignment, workplace, view assignments
 
 WORKPLACE.-
 // Mensaje si no existenn resultados
 // Eliminar paginacion si solo hay una pantalla
 // Ver usuario al abrir un Assignment, poder acceder a su informacion publica
--- Arreglar diseño después de escoger un trabajo Wokrplace2v
+// Arreglar diseño después de escoger un trabajo Wokrplace2v
+Pagarle unicamente cuando el publicador haya aceptado la entrega
+Que pasa si el publicador no aceptó la entrega despues de haber iniciado sesion 
+    despues de haberse entregado? Deberia contantarme para preguntarle si la tarea fue correcta, 
+    y decirle al trabajador que si no recibio el pago en el dia indicado, que nos escriba
+Retornar trabajo en workplace 3 y 4
+Iconos de archivos si hay archivos
 
 LANDING PAGE.-
 // Iconos del inicio
@@ -48,11 +54,12 @@ NAVBAR.-
 // Agregar opcion pantalla de soporte
 // Alinear elementos
 -- Hacerle mas bonito en general
+Color MyGrades en boton
 
 PERFIL.-
 // KeyWords sin comas y placeholder
 // About You con placeholder
-// KeyWords en secciones independientes
+++ KeyWords en secciones independientes
 // Agregar informacion bancaria para transferencias {
     Nombre de la institucion
     tipo de cuenta
@@ -60,27 +67,29 @@ PERFIL.-
     cedula o Recuperar
     Numero de cuenta
 }
-historial de pagos y cobros
+++ historial de pagos y cobros
 // Actualizacion de foto con js
 // mensaje de confirmacion de informacion guardada, alert
 // Perfil con informacion publica
 // Al editar usuario tambien se debe editar el user de django auth
 verificar si deben estar los estados en View Assignments Public
 // Guardar informacion de pago
+Mostrar metodo de pago en perfil
 
 REGISTER and SIGNIN.-
 -- Agregar Register with Google and Facebook
 -- Agergar SignIn with Google and Facebook
 // Cambiar diseño signin
 // Cambiar diseño de error de credenciales
--- Agregar recaptcha
+Agregar recaptcha signin
 Recuperar contraseña
 // Logo MyGrades
 Mensaje de confirmacion despues de crear cuenta, en el signin
 
 VIEW ASSIGNMENTS.-
 // Corregir diseños del precio y status
-Opciones de borrar y desactivar Assignment
+// Opciones de borrar assignment 
+desactivar Assignment
 // Agregar opcion de ver y hacer pago
 Explicacion de las fechas pasando el mouse por encima
 -- Mejorar diseño en general
@@ -89,24 +98,28 @@ Explicacion de las fechas pasando el mouse por encima
 Eliminar linea subrayada en enlaces, el color se queda
 // Pantalla despues de Edit Assignment dependiendo si pago o no
 Validaciones archivos send assignments
-Validacion de entreda send assignments
+Validacion de entrega send assignments
 Poder ver trabajos eliminados en Taken
 Poder eliminar un taken assignment cuando es closed o cuando el publicador lo ha eliminado
 Poder eliminar un taken assignments en la primera hora
-Que pasa si publique un trabajo y nadie lo tomo y ya se temrino el tiempo? Y el dinero?
+* Que pasa si publique un trabajo y nadie lo tomo y ya se temrino el tiempo? Y el dinero? Devulucion de dinero automatica, mensaje indicando que debe esperar que se le deposite
+Agregar estado aceptado
+Agregar opcion de poder aceptar o rechazar la entrega del deber
+Iconos de archivos si hay archivos
 
 CUSTOMER SUPPORT.-
 // Agregar texto explicativo
+Acceder a politica de privacidad
 
 SERVIDOR.-
 Arreglar hora del servidor, adelantado por 5 horas en local y digital ocean
 // Middleware para seguridad de assignments, archivos e inf de otros usuarios
--- Verificar urls correctas y seguras
+// Verificar urls correctas y seguras
 Verificar SEO
 Migrar a postgres (investigar la mejor BDD)
 -- Validar tamaño maximo de archivos a 10MB
 Validar maximo de 5 archivos por trabajo
-Actualizar trabajos si la fecha terminó
+-- Actualizar trabajos si la fecha terminó
 -- Ventana de error 404 personalizada
 -- Ventana de errores que no sean 404 personalizada
 // Corregir error de id despues de publicar y tomar un trabajo
@@ -121,7 +134,16 @@ OTROS.-
 // Verificar la utilidad de tener foto, keywords y about you
 Analizar la posibilidad de enviar mails con herramientas github
 // Pantalla formulario de soporte
--- Tamaños de letras de toda las paginas, principalmente las pantallas despues de tomar o publicar un trabajo
+// Tamaños de letras de toda las paginas, principalmente las pantallas despues de tomar o publicar un trabajo
 -- Verificar diseño responsive en toda la aplicacion
 Calificacion al trabajador por parte de publicador (tal vez siguiente sprint)
+Pruebas grupales con el grupo
+Pruebas grupales con personas externas
+Facilitar visualizacion (admin) {
+    datos bancarios
+    customer SUPPORT
+    personas que sus tareas fueron aceptadas y esperan un pago
+    personas que publicaron y nadie tomo y esperan el reembolso
+    de la tabla order con pagina de paypal para comparacion y verificacion
+}
 

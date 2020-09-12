@@ -137,8 +137,7 @@ def post_assignment_payment(request, trabajo):
 #___________________________WORK PLACE_____________________________
 
 @login_required
-def work_place(request): 
-    return render(request, 'work_place/work_place.html', {})
+def work_place(request): return render(request, 'work_place/work_place.html', {})
 
 def wp_ajax(request):
     if request.is_ajax and request.method == "POST":
@@ -169,20 +168,25 @@ def wp_ajax(request):
     return JsonResponse(data={'len': trabajos.count, 'pags': pags}, safe=False)
 
 @login_required
-def work_place_2(request, pk):
-    # trabajo = Trabajo.objects.get(pk = pk)
+def work_place_2(request, pk): #preview
     trabajo = get_object_or_404(Trabajo, pk=pk)
-    if trabajo.estado != 'posted': raise Http404('Que fue veeeee')
+    if trabajo.estado != 'posted': raise Http404()
 
-    return render(request, 'work_place/work_place_2.html', {'trabajo': trabajo})
+    return render(request, 'work_place/work_place_2.html', { 'trabajo': trabajo })
 
 @login_required
-def work_place_3(request, id):
+def work_place_3(request, id): #conditions
     trabajo = get_object_or_404(Trabajo, id=id)
-    fecha_expiracion = trabajo.fecha_expiracion
-    if trabajo.trabajador: raise Http404()
+    if trabajo.estado != 'posted': raise Http404()
 
-    context = {'fecha_expiracion': fecha_expiracion, 'id': id}
+    if request.method == 'POST':
+        trabajo.trabajador = Usuario.objects.get(username = request.user)
+        trabajo.estado = 'taken'
+        trabajo.fecha_asignacion_trabajador = datetime.datetime.now()
+        trabajo.save()
+        return redirect('work_place_4', id=id)
+
+    context = { 'fecha_expiracion': trabajo.fecha_expiracion, 'id': id }
     return render(request, 'work_place/work_place_3.html', context)
 
 @login_required
@@ -197,10 +201,7 @@ def download_file(request, path):
 @login_required
 def work_place_4(request, id):
     trabajo = Trabajo.objects.get(id = id)
-    trabajo.trabajador = Usuario.objects.get(username = request.user.username)
-    trabajo.estado = 'taken'
-    trabajo.fecha_asignacion_trabajador = datetime.datetime.now()
-    trabajo.save()
+    if str(trabajo.trabajador) != str(request.user): raise Http404()
 
     context = {
         'fecha_expiracion': trabajo.fecha_expiracion,
