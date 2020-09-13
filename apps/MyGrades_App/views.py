@@ -177,7 +177,8 @@ def work_place_2(request, pk): #preview
 @login_required
 def work_place_3(request, id): #conditions
     trabajo = get_object_or_404(Trabajo, id=id)
-    if trabajo.estado != 'posted': raise Http404()
+    if trabajo.estado != 'posted' or str(trabajo.publicador) == str(request.user): 
+        raise Http404()
 
     if request.method == 'POST':
         trabajo.trabajador = Usuario.objects.get(username = request.user)
@@ -361,10 +362,37 @@ def user_assignments(request):
 @login_required
 def delete_assignment(request, id):
     trabajo = Trabajo.objects.get(id=id)
-    if str(trabajo.publicador) != str(request.user) or trabajo.estado == 'taken': raise Http404()
+    if str(trabajo.publicador) != str(request.user) or trabajo.estado == 'taken' or trabajo.estado == 'rejected' or trabajo.estado == 'sent': 
+        raise Http404()
 
     if request.method == 'POST': trabajo.estado = 'deleted'; trabajo.save()
     
+    return redirect('user_assignments')
+
+@login_required
+def accept_reject(request, id):
+    trabajo = Trabajo.objects.get(id=id)
+    if str(trabajo.publicador) != str(request.user) or not (trabajo.estado == 'sent' or trabajo.estado == 'accepted' or trabajo.estado == 'rejected'): 
+        raise Http404()
+    
+    if request.POST['accept_reject'] == 'accept': trabajo.estado = 'accepted'
+    elif request.POST['accept_reject'] == 'reject': trabajo.estado = 'rejected'
+    trabajo.save()
+
+    return redirect('user_assignments')
+
+@login_required
+def open_close(request, id):
+    trabajo = Trabajo.objects.get(id=id)
+    if str(trabajo.publicador) != str(request.user) or not (trabajo.estado == 'posted' or trabajo.estado == 'sent' or trabajo.estado == 'closed'): 
+        raise Http404()
+    
+    if request.POST['open_close'] == 'open': 
+        if trabajo.trabajador: trabajo.estado = 'sent'
+        else: trabajo.estado = 'posted'
+    elif request.POST['open_close'] == 'close': trabajo.estado = 'closed'
+    trabajo.save()
+
     return redirect('user_assignments')
 
 @login_required

@@ -23,7 +23,7 @@ POST ASSIGNMENT.-
 // Texto explicativo ventana de pago PAYPAL
 // Arreglar diseño después de publicar un trabajo
 // Desactivar poder cambiar el precio cuando ya se ha pagado
-Que un usuario no pueda coger un trabajo que publico el mismo
+// Que un usuario no pueda coger un trabajo que publico el mismo
 Al ingresar codigo html en descripcion se renderiza en html en post assignment, workplace, view assignments
 
 WORKPLACE.-
@@ -99,6 +99,8 @@ Eliminar linea subrayada en enlaces, el color se queda
 // Pantalla despues de Edit Assignment dependiendo si pago o no
 Validaciones archivos send assignments
 Validacion de entrega send assignments
+A veces no se previsualiza nada al hacer una entrega pero si se sube el archivo
+Pasado las 3 horas poder volver a publicar
 Poder ver trabajos eliminados en Taken
 Poder eliminar un taken assignment cuando es closed o cuando el publicador lo ha eliminado
 Poder eliminar un taken assignments en la primera hora
@@ -137,6 +139,7 @@ Analizar la posibilidad de enviar mails con herramientas github
 // Tamaños de letras de toda las paginas, principalmente las pantallas despues de tomar o publicar un trabajo
 -- Verificar diseño responsive en toda la aplicacion
 Calificacion al trabajador por parte de publicador (tal vez siguiente sprint)
+Agregar iconos donde se pueda agregar de https://simplelineicons.github.io/
 Pruebas grupales con el grupo
 Pruebas grupales con personas externas
 Facilitar visualizacion (admin) {
@@ -146,4 +149,9 @@ Facilitar visualizacion (admin) {
     personas que publicaron y nadie tomo y esperan el reembolso
     de la tabla order con pagina de paypal para comparacion y verificacion
 }
+++ Optimizar paginacion
+++ Optimizar areas de assignment
+++ Optimizar subida de archivos
+++ Optimizar busqueda y carga del usuario de foto de perfil, usar framework
+++ Validar tipo archivo y tamaño de foto de perfil 
 

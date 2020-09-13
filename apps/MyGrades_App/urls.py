@@ -23,6 +23,8 @@ urlpatterns = [
     path('post_assignment/<int:trabajo>', post_assignment_payment, name = 'post_assignment_payment'),
     path('post_assignment/<int:id>/edit', edit_post_assignment, name='edit_post_assignment'),
     path('delete_assignment/<int:id>', delete_assignment, name='delete_assignment'),
+    path('assignment/<int:id>/accept_reject', accept_reject, name='accept_reject'),
+    path('assignment/<int:id>/open_close', open_close, name='open_close'),
     path('assignment/send', send_assignment, name='send_assignment'),
 
     path('work_place', work_place, name='work_place'),
@@ -46,5 +48,5 @@ urlpatterns = [
 
 
 
-    path('<str:username>', public_profile, name='public_profile'),
+    path('@<str:username>', public_profile, name='public_profile'),
 ]
