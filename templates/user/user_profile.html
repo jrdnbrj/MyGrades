@@ -28,9 +28,9 @@
                 <div class="form-group">
                     <h4>About you</h4>
                     {% if usuario.info_about %}
-                        <span class="form-control-plaintext col-10 mx-auto px-4">{{ usuario.info_about }}</span>
+                        <span class="form-control-plaintext col-10 mx-auto px-4 mb-5">{{ usuario.info_about }}</span>
                     {% else %}
-                        <span class="form-control-plaintext text-muted"><small>Has not been added yet.</small></span>
+                        <span class="form-control-plaintext text-muted mb-5"><small>Has not been added yet.</small></span>
                     {% endif %}
                 </div>
             </section>
@@ -62,14 +62,52 @@
                             <span class="form-control-plaintext ml-3">{{ usuario.celular }}</span>
                         </div>
                     </div>
+                </div><hr>
+                 <div class="form-group">
+                        <label class="h4"><strong>Payment Method</strong></label>
+                        {% if payment.tipo_pago %}
+                            <div class="form-row">
+                                <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <label><strong>Payment Type</strong></label>
+                                    <br><span class="ml-3 mb-3">{{ payment.tipo_pago }}</span>
+                                </div>
+                                {% if payment.paypal_email %}
+                                    <div class="col-sm-12 col-md-6 col-lg-9 mb-3">
+                                        <label><strong>PayPal Email</strong></label>
+                                        <br><span class="ml-3">{{ payment.paypal_email }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3">
+                                        <label><strong>Intitution Name</strong></label>
+                                        <br><span class="ml-3">{{ payment.institucion }}</span>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3">
+                                        <label><strong>Full Name</strong></label>
+                                        <br><span class="ml-3">{{ payment.nombre_apellido }}</span>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                                        <label><strong>DNI (Cédula o RUC)</strong></label>
+                                        <br><span class="ml-3">{{ payment.cedula_ruc }}</span>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                                        <label><strong>Account Number</strong></label>
+                                        <br><span class="ml-3">{{ payment.numero_cuenta }}</span>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                                        <label><strong>Account Type</strong></label>
+                                        <br><span class="ml-3">{{ payment.tipo_cuenta }}</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <span class="form-control-plaintext text-muted ml-3"><small>Has not been added yet.</small></span>
+                        {% endif %}
+                    <hr>
                 </div>
-                <div class="Push-20" style="height: 28.8px;"></div>
-                <small class="form-text text-muted text-justify">
-                    Only your username, profile picture, key words, what you wrote about you and your Posted Assignments will be visible to other users, 
+                <small class="form-text text-muted text-justify mb-5">
+                    Only your username, profile picture, key words, what you wrote about you, your Posted Assignments will be visible to other users, 
                     information about your contact and your payment method will remain private. <a href="{% url 'public_profile' usuario.username %}">Take a look.</a>
                 </small>
-                <div class="Push-20" style="height: 28.8px;"></div>
-                <button class="btn btn-info d-lg-flex mx-auto rounded" onclick="location.href='{% url 'user_assignments' %}'">View Assignments</button>
             </div>
         </div>
     </div>

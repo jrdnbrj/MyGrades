@@ -46,7 +46,7 @@
         {% endif %}
         <section class="row mx-auto mt-4 d-flex flex-row-reverse">
             {% if trabajo.publicador.username != user.username %}
-                <button class="btn btn-success rounded border mx-1" type="button" onclick="location.href='{% url 'work_place_3' trabajo.id %}'">Take</button>
+                <button class="btn btn-success rounded border mx-1" type="button" onclick="location.href='{% url 'work_place_3' trabajo.id %}'">Take Assignment</button>
             {% endif %}
             <button class="btn btn-outline-info rounded border mx-1" type="button" onclick="location.href='{% url 'work_place' %}'">Back to Work Place</button>
         </section>

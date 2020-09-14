@@ -48,13 +48,23 @@
                 {% else %}
                 {% endif %}
                     {% for assignment in assignments %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <a href="{% url 'work_place_2' assignment.pk %}"><span class="h5"><strong>{{ assignment.titulo }}</strong></span> - <small>{{ assignment.area }}</small></a>
-                            <section class="col-2">
-                                <span class="badge badge-primary badge-pill mb-1">${{ assignment.precio }}</span><br>
-                                <span class="badge badge-success badge-pill">{{ assignment.estado }}</span>
-                            </section>
-                        </li>
+                        {% if assignment.estado == 'taken' %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="h5 text-primary"><strong>{{ assignment.titulo }}</strong>- <small>{{ assignment.area }}</small></span>
+                                <section class="">
+                                    <span class="badge badge-primary badge-pill mb-1">${{ assignment.precio }}</span><br>
+                                    <span class="badge badge-info badge-pill">{{ assignment.estado }}</span>
+                                </section>
+                            </li>  
+                        {% elif assignment.estado == 'posted' %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="{% url 'work_place_2' assignment.pk %}"><span class="h5"><strong>{{ assignment.titulo }}</strong></span> - <small>{{ assignment.area }}</small></a>
+                                <section class="">
+                                    <span class="badge badge-primary badge-pill mb-1">${{ assignment.precio }}</span><br>
+                                    <span class="badge badge-success badge-pill">{{ assignment.estado }}</span>
+                                </section>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>

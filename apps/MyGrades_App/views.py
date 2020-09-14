@@ -212,28 +212,28 @@ def work_place_4(request, id):
 
 #___________________________USER PROFILE_____________________________
 
+def user_and_payment(request):
+    user = User.objects.get(username=request.user)
+    usuario = Usuario.objects.get(username=request.user)
+    payment = Cuenta_Bancaria.objects.filter(usuario__username=request.user).first()
+    return user, usuario, payment
+
 @login_required
 def user_profile(request):
-    usuario = Usuario.objects.get(username = request.user)
-    return render(request, 'user/user_profile.html', {'usuario': usuario})
+    _, usuario, payment = user_and_payment(request)
+    return render(request, 'user/user_profile.html', {'usuario': usuario, 'payment': payment })
 
 def public_profile(request, username):
     try: usuario = Usuario.objects.get(username=username)
     except: raise Http404()
 
     assignments = Trabajo.objects.filter(publicador__username=username) \
-        .exclude(estado='deleted').exclude(estado='hidden').order_by('-fecha_publicacion')
+        .filter(Q(estado='posted') | Q(estado='taken')).order_by('-fecha_publicacion')
     context = {
         'usuario': usuario,
         'assignments': assignments
     }
     return render(request, 'user/public_profile.html', context)
-    
-def user_and_payment(request):
-    user = User.objects.get(username=request.user)
-    usuario = Usuario.objects.get(username=request.user)
-    payment = Cuenta_Bancaria.objects.filter(usuario__username=request.user).first()
-    return user, usuario, payment
 
 @login_required
 def user_profile_2(request, status):
@@ -351,7 +351,7 @@ def verify_assignments(assignments):
 def user_assignments(request):
     user = Usuario.objects.get(username=request.user)
     posted_assignments = Trabajo.objects.filter(publicador__username=request.user).exclude(estado='deleted')
-    taken_assignments = Trabajo.objects.filter(trabajador__username=request.user).exclude(estado='deleted')
+    taken_assignments = Trabajo.objects.filter(trabajador__username=request.user)
 
     context = {
         'posted_assignments': posted_assignments.order_by('-fecha_publicacion'),
@@ -585,18 +585,14 @@ def paypal_capture(request, order_id, trabajo_id):
             if new_order.estado == 'COMPLETED':
                 trabajo.estado = 'posted'
                 trabajo.save()
+            return JsonResponse(order)
         else:
             print('EL PRECIO PAGADO NO ES EL MISMO QUE EL DEL TRABAJO!!! PILAS WEY')
             print(float(order_amount), float(trabajo.precio))
-            return JsonResponse({ 
-                'details': "It seems that there was an error with the transaction. It is possible that the charge has been debited from your payment account, if you had any problems please contact us on the Customer Support." 
-            })
 
-        return JsonResponse(order)
-    else:
-        return JsonResponse({ 
-            'details': "It seems that there was an error with the transaction. It is possible that the charge has been debited from your payment account, if you had any problems please contact us on the Customer Support." 
-        })
+    return JsonResponse({ 
+        'details': "It seems that there was an error with the transaction. It is possible that the charge has been debited from your payment account, if you had any problems please contact us on the Customer Support." 
+    })
 
 class PayPalClient:
     def __init__(self):

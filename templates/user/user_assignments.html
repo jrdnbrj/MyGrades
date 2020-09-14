@@ -103,7 +103,7 @@
                                             <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
                                         {% endif %}
                                         <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
-                                            Status<span class="badge {% if trabajo.estado == 'posted' %} badge-success {% elif trabajo.estado == 'taken' %} badge-info {% elif trabajo.estado == 'sent' %} badge-primary {% elif trabajo.estado == 'closed' %} badge-danger {% elif trabajo.estado == 'accepted' or trabajo.estado == 'rejected' %} badge-warning {% else %} badge-light {% endif %} ml-1">{{ trabajo.estado }}</span>
+                                            Status<span class="badge {% if trabajo.estado == 'posted' %} badge-success {% elif trabajo.estado == 'taken' %} badge-info {% elif trabajo.estado == 'sent' %} badge-primary {% elif trabajo.estado == 'closed' %} badge-danger {% elif trabajo.estado == 'accepted' %} badge-warning text-success {% elif trabajo.estado == 'rejected' %} badge-warning text-danger {% else %} badge-dark {% endif %} ml-1">{{ trabajo.estado }}</span>
                                         </button>
                                         <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
                                             Cost<span class="badge badge-light ml-1">${{ trabajo.precio }}</span>
