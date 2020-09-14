@@ -152,7 +152,7 @@ def wp_ajax(request):
             trabajos = trabajos.exclude(fecha_expiracion__lt=request.POST['date_from'])
         if request.POST['date_to']:
             trabajos = trabajos.exclude(fecha_publicacion__gt=request.POST['date_to'])
-        trabajos = trabajos.order_by('-fecha_publicacion')
+        trabajos = trabajos.order_by('-fecha_editado')
 
         # len_trabajos = len(trabajos)
         page = request.POST['page']
@@ -384,12 +384,10 @@ def accept_reject(request, id):
 @login_required
 def open_close(request, id):
     trabajo = Trabajo.objects.get(id=id)
-    if str(trabajo.publicador) != str(request.user) or not (trabajo.estado == 'posted' or trabajo.estado == 'sent' or trabajo.estado == 'closed'): 
+    if str(trabajo.publicador) != str(request.user) or not (trabajo.estado == 'posted' or trabajo.estado == 'closed'): 
         raise Http404()
     
-    if request.POST['open_close'] == 'open': 
-        if trabajo.trabajador: trabajo.estado = 'sent'
-        else: trabajo.estado = 'posted'
+    if request.POST['open_close'] == 'open': trabajo.estado = 'posted'
     elif request.POST['open_close'] == 'close': trabajo.estado = 'closed'
     trabajo.save()
 
@@ -400,14 +398,14 @@ def edit_post_assignment(request, id):
     context = { 'title': 'Edit' }
 
     trabajo = Trabajo.objects.get(id = id)
-    if str(trabajo.publicador) != str(request.user): raise Http404()
+    if str(trabajo.publicador) != str(request.user) or trabajo.estado == 'sent' or trabajo.estado == 'accepted': 
+        raise Http404()
     
     if request.method == 'POST':
 
         form = PostAssignmentForm(request.POST, status=trabajo.estado)
         if form.is_valid():
             trabajo = form.save(commit=False, instance=trabajo)
-            # trabajo.publicador = Usuario.objects.get(username = request.user)
             trabajo.save()
 
             if 'files_from_validation' in request.POST:

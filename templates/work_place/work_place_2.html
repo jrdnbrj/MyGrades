@@ -10,7 +10,13 @@
     <div class="col-lg-10 mx-auto my-5">
         <section class="row">
             <section class="col">
-                <h2 class="text-left">{{ trabajo.titulo }}&nbsp;<small>-&nbsp;{{ trabajo.area }}</small></h2>
+                <h2 class="text-left d-flex align-items-center">
+                    {% if trabajo.publicador.username == user.username %}
+                        <button class="btn btn-sm btn-warning border rounded mr-1" title="Edit Assignment" onclick="location.href='{% url 'edit_post_assignment' trabajo.id %}'" data-toggle="tooltip" rel="tooltip" data-placement="bottom">
+                            <i class="icon-note text-white"></i>
+                        </button>
+                    {% endif %}{{ trabajo.titulo }}<small> - {{ trabajo.area }}</small>
+                </h2>
                 <section class="ml-3">
                     <section class="float-left">
                         {% if trabajo.publicador.foto %}

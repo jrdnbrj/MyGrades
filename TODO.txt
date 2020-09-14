@@ -108,6 +108,10 @@ Poder eliminar un taken assignments en la primera hora
 Agregar estado aceptado
 Agregar opcion de poder aceptar o rechazar la entrega del deber
 Iconos de archivos si hay archivos
+Que no aparezca la hora si el tiempo es 0
+Desactivar la opcion de cambiar a rejected despues de que el tiempo es 0
+Tener que decir pasar a taken para poder volver a entregar, tambien puede no hacerlo y pasaria a posted, modal en Titulos
+Analizar estados si el tiempo finaliza
 
 CUSTOMER SUPPORT.-
 // Agregar texto explicativo

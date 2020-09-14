@@ -54,6 +54,7 @@
                                                     <button type="submit" class="btn btn-success" name="accept_reject" value="accept">Accept</button>
                                                     <button type="submit" class="btn btn-danger" name="accept_reject" value="reject">Reject</button>
                                                 </form>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                             </div>
                                         </div>
                                     </div>
@@ -66,12 +67,13 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             </div>
                                             <div class="modal-body text-justify">
-                                                <p>Are you sure to close "<strong>{{ trabajo.titulo }}</strong>"? This action will make the Assignment disappear from the Work Place or that the worker cannot modify the delivery, you can reopen it.</p>
+                                                <p>Are you sure to close "<strong>{{ trabajo.titulo }}</strong>"? This action will make the Assignment disappear from the Work Place, you can make it reappear.</p>
                                             </div>
                                             <div class="modal-footer">
                                                 <form method="POST" action="{% url 'open_close' trabajo.id %}">{% csrf_token %}
                                                     <button type="submit" class="btn btn-success" name="open_close" value="close">Close</button>
                                                 </form>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                             </div>
                                         </div>
                                     </div>
@@ -80,16 +82,17 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Open Assignment</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">Post Assignment</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             </div>
                                             <div class="modal-body text-justify">
-                                                <p>This action will make "<strong>{{ trabajo.titulo }}</strong>" appear in the Work Place again if no one has taken it yet, otherwise, you will allow the worker to modify the delivery.</p>
+                                                <p>This action will make "<strong>{{ trabajo.titulo }}</strong>" appear in the Work Place and someone could take it.</p>
                                             </div>
                                             <div class="modal-footer">
                                                 <form method="POST" action="{% url 'open_close' trabajo.id %}">{% csrf_token %}
-                                                    <button type="submit" class="btn btn-success" name="open_close" value="open">Open</button>
+                                                    <button type="submit" class="btn btn-success" name="open_close" value="open">Post</button>
                                                 </form>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                             </div>
                                         </div>
                                     </div>
@@ -99,7 +102,7 @@
                                         <h5 class="col align-middle d-flex align-items-center">
                                             <a data-toggle="collapse" class="align-top" id="assignment_workplace" aria-expanded="false" aria-controls="accordion-1 .item-{{ trabajo.id }}" href="#accordion-1 .item-{{ trabajo.id }}">{{ trabajo.titulo }}</a>
                                         </h5>
-                                        {% if trabajo.estado != 'closed' %}
+                                        {% if trabajo.fecha_expiracion|timesince != " 0 minutes " %}
                                             <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
                                         {% endif %}
                                         <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
@@ -131,17 +134,17 @@
                                                             <i class="icon-paypal"></i>
                                                         </button>
                                                     {% endif %}
-                                                    {% if trabajo.estado != 'sent' %}
+                                                    {% if trabajo.estado != 'sent' and trabajo.estado != 'accepted' %}
                                                         <button class="btn btn-sm btn-warning border rounded" title="Edit Assignment" onclick="location.href='{% url 'edit_post_assignment' trabajo.id %}'" data-toggle="tooltip" rel="tooltip" data-placement="bottom">
                                                             <i class="icon-note text-white"></i></button>
                                                     {% endif %}
-                                                    {% if trabajo.estado == 'posted' or trabajo.estado == 'sent' %}
+                                                    {% if trabajo.estado == 'posted' %}
                                                         <button class="btn btn-sm btn-info border rounded" title="Close Assignment" data-toggle="modal" data-target="#close-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
                                                             <i class="icon-minus"></i>
                                                         </button>
                                                     {% endif %}
                                                     {% if trabajo.estado == 'closed' %}
-                                                        <button class="btn btn-sm btn-info border rounded" title="Open Assignment" data-toggle="modal" data-target="#open-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
+                                                        <button class="btn btn-sm btn-info border rounded" title="Post Assignment" data-toggle="modal" data-target="#open-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
                                                             <i class="icon-plus"></i>
                                                         </button>
                                                     {% endif %}
@@ -187,9 +190,7 @@
                         {% else %}
                                 
                             <br><p>You haven't posted any assignment yet. For assignments to appear on this section you must create an assignment to be taken by another user.</p>
-                            <div class="Push-20"></div>
-                            <h4 class="text-left" style="width: 610px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Get Started!</h4>
+                            <h4 class="text-left">Get Started!</h4>
                                 <button class="btn btn-primary rounded d-lg-flex my-auto" type="button" style="margin-left: 400px;" onclick="location.href='{% url 'post_assignment' %}'">Post Asignment</button>
                         {% endif %}
 
@@ -209,7 +210,14 @@
                                             <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
                                         {% endif %}
                                         <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
-                                            Status<span class="badge {% if trabajo.estado == 'posted' %} badge-success {% elif trabajo.estado == 'taken' %} badge-info {% elif trabajo.estado == 'sent' %} badge-primary {% elif trabajo.estado == 'closed' %} badge-danger {% else %} badge-light {% endif %} ml-1">{{ trabajo.estado }}</span>
+                                            Status<span class="badge 
+                                                {% if trabajo.estado == 'taken' %} badge-info 
+                                                {% elif trabajo.estado == 'sent' %} badge-primary 
+                                                {% elif trabajo.estado == 'accepted' or trabajo.estado == 'deleted' %} badge-success 
+                                                {% elif trabajo.estado == 'rejected' %} badge-danger 
+                                                {% else %} badge-light {% endif %} ml-1">
+                                                {% if trabajo.estado == 'deleted' %} accepted{% else %}{{ trabajo.estado }}{% endif %}
+                                            </span>
                                         </button>
                                         <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
                                             Payment<span class="badge badge-light ml-1">${{ trabajo.precio }}</span>
@@ -219,7 +227,9 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-lg-9">
-                                                    <small><strong>{{ trabajo.area }}</strong> - {{ trabajo.fecha_expiracion }}</small><br>
+                                                    <small data-toggle="tooltip" rel="tooltip" data-placement="bottom" title="Area - Start Date / Deadline / Delivery Date - Publisher">
+                                                        <strong>{{ trabajo.area }}</strong> - {{ trabajo.fecha_publicacion }} / {{ trabajo.fecha_expiracion }} / {{ trabajo.fecha_entrega }} - <a href="{% url 'public_profile' trabajo.publicador %}">{{ trabajo.publicador }}</a>
+                                                    </small><br>
                                                     <h5 class="mt-3 ml-3"><strong>Assignment Description</strong></h5>
                                                     <span class="card-text text-justify">{{ trabajo.descripcion | linebreaksbr }}</span>
                                                     {% if trabajo.archivos.all or trabajo.archivos_trabajador.all %}<hr>{% endif %}
@@ -247,9 +257,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-3">
-                                                    {% if trabajo.estado == 'closed' %}
+                                                    {% if trabajo.estado == 'deleted' %}
                                                         <button class="btn btn-dark rounded p-2 mx-auto col">
-                                                            {{ trabajo.estado }}
+                                                            closed
                                                         </button>
                                                     {% elif trabajo.estado == 'sent' %}
                                                         <div role="tablist" id="accordion-3">
