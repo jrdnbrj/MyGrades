@@ -89,28 +89,28 @@ Mensaje de confirmacion despues de crear cuenta, en el signin
 VIEW ASSIGNMENTS.-
 // Corregir diseños del precio y status
 // Opciones de borrar assignment 
-desactivar Assignment
+// desactivar Assignment
 // Agregar opcion de ver y hacer pago
-Explicacion de las fechas pasando el mouse por encima
+// Explicacion de las fechas pasando el mouse por encima
 -- Mejorar diseño en general
 // Si es sent, editar a 'Resend'
 -- Desactivar botones si el tiempo acabo o se elimino o algo
 Eliminar linea subrayada en enlaces, el color se queda
 // Pantalla despues de Edit Assignment dependiendo si pago o no
-Validaciones archivos send assignments
-Validacion de entrega send assignments
-A veces no se previsualiza nada al hacer una entrega pero si se sube el archivo
+// Validaciones archivos send assignments
+// Validacion de entrega send assignments
+// A veces no se previsualiza nada al hacer una entrega pero si se sube el archivo
 Pasado las 3 horas poder volver a publicar
-Poder ver trabajos eliminados en Taken
-Poder eliminar un taken assignment cuando es closed o cuando el publicador lo ha eliminado
-Poder eliminar un taken assignments en la primera hora
+// Poder ver trabajos eliminados en Taken
+Poder eliminar un taken assignments en los primeros 15 minutos
 * Que pasa si publique un trabajo y nadie lo tomo y ya se temrino el tiempo? Y el dinero? Devulucion de dinero automatica, mensaje indicando que debe esperar que se le deposite
-Agregar estado aceptado
-Agregar opcion de poder aceptar o rechazar la entrega del deber
+* Que pasa si publique un trabajo, alguien lo tomo, lo hizo mal y lo rechace pero ya no quiero que alguien mas lo haga y lo borre?
+// Agregar estado aceptado
+// Agregar opcion de poder aceptar o rechazar la entrega del deber
 Iconos de archivos si hay archivos
 Que no aparezca la hora si el tiempo es 0
 Desactivar la opcion de cambiar a rejected despues de que el tiempo es 0
-Tener que decir pasar a taken para poder volver a entregar, tambien puede no hacerlo y pasaria a posted, modal en Titulos
+// Tener que decir pasar a taken para poder volver a entregar, tambien puede no hacerlo y pasaria a posted, modal en Titulos
 Analizar estados si el tiempo finaliza
 
 CUSTOMER SUPPORT.-

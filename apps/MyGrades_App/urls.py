@@ -25,7 +25,9 @@ urlpatterns = [
     path('delete_assignment/<int:id>', delete_assignment, name='delete_assignment'),
     path('assignment/<int:id>/accept_reject', accept_reject, name='accept_reject'),
     path('assignment/<int:id>/open_close', open_close, name='open_close'),
-    path('assignment/send', send_assignment, name='send_assignment'),
+    path('assignment/<int:id>/throw', throw_assignment, name='throw_assignment'),
+    path('assignment/<int:id>/take', take_assignment, name='take_assignment'),
+    path('assignment/<int:id>/send', send_assignment, name='send_assignment'),
 
     path('work_place', work_place, name='work_place'),
     path('wp_ajax', wp_ajax, name='wp_ajax'),

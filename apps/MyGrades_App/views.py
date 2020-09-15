@@ -350,8 +350,8 @@ def verify_assignments(assignments):
 @login_required
 def user_assignments(request):
     user = Usuario.objects.get(username=request.user)
-    posted_assignments = Trabajo.objects.filter(publicador__username=request.user).exclude(estado='deleted')
-    taken_assignments = Trabajo.objects.filter(trabajador__username=request.user)
+    posted_assignments = Trabajo.objects.filter(publicador__username=request.user).exclude(estado='deleted').exclude(estado='eliminated')
+    taken_assignments = Trabajo.objects.filter(trabajador__username=request.user).exclude(estado='thrown').exclude(estado='eliminated')
 
     context = {
         'posted_assignments': posted_assignments.order_by('-fecha_publicacion'),
@@ -365,7 +365,10 @@ def delete_assignment(request, id):
     if str(trabajo.publicador) != str(request.user) or trabajo.estado == 'taken' or trabajo.estado == 'rejected' or trabajo.estado == 'sent': 
         raise Http404()
 
-    if request.method == 'POST': trabajo.estado = 'deleted'; trabajo.save()
+    if request.method == 'POST': 
+        if trabajo.estado == 'thrown': trabajo.estado = 'eliminated'
+        else: trabajo.estado = 'deleted'
+        trabajo.save()
     
     return redirect('user_assignments')
 
@@ -375,9 +378,10 @@ def accept_reject(request, id):
     if str(trabajo.publicador) != str(request.user) or not (trabajo.estado == 'sent' or trabajo.estado == 'accepted' or trabajo.estado == 'rejected'): 
         raise Http404()
     
-    if request.POST['accept_reject'] == 'accept': trabajo.estado = 'accepted'
-    elif request.POST['accept_reject'] == 'reject': trabajo.estado = 'rejected'
-    trabajo.save()
+    if request.method == 'POST':
+        if request.POST['accept_reject'] == 'accept': trabajo.estado = 'accepted'
+        elif request.POST['accept_reject'] == 'reject': trabajo.estado = 'rejected'
+        trabajo.save()
 
     return redirect('user_assignments')
 
@@ -387,9 +391,33 @@ def open_close(request, id):
     if str(trabajo.publicador) != str(request.user) or not (trabajo.estado == 'posted' or trabajo.estado == 'closed'): 
         raise Http404()
     
-    if request.POST['open_close'] == 'open': trabajo.estado = 'posted'
-    elif request.POST['open_close'] == 'close': trabajo.estado = 'closed'
-    trabajo.save()
+    if request.method == 'POST':
+        if request.POST['open_close'] == 'open': trabajo.estado = 'posted'
+        elif request.POST['open_close'] == 'close': trabajo.estado = 'closed'
+        trabajo.save()
+
+    return redirect('user_assignments')
+
+@login_required
+def throw_assignment(request, id):
+    trabajo = Trabajo.objects.get(id=id)
+    if str(trabajo.publicador) != str(request.user) or not (trabajo.estado == 'accepted' or trabajo.estado == 'deleted'): 
+        raise Http404()
+
+    if request.method == 'POST': 
+        if trabajo.estado == 'deleted': trabajo.estado = 'eliminated'
+        else: trabajo.estado = 'thrown'
+        trabajo.save()
+
+    return redirect('user_assignments')
+
+@login_required
+def take_assignment(request, id):
+    trabajo = Trabajo.objects.get(id=id)
+    if str(trabajo.publicador) != str(request.user) or trabajo.estado != 'rejected': 
+        raise Http404()
+
+    if request.method == 'POST': trabajo.estado = 'taken'; trabajo.save()
 
     return redirect('user_assignments')
 
@@ -457,23 +485,29 @@ def edit_post_assignment(request, id):
     return render(request, 'post/post_assignment.html', context)
 
 @login_required
-def send_assignment(request):
-    pk = request.POST['pk']
-    trabajo = Trabajo.objects.get(pk=pk)
+def send_assignment(request, id):
+    trabajo = Trabajo.objects.get(id=id)
+
+    if str(trabajo.trabajador) != str(request.user) or not (trabajo.estado == 'sent' or trabajo.estado == 'taken'): 
+        raise Http404()
+
     if request.method == 'POST':
         
         if request.FILES:
-            print('files')
             for archivo in trabajo.archivos_trabajador.all():
                 trabajo.archivos_trabajador.remove(archivo)
+                # pendiente por eliminar archivos del modelo
         
         for file in request.FILES.getlist('archivos'):
-            print('getlist')
-            archivo = Archivo.objects.create(nombre=file.name, archivo=file)
-            trabajo.archivos_trabajador.add(archivo)
+            if file.size < 10000000:
+                archivo = Archivo.objects.create(nombre=file.name, archivo=file)
+                trabajo.archivos_trabajador.add(archivo)
+
+        if request.FILES:
             trabajo.estado = 'sent'
             trabajo.fecha_entrega = datetime.datetime.now()
             trabajo.save()
+
     return redirect('user_assignments')
 
 

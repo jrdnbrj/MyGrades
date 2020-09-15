@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} User Interface {% endblock %}
+{% block title %} Assignments {% endblock %}
 {% block content %}
 {% load static %}
 
@@ -9,326 +9,391 @@
 
 <div class="container">
     <div class="col-lg mx-auto my-3">
-            <ul class="nav nav-tabs panel-heading">
-                <li class="nav-item col"><a class="nav-link active h4 text-center m-0" role="tab" data-toggle="tab" href="#tab-1" title="HOLA"><strong>Posted Assignments</strong></a></li>
-                <li class="nav-item col"><a class="nav-link h4 text-center m-0" role="tab" data-toggle="tab" href="#tab-2"><strong>Taken Assignments</strong></a></li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" role="tabpanel" id="tab-1">
-                    <div role="tablist" id="accordion-1">
+        <ul class="nav nav-tabs panel-heading">
+            <li class="nav-item col"><a class="nav-link active h4 text-center m-0" role="tab" data-toggle="tab" href="#tab-1" title="HOLA"><strong>Posted Assignments</strong></a></li>
+            <li class="nav-item col"><a class="nav-link h4 text-center m-0" role="tab" data-toggle="tab" href="#tab-2"><strong>Taken Assignments</strong></a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" role="tabpanel" id="tab-1">
+                <div role="tablist" id="accordion-1">
 
-                        {% if posted_assignments %}
+                    {% if posted_assignments %}
 
-                            {% for trabajo in posted_assignments %}
-                                <div class="modal fade" id="delete-{{ trabajo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Delete Assignment</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            </div>
-                                            <div class="modal-body text-justify">
-                                                <p>Are you sure to delete "<strong>{{ trabajo.titulo }}</strong>" forever? The action cannot be undone.</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <form method="POST" action="{% url 'delete_assignment' trabajo.id %}">{% csrf_token %}
-                                                    <button type="submit" class="btn btn-outline-danger">Delete</button>
-                                                </form>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                            </div>
+                        {% for trabajo in posted_assignments %}
+                            <div class="modal fade" id="delete-{{ trabajo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Delete Assignment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body text-justify">
+                                            <p>Are you sure to delete "<strong>{{ trabajo.titulo }}</strong>" forever? This action cannot be undone.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form method="POST" action="{% url 'delete_assignment' trabajo.id %}">{% csrf_token %}
+                                                <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                            </form>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade" id="accept-{{ trabajo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Accept or Reject Assignment</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            </div>
-                                            <div class="modal-body text-justify">
-                                                <p>Only accept if the Assignment was submitted as you requested, if you reject it, we will notify the worker that he can send the Assignment again, if agrees to do it, the assignment will be in a <kbd>taken</kbd> status again. If not, after 3 hours of being in a <kbd>rejected</kbd> status you can repost or close it.</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <form method="POST" action="{% url 'accept_reject' trabajo.id %}">{% csrf_token %}
-                                                    <button type="submit" class="btn btn-success" name="accept_reject" value="accept">Accept</button>
-                                                    <button type="submit" class="btn btn-danger" name="accept_reject" value="reject">Reject</button>
-                                                </form>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                            </div>
+                            </div>
+                            <div class="modal fade" id="accept-{{ trabajo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Accept or Reject Assignment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body text-justify">
+                                            <p>Only accept if the Assignment was submitted as you requested, if you reject it, we will notify the worker that he can send the Assignment again (you can change the description to indicate the changes to make), if agrees to do it, the assignment will be in a <kbd>taken</kbd> status again. If not, after 3 hours of being in a <kbd>rejected</kbd> status you can repost or close it.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form method="POST" action="{% url 'accept_reject' trabajo.id %}">{% csrf_token %}
+                                                <button type="submit" class="btn btn-success" name="accept_reject" value="accept">Accept</button>
+                                                <button type="submit" class="btn btn-danger" name="accept_reject" value="reject">Reject</button>
+                                            </form>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade" id="close-{{ trabajo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Close Assignment</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            </div>
-                                            <div class="modal-body text-justify">
-                                                <p>Are you sure to close "<strong>{{ trabajo.titulo }}</strong>"? This action will make the Assignment disappear from the Work Place, you can make it reappear.</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <form method="POST" action="{% url 'open_close' trabajo.id %}">{% csrf_token %}
-                                                    <button type="submit" class="btn btn-success" name="open_close" value="close">Close</button>
-                                                </form>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                            </div>
+                            </div>
+                            <div class="modal fade" id="close-{{ trabajo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Close Assignment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body text-justify">
+                                            <p>Are you sure to close "<strong>{{ trabajo.titulo }}</strong>"? This action will make the Assignment disappear from the Work Place, you can make it reappear.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form method="POST" action="{% url 'open_close' trabajo.id %}">{% csrf_token %}
+                                                <button type="submit" class="btn btn-success" name="open_close" value="close">Close</button>
+                                            </form>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade" id="open-{{ trabajo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Post Assignment</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            </div>
-                                            <div class="modal-body text-justify">
-                                                <p>This action will make "<strong>{{ trabajo.titulo }}</strong>" appear in the Work Place and someone could take it.</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <form method="POST" action="{% url 'open_close' trabajo.id %}">{% csrf_token %}
-                                                    <button type="submit" class="btn btn-success" name="open_close" value="open">Post</button>
-                                                </form>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                            </div>
+                            </div>
+                            <div class="modal fade" id="open-{{ trabajo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Post Assignment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body text-justify">
+                                            <p>This action will make "<strong>{{ trabajo.titulo }}</strong>" appear in the Work Place and someone could take it.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form method="POST" action="{% url 'open_close' trabajo.id %}">{% csrf_token %}
+                                                <button type="submit" class="btn btn-success" name="open_close" value="open">Post</button>
+                                            </form>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card">
-                                    <div class="card-header row py-2" style="margin: 0" role="tab">
-                                        <h5 class="col align-middle d-flex align-items-center">
-                                            <a data-toggle="collapse" class="align-top" id="assignment_workplace" aria-expanded="false" aria-controls="accordion-1 .item-{{ trabajo.id }}" href="#accordion-1 .item-{{ trabajo.id }}">{{ trabajo.titulo }}</a>
-                                        </h5>
-                                        {% if trabajo.fecha_expiracion|timesince != " 0 minutes " %}
-                                            <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
-                                        {% endif %}
-                                        <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
-                                            Status<span class="badge {% if trabajo.estado == 'posted' %} badge-success {% elif trabajo.estado == 'taken' %} badge-info {% elif trabajo.estado == 'sent' %} badge-primary {% elif trabajo.estado == 'closed' %} badge-danger {% elif trabajo.estado == 'accepted' %} badge-warning text-success {% elif trabajo.estado == 'rejected' %} badge-warning text-danger {% else %} badge-dark {% endif %} ml-1">{{ trabajo.estado }}</span>
-                                        </button>
-                                        <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
-                                            Cost<span class="badge badge-light ml-1">${{ trabajo.precio }}</span>
-                                        </button>
-                                    </div>
-                                    <div class="collapse item-{{ trabajo.id }}" role="tabpanel" data-parent="#accordion-1">
-                                        <div class="card-body">
-                                            <section class="row align-items-center">
-                                                <section class="col">
-                                                    <small data-toggle="tooltip" rel="tooltip" data-placement="bottom" title="Area - Start Date / Deadline {% if trabajo.fecha_entrega %}/ Delivery Date{% endif %} {% if trabajo.trabajador %}- Worker{% endif %}">
-                                                        <strong>{{ trabajo.area }}</strong> - {{ trabajo.fecha_publicacion }} / {{ trabajo.fecha_expiracion }} {% if trabajo.fecha_entrega %}/ {{ trabajo.fecha_entrega }} {% endif %}
-                                                        {% if trabajo.trabajador %}
-                                                            - <a href="{% url 'public_profile' trabajo.trabajador %}">{{ trabajo.trabajador }}</a>
-                                                        {% endif %}
-                                                    </small><br>
-                                                </section>
-                                                <section class="mr-3">
-                                                    {% if trabajo.estado == 'sent' or trabajo.estado == 'accepted' or trabajo.estado == 'rejected' %}
-                                                        <button class="btn btn-sm btn-success border rounded" title="Accept or Reject Assignment" data-toggle="modal" data-target="#accept-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
-                                                            <i class="icon-check"></i>
-                                                        </button>
+                            </div>
+                            <div class="card">
+                                <div class="card-header row py-2" style="margin: 0" role="tab">
+                                    <h5 class="col align-middle d-flex align-items-center">
+                                        <a data-toggle="collapse" class="align-top" id="assignment_workplace" aria-expanded="false" aria-controls="accordion-1 .item-{{ trabajo.id }}" href="#accordion-1 .item-{{ trabajo.id }}">{{ trabajo.titulo }}</a>
+                                    </h5>
+                                    {% if trabajo.fecha_expiracion|timesince != " 0 minutes " %}
+                                        <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
+                                    {% endif %}
+                                    <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
+                                        Status<span class="badge 
+                                            {% if trabajo.estado == 'posted' %} badge-success 
+                                            {% elif trabajo.estado == 'taken' %} badge-info 
+                                            {% elif trabajo.estado == 'sent' %} badge-primary 
+                                            {% elif trabajo.estado == 'closed' %} badge-danger 
+                                            {% elif trabajo.estado == 'accepted' or trabajo.estado == 'thrown' %} badge-warning text-success 
+                                            {% elif trabajo.estado == 'rejected' %} badge-warning text-danger 
+                                            {% else %} badge-dark {% endif %} ml-1"
+                                        >{% if trabajo.estado == 'thrown' %}accepted{% else %}{{ trabajo.estado }}{% endif %}</span>
+                                    </button>
+                                    <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
+                                        Cost<span class="badge badge-light ml-1">${{ trabajo.precio }}</span>
+                                    </button>
+                                </div>
+                                <div class="collapse item-{{ trabajo.id }}" role="tabpanel" data-parent="#accordion-1">
+                                    <div class="card-body">
+                                        <section class="row align-items-center">
+                                            <section class="col">
+                                                <small data-toggle="tooltip" rel="tooltip" data-placement="bottom" title="Area - Start Date / Deadline {% if trabajo.fecha_entrega %}/ Delivery Date{% endif %} {% if trabajo.trabajador %}- Worker{% endif %}">
+                                                    <strong>{{ trabajo.area }}</strong> - {{ trabajo.fecha_publicacion }} / {{ trabajo.fecha_expiracion }} {% if trabajo.fecha_entrega %}/ {{ trabajo.fecha_entrega }} {% endif %}
+                                                    {% if trabajo.trabajador %}
+                                                        - <a href="{% url 'public_profile' trabajo.trabajador %}">{{ trabajo.trabajador }}</a>
                                                     {% endif %}
-                                                    {% if trabajo.estado == 'hidden' %}
-                                                        <button class="btn btn-sm btn-primary border rounded" title="Pay with PayPal" onclick="location.href='{% url 'post_assignment_payment' trabajo.id %}'" data-toggle="tooltip" rel="tooltip" data-placement="bottom">
-                                                            <i class="icon-paypal"></i>
-                                                        </button>
-                                                    {% endif %}
-                                                    {% if trabajo.estado != 'sent' and trabajo.estado != 'accepted' %}
-                                                        <button class="btn btn-sm btn-warning border rounded" title="Edit Assignment" onclick="location.href='{% url 'edit_post_assignment' trabajo.id %}'" data-toggle="tooltip" rel="tooltip" data-placement="bottom">
-                                                            <i class="icon-note text-white"></i></button>
-                                                    {% endif %}
-                                                    {% if trabajo.estado == 'posted' %}
-                                                        <button class="btn btn-sm btn-info border rounded" title="Close Assignment" data-toggle="modal" data-target="#close-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
-                                                            <i class="icon-minus"></i>
-                                                        </button>
-                                                    {% endif %}
-                                                    {% if trabajo.estado == 'closed' %}
-                                                        <button class="btn btn-sm btn-info border rounded" title="Post Assignment" data-toggle="modal" data-target="#open-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
-                                                            <i class="icon-plus"></i>
-                                                        </button>
-                                                    {% endif %}
-                                                    {% if trabajo.estado != 'taken' and trabajo.estado != 'sent' and trabajo.estado != 'rejected' %}
-                                                        <button class="btn btn-sm btn-danger border rounded" title="Delete Assignment" data-toggle="modal" data-target="#delete-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
-                                                            <i class="icon-trash"></i>
-                                                        </button>
-                                                    {% endif %}
-                                                    
-                                                </section>
+                                                </small><br>
                                             </section>
-                                            <h5 class="mt-3 ml-3"><strong>Assignment Description</strong></h5>
-                                            <span class="card-text text-truncate">{{ trabajo.descripcion }}</span>
-                                            {% if trabajo.archivos.all or trabajo.archivos_trabajador.all %}<hr>{% endif %}
-                                            <div class="row">
-                                                {% if trabajo.archivos.all %}
-                                                    <div class="col">
-                                                        <h5 class="text-left ml-3" id="archivos_title">Related Documents</h5>
-                                                        {% for archivo in trabajo.archivos.all %}
-                                                            <div id="file_text_2">
-                                                                +&nbsp<a class="" href="{% url 'media/' archivo %}">{{ archivo }}</a>
-                                                            </div>
-                                                        {% endfor %}
-                                                    </div>
+                                            <section class="mr-3">
+                                                {% if trabajo.estado == 'sent' or trabajo.estado == 'accepted' or trabajo.estado == 'rejected' %}
+                                                    <button class="btn btn-sm btn-success border rounded" title="Accept or Reject Assignment" data-toggle="modal" data-target="#accept-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
+                                                        <i class="icon-check"></i>
+                                                    </button>
                                                 {% endif %}
+                                                {% if trabajo.estado == 'hidden' %}
+                                                    <button class="btn btn-sm btn-primary border rounded" title="Pay with PayPal" onclick="location.href='{% url 'post_assignment_payment' trabajo.id %}'" data-toggle="tooltip" rel="tooltip" data-placement="bottom">
+                                                        <i class="icon-paypal"></i>
+                                                    </button>
+                                                {% endif %}
+                                                {% if trabajo.estado != 'sent' and trabajo.estado != 'accepted' %}
+                                                    <button class="btn btn-sm btn-warning border rounded" title="Edit Assignment" onclick="location.href='{% url 'edit_post_assignment' trabajo.id %}'" data-toggle="tooltip" rel="tooltip" data-placement="bottom">
+                                                        <i class="icon-note text-white"></i></button>
+                                                {% endif %}
+                                                {% if trabajo.estado == 'posted' %}
+                                                    <button class="btn btn-sm btn-info border rounded" title="Close Assignment" data-toggle="modal" data-target="#close-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
+                                                        <i class="icon-minus"></i>
+                                                    </button>
+                                                {% endif %}
+                                                {% if trabajo.estado == 'closed' %}
+                                                    <button class="btn btn-sm btn-info border rounded" title="Post Assignment" data-toggle="modal" data-target="#open-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
+                                                        <i class="icon-plus"></i>
+                                                    </button>
+                                                {% endif %}
+                                                {% if trabajo.estado != 'taken' and trabajo.estado != 'sent' and trabajo.estado != 'rejected' %}
+                                                    <button class="btn btn-sm btn-danger border rounded" title="Delete Assignment" data-toggle="modal" data-target="#delete-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
+                                                        <i class="icon-trash"></i>
+                                                    </button>
+                                                {% endif %}
+                                                
+                                            </section>
+                                        </section>
+                                        <h5 class="mt-3 ml-3"><strong>Assignment Description</strong></h5>
+                                        <span class="card-text text-truncate">{{ trabajo.descripcion }}</span>
+                                        {% if trabajo.archivos.all or trabajo.archivos_trabajador.all %}<hr>{% endif %}
+                                        <div class="row">
+                                            {% if trabajo.archivos.all %}
                                                 <div class="col">
-                                                    {% if trabajo.archivos_trabajador.all %}
-                                                        <h5 class="text-left ml-3" id="archivos_title">Sent Documents</h5>
-                                                        {% for archivo in trabajo.archivos_trabajador.all %}
-                                                            <div id="file_text_2">
-                                                                +&nbsp<a class="" href="{% url 'media/' archivo %}">{{ archivo }}</a>
-                                                            </div>
-                                                        {% endfor %}
-                                                    {% endif %}
+                                                    <h5 class="text-left ml-3" id="archivos_title">Related Documents</h5>
+                                                    {% for archivo in trabajo.archivos.all %}
+                                                        <div id="file_text_2">
+                                                            +&nbsp<a class="" href="{% url 'media/' archivo %}">{{ archivo }}</a>
+                                                        </div>
+                                                    {% endfor %}
                                                 </div>
+                                            {% endif %}
+                                            <div class="col">
+                                                {% if trabajo.archivos_trabajador.all %}
+                                                    <h5 class="text-left ml-3" id="archivos_title">Sent Documents</h5>
+                                                    {% for archivo in trabajo.archivos_trabajador.all %}
+                                                        <div id="file_text_2">
+                                                            +&nbsp<a class="" href="{% url 'media/' archivo %}">{{ archivo }}</a>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                            {% endfor %}
-                        
-                        {% else %}
-                                
-                            <br><p>You haven't posted any assignment yet. For assignments to appear on this section you must create an assignment to be taken by another user.</p>
-                            <h4 class="text-left">Get Started!</h4>
-                                <button class="btn btn-primary rounded d-lg-flex my-auto" type="button" style="margin-left: 400px;" onclick="location.href='{% url 'post_assignment' %}'">Post Asignment</button>
-                        {% endif %}
-
-                    </div>
-                </div>
-                <div class="tab-pane" role="tabpanel" id="tab-2">
-                    <div role="tablist" id="accordion-2">
-
-                        {% if taken_assignments %}
-
-                            {% for trabajo in taken_assignments %}
-
-                                <div class="card">
-                                    <div class="card-header row py-2" style="margin: 0" role="tab">
-                                        <h5 class="col"><a data-toggle="collapse" class="align-middle" id="assignment_workplace" aria-expanded="false" aria-controls="accordion-2 .item-{{ trabajo.id }}" href="#accordion-2 .item-{{ trabajo.id }}"><strong>{{ trabajo.titulo }}</strong><br></a></h5>
-                                        {% if trabajo.estado != 'closed' %}
-                                            <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
-                                        {% endif %}
-                                        <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
-                                            Status<span class="badge 
-                                                {% if trabajo.estado == 'taken' %} badge-info 
-                                                {% elif trabajo.estado == 'sent' %} badge-primary 
-                                                {% elif trabajo.estado == 'accepted' or trabajo.estado == 'deleted' %} badge-success 
-                                                {% elif trabajo.estado == 'rejected' %} badge-danger 
-                                                {% else %} badge-light {% endif %} ml-1">
-                                                {% if trabajo.estado == 'deleted' %} accepted{% else %}{{ trabajo.estado }}{% endif %}
-                                            </span>
-                                        </button>
-                                        <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
-                                            Payment<span class="badge badge-light ml-1">${{ trabajo.precio }}</span>
-                                        </button>
-                                    </div>
-                                    <div class="collapse item-{{ trabajo.id }}" role="tabpanel" data-parent="#accordion-2">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-lg-9">
-                                                    <small data-toggle="tooltip" rel="tooltip" data-placement="bottom" title="Area - Start Date / Deadline / Delivery Date - Publisher">
-                                                        <strong>{{ trabajo.area }}</strong> - {{ trabajo.fecha_publicacion }} / {{ trabajo.fecha_expiracion }} / {{ trabajo.fecha_entrega }} - <a href="{% url 'public_profile' trabajo.publicador %}">{{ trabajo.publicador }}</a>
-                                                    </small><br>
-                                                    <h5 class="mt-3 ml-3"><strong>Assignment Description</strong></h5>
-                                                    <span class="card-text text-justify">{{ trabajo.descripcion | linebreaksbr }}</span>
-                                                    {% if trabajo.archivos.all or trabajo.archivos_trabajador.all %}<hr>{% endif %}
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            {% if trabajo.archivos.all %}
-                                                                <h5 class="text-left ml-3" id="archivos_title">Related Documents</h5>
-                                                                {% for archivo in trabajo.archivos.all %}
-                                                                    <div id="file_text_2">
-                                                                        +&nbsp<a class="" href="{% url 'media/' archivo %}">{{ archivo }}</a>
-                                                                    </div>
-                                                                {% endfor %}
-                                                            {% endif %}
-                                                        </div>
-                                                        <div class="col">
-                                                            {% if trabajo.archivos_trabajador.all %}
-                                                                <h5 class="text-left ml-3" id="archivos_title">Sent Documents</h5>
-                                                                {% for archivo in trabajo.archivos_trabajador.all %}
-                                                                    <div id="file_text_2">
-                                                                        +&nbsp<a class="" href="{% url 'media/' archivo %}">{{ archivo }}</a>
-                                                                    </div>
-                                                                {% endfor %}
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-3">
-                                                    {% if trabajo.estado == 'deleted' %}
-                                                        <button class="btn btn-dark rounded p-2 mx-auto col">
-                                                            closed
-                                                        </button>
-                                                    {% elif trabajo.estado == 'sent' %}
-                                                        <div role="tablist" id="accordion-3">
-                                                            <div class="">
-                                                                <div class="py-0" role="tab">
-                                                                    <h5 class="mx-auto text-center">
-                                                                        <a class="btn btn-warning rounded p-2 mx-auto col" data-toggle="collapse" aria-expanded="true" aria-controls="accordion-3 .item-77" href="#accordion-3 .item-77">
-                                                                            Resend
-                                                                        </a>
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="collapse item-77" role="tabpanel" data-parent="#accordion-3">
-                                                                    <div class="card-body py-1">
-                                                                        <form method="POST" action="{% url 'send_assignment' %}" enctype="multipart/form-data">{% csrf_token %}
-                                                                            <input type="hidden" name="pk" value="{{ trabajo.pk }}">
-                                                                            <div class="files">
-                                                                                <input type="file" multiple onchange="readURL(this);" class="custom-file-input py-6" name="archivos" id="archvios" style="cursor: pointer;">
-                                                                            </div>
-                                                                            <button class="btn btn-primary d-block rounded col-5 mx-auto ml-auto p-2" type="submit">Resend</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    {% else %}
-                                                        <div role="tablist" id="accordion-3">
-                                                            <div class="">
-                                                                <div class="py-0" role="tab">
-                                                                    <h5 class="mx-auto text-center">
-                                                                        <a class="btn btn-warning rounded p-2 mx-auto col" data-toggle="collapse" aria-expanded="true" aria-controls="accordion-3 .item-77" href="#accordion-3 .item-77">
-                                                                            Send
-                                                                        </a>
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="collapse item-77" role="tabpanel" data-parent="#accordion-3">
-                                                                    <div class="card-body py-1">
-                                                                        <form method="POST" action="{% url 'send_assignment' %}" enctype="multipart/form-data">{% csrf_token %}
-                                                                            <input type="hidden" name="pk" value="{{ trabajo.pk }}">
-                                                                            <div class="files">
-                                                                                <input type="file" multiple onchange="readURL(this);" class="custom-file-input py-6" name="archivos" id="archvios" style="cursor: pointer;">
-                                                                            </div>
-                                                                            <button class="btn btn-primary d-block rounded col-5 mx-auto ml-auto p-2" type="submit">Send</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="frame_div"></div>
-                                    </div>
-                                </div>
-
-                            {% endfor %}
-
-                        {% else %}
-
-                            <br><p>You haven't taken any assignment yet. For assignments to appear on this section you must take an assignment to fulfill it and earn your payment.</p>
-                            <div class="Push-20"></div>
-                            <h4 class="col"><span class="text-center">Get Started!</span></h4>
-                            <button class="btn-lg btn-primary border rounded d-flex mx-auto" type="button" onclick="location.href='{% url 'work_place' %}'">Choose Assignment</button></div>
-
-                        {% endif %}
+                        {% endfor %}
                     
-                    </div>
+                    {% else %}
+                            
+                        <br><p>You haven't posted any assignment yet. For assignments to appear on this section you must create an assignment to be taken by another user.</p>
+                        <h4 class="text-left">Get Started!</h4>
+                            <button class="btn btn-primary rounded d-lg-flex my-auto" type="button" style="margin-left: 400px;" onclick="location.href='{% url 'post_assignment' %}'">Post Asignment</button>
+                    {% endif %}
+
                 </div>
             </div>
+            <div class="tab-pane" role="tabpanel" id="tab-2">
+                <div role="tablist" id="accordion-2">
+
+                    {% if taken_assignments %}
+
+                        {% for trabajo in taken_assignments %}
+
+                            <div class="modal fade" id="sent-{{ trabajo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Sent Assignment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body text-justify">
+                                            <p>You can edit the delivery if you consider it necessary. Once the publisher marks the Assignment as accepted you will receive the payment, if he rejects it, you can do it again, otherwise, 3 hours after being in a <kbd>rejected</kbd> status the publisher may repost it.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="accepted-{{ trabajo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Accepted Assignment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body text-justify">
+                                            <p><strong>Congratulations!</strong> The publisher has mentioned that your submission is correct, we make payments on Thursdays of each week, if you have not received it yet <a href="{% url 'customer_support' %}" target="_blank">write us</a>, remember that you have to tell us how you want to receive your money in the Payment Method in your <a href="{% url 'user_profile' %}" target="_blank">profile.</a></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="rejected-{{ trabajo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Rejected Assignment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body text-justify">
+                                            <p>The publisher has rejected your submission, maybe it was not what they expected or it is incomplete (the publisher may have changed the description to indicate the changes), if you want to send the Assignment again click on "Take it again" and we will notify he that he cannot repost it, otherwise the publisher will be able to repost it after 3 hours.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form method="POST" action="{% url 'take_assignment' trabajo.id %}">{% csrf_token %}
+                                                <button type="submit" class="btn btn-success">Take it again</button>
+                                            </form>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="throw-{{ trabajo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Delete Assignment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body text-justify">
+                                            <p>Are you sure to delete "<strong>{{ trabajo.titulo }}</strong>" forever? This action cannot be undone.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form method="POST" action="{% url 'throw_assignment' trabajo.id %}">{% csrf_token %}
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header row py-2" style="margin: 0" role="tab">
+                                    <h5 class="col" data-toggle="modal" 
+                                        data-target="#{% if trabajo.estado == 'deleted' %}accepted{% else %}{{ trabajo.estado }}{% endif %}-{{ trabajo.id }}"
+                                    >
+                                        <a data-toggle="collapse" class="align-middle" id="assignment_workplace" aria-expanded="false" aria-controls="accordion-2 .item-{{ trabajo.id }}" href="#accordion-2 .item-{{ trabajo.id }}">
+                                            <strong>{{ trabajo.titulo }}</strong><br>
+                                        </a>
+                                    </h5>
+                                    {% if trabajo.estado != 'closed' %}
+                                        <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
+                                    {% endif %}
+                                    <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
+                                        Status<span class="badge 
+                                            {% if trabajo.estado == 'taken' %} badge-info 
+                                            {% elif trabajo.estado == 'sent' %} badge-primary 
+                                            {% elif trabajo.estado == 'accepted' or trabajo.estado == 'deleted' %} badge-success 
+                                            {% elif trabajo.estado == 'rejected' %} badge-danger 
+                                            {% else %} badge-light {% endif %} ml-1">
+                                            {% if trabajo.estado == 'deleted' %}accepted{% else %}{{ trabajo.estado }}{% endif %}
+                                        </span>
+                                    </button>
+                                    <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
+                                        Payment<span class="badge badge-light ml-1">${{ trabajo.precio }}</span>
+                                    </button>
+                                </div>
+                                <div class="collapse item-{{ trabajo.id }}" role="tabpanel" data-parent="#accordion-2">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-9">
+                                                <small data-toggle="tooltip" rel="tooltip" data-placement="bottom" title="Area - Start Date / Deadline / Delivery Date - Publisher">
+                                                    <strong>{{ trabajo.area }}</strong> - {{ trabajo.fecha_publicacion }} / {{ trabajo.fecha_expiracion }} / {{ trabajo.fecha_entrega }} - <a href="{% url 'public_profile' trabajo.publicador %}">{{ trabajo.publicador }}</a>
+                                                </small><br>
+                                                <h5 class="mt-3 ml-3"><strong>Assignment Description</strong></h5>
+                                                <span class="card-text text-justify">{{ trabajo.descripcion | linebreaksbr }}</span>
+                                                {% if trabajo.archivos.all or trabajo.archivos_trabajador.all %}<hr>{% endif %}
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {% if trabajo.archivos.all %}
+                                                            <h5 class="text-left ml-3" id="archivos_title">Related Documents</h5>
+                                                            {% for archivo in trabajo.archivos.all %}
+                                                                <div id="file_text_2">
+                                                                    +&nbsp<a class="" href="{% url 'media/' archivo %}">{{ archivo }}</a>
+                                                                </div>
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="col">
+                                                        {% if trabajo.archivos_trabajador.all %}
+                                                            <h5 class="text-left ml-3" id="archivos_title">Sent Documents</h5>
+                                                            {% for archivo in trabajo.archivos_trabajador.all %}
+                                                                <div id="file_text_2">
+                                                                    +&nbsp<a class="" href="{% url 'media/' archivo %}">{{ archivo }}</a>
+                                                                </div>
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                {% if trabajo.estado == 'rejected' %}
+                                                    <button class="btn btn-dark rounded p-2 mx-auto col">
+                                                        closed
+                                                    </button>
+                                                {% elif trabajo.estado == 'accepted' or trabajo.estado == 'deleted' %}
+                                                    <button class="btn btn-danger rounded p-2 mx-auto col" title="Delete Assignment" data-toggle="modal" data-target="#throw-{{ trabajo.id }}">
+                                                        delete
+                                                    </button>
+                                                {% else %}
+                                                    <div role="tablist" id="accordion-3">
+                                                        <div class="">
+                                                            <div class="py-0" role="tab">
+                                                                <h5 class="mx-auto text-center">
+                                                                    <a class="btn btn-warning rounded p-2 mx-auto col" data-toggle="collapse" aria-expanded="true" aria-controls="accordion-3 .item-77" href="#accordion-3 .item-77">
+                                                                        {% if trabajo.estado == 'sent' %}Resend{% else %}Send{% endif %}
+                                                                    </a>
+                                                                </h5>
+                                                            </div>
+                                                            <div class="collapse item-77" role="tabpanel" data-parent="#accordion-3">
+                                                                <div class="card-body py-1">
+                                                                    <form method="POST" action="{% url 'send_assignment' trabajo.id %}" enctype="multipart/form-data">{% csrf_token %}
+                                                                        <!--<input type="hidden" name="pk" value="{{ trabajo.pk }}">-->
+                                                                        <div class="files">
+                                                                            <input type="file" multiple onchange="readURL(this);" class="custom-file-input py-6" name="archivos" id="archivos-{{ trabajo.id }}" style="cursor: pointer;">
+                                                                        </div>
+                                                                        <button class="btn btn-primary d-block rounded col-5 mx-auto ml-auto p-2" type="submit">{% if trabajo.estado == 'sent' %}Resend{% else %}Send{% endif %}</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="" id="frame_div-{{ trabajo.id }}"></div>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <br><p>You haven't taken any assignment yet. For assignments to appear on this section you must take an assignment to fulfill it and earn your payment.</p>
+                        <div class="Push-20"></div>
+                        <h4 class="col"><span class="text-center">Get Started!</span></h4>
+                        <button class="btn-lg btn-primary border rounded d-flex mx-auto" type="button" onclick="location.href='{% url 'work_place' %}'">Choose Assignment</button></div>
+
+                    {% endif %}
+                
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -344,35 +409,45 @@
         $(document).ready($("[rel='tooltip']").tooltip({ 'trigger': 'hover' }))
     
         function readURL(input) {
+            console.log(input)
+            const id = input.id.split('-')[1]
+            console.log(input.id)
             files = input.files
             console.log(files)
             
-            if(files){
-                $('#frame_div').show();
-                $('#frame_div').html("");
+            if (files.length > 0) {
+                $('#frame_div-'+id).show();
+                $('#frame_div-'+id).html("");
+                $('#frame_div-'+id).append("<hr><h5 class='ml-3 mt-4' id='archivos_title'>Documents to Send</h5>");
                 for(var i = 0; i < files.length; i++){
-                    if (/\.(jpe?g|png|gif|pdf|md|txt|py|html|css|js|ts|php)$/i.test(files[i].name) ) {
-                        (function(file) {
-                            var reader = new FileReader();
-                            console.log(file.name)
-                            $('#frame_div').append(` <span class="m-3">+&nbsp` + file.name + `</span><br>`);
-                            reader.onload = function (r) {
-                                console.log(r)
-                                $('#frame_div').append(
-                                `   <div class="embed-responsive embed-responsive-21by9 shadow my-3" id="frame">
-                                        <iframe src="` + r.target.result + `" id="file_iframe" class="embed-responsive-item"></iframe>
-                                    </div>                    
-                                `);
-                            };
-                            reader.readAsDataURL(file);
-                        })(files[i]);
-                    }else{
-                        $('#frame_div').append(`
-                            <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">Unable to display a file preview.</span><br>
+                    if (files[i].size > 10000000) {
+                        $('#frame_div-'+id).append(`
+                            <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">This file size exceeds the maximum allowed. Will be not upload. <small>Max: 10MB</small></span><br>
                         `);
+                    } else {
+                        if (/\.(jpe?g|png|gif|pdf|md|txt|py|html|css|js|ts|php)$/i.test(files[i].name) ) {
+                            (function(file) {
+                                var reader = new FileReader();
+                                console.log(file.name)
+                                $('#frame_div-'+id).append(` <span class="m-3">+&nbsp` + file.name + `</span><br>`);
+                                reader.onload = function (r) {
+                                    //console.log(r)
+                                    $('#frame_div-'+id).append(
+                                    `   <div class="embed-responsive embed-responsive-21by9 shadow my-3" id="frame">
+                                            <iframe src="` + r.target.result + `" id="file_iframe" class="embed-responsive-item"></iframe>
+                                        </div>                    
+                                    `);
+                                };
+                                reader.readAsDataURL(file);
+                            })(files[i]);
+                        }else{
+                            $('#frame_div-'+id).append(`
+                                <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">Unable to display a file preview.</span><br>
+                            `);
+                        }
                     }
                 }
-            }
+            } else $('#frame_div-'+id).html("")
         }
     </script>
 {% endblock js %}
