@@ -1,5 +1,4 @@
 from django import forms
-from django.utils import timezone
 from django.db.models import Q
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
@@ -222,10 +221,10 @@ class PostAssignmentForm(forms.Form):
     def clean_fecha_expiracion(self):
         data = self.cleaned_data
         fecha_expiracion = data['fecha_expiracion']
-        date_time = utc.localize(datetime.datetime.now())
+        date_time = datetime.datetime.now()
 
-        if date_time >= fecha_expiracion:
-            raise forms.ValidationError('The Dead Line must be greater than '+ str(date_time)[:-16])
+        if fecha_expiracion <= date_time:
+            raise forms.ValidationError('The Dead Line must be greater than '+ str(date_time)[:-10])
 
         return fecha_expiracion
 

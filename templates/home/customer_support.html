@@ -114,7 +114,7 @@
                 console.log(files[i].size + ' ' + files[i].name)
                 if (files[i].size > 10000000) {
                     $('#files').append(`
-                        <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">This file size exceeds the maximum allowed.</span><br>
+                        <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">This file size exceeds the maximum allowed.<small>Max: 10MB</small></span><br>
                     `);
                 } else {
                     $('#files').append(`

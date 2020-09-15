@@ -11,6 +11,7 @@ from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment, LiveEnv
 from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersGetRequest, OrdersCaptureRequest
 
 import datetime
+from django.utils import timezone
 import sys
 import json
 
@@ -18,7 +19,11 @@ from .forms import *
 from .models import *
 
 
-def landing_page(request): return render(request, 'home/landing_page.html', {})
+def landing_page(request): 
+    print(datetime.datetime.now())
+    print(timezone.now())
+    # print(timezone.localtime(timezone.now()))
+    return render(request, 'home/landing_page.html', {})
 
 def register(request):
 
