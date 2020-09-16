@@ -77,7 +77,7 @@ def about(request): return render(request, 'home/about.html')
 
 def contact(request): return render(request, 'home/contact.html')
 
-def privacy_policy(request): return render(request, 'home/privacy_policy.html')
+def terms_conditions(request): return render(request, 'home/terms&conditions.html')
 
 #___________________________ERROR HANDLERS_____________________________
 

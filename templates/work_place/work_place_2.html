@@ -15,7 +15,7 @@
                         <button class="btn btn-sm btn-warning border rounded mr-1" title="Edit Assignment" onclick="location.href='{% url 'edit_post_assignment' trabajo.id %}'" data-toggle="tooltip" rel="tooltip" data-placement="bottom">
                             <i class="icon-note text-white"></i>
                         </button>
-                    {% endif %}{{ trabajo.titulo }}<small> - {{ trabajo.area }}</small>
+                    {% endif %}{{ trabajo.titulo }}&nbsp<small> - {{ trabajo.area }}</small>
                 </h2>
                 <section class="ml-3">
                     <section class="float-left">
@@ -46,7 +46,7 @@
             <section>
                 <h5 class="text-left">Related Documents</h5>
                 {% for archivo in trabajo.archivos.all %}
-                    <span class="ml-3" title="You can dowload the files once you take the Assignment.">+&nbsp{{ archivo }}</span><br>
+                    <span class="ml-3" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="You can dowload this file once you take the Assignment">+&nbsp{{ archivo }}</span><br>
                 {% endfor %}
             </section>
         {% endif %}
@@ -63,3 +63,8 @@
     <div class="overlay"></div>
 </section>
 {% endblock %}
+{% block js %}
+<script>
+    $("[rel='tooltip']").tooltip({ 'trigger': 'hover' });
+</script>
+{% endblock js %}

@@ -44,7 +44,7 @@
             <div class="form-group">
                 <div class="form-check row align-middle">
                     <input class="" type="checkbox" name="license_terms" required>
-                    <label class="form-check-label ml-2 ">I agree with the <a href="{% url 'privacy_policy' %}" target="_blank">privacy policy</a>.</label>
+                    <label class="form-check-label ml-2 ">I agree with the <a href="{% url 'terms&conditions' %}" target="_blank">Terms & Conditions</a>.</label>
                     {% if license_error %}
                         <small class="text-danger">{{ license_error }}</small>
                     {% endif %}

@@ -123,11 +123,21 @@
                     </li>
                 `);
             }
+            let docs
             for (var i = 0; i < trabajos.length; i++) {
                 var pk = trabajos[i].pk
+                if (trabajos[i]['fields'].archivos.length > 0) {
+                    docs = "<i class='icon-doc mx-1'></i>"
+                    console.log('123')
+                }
+                else {
+                    console.log('234')
+                    docs = ""
+                }
+                console.log(docs)
                 $('#list').append(`
                     <li class='list-group-item'>` + `
-                        <span><a id="assignment_workplace" href="/work_place/` + pk + `"><span class="h4">` + trabajos[i]['fields'].titulo+`</span> - <small>` + trabajos[i]['fields'].area + `</small></a></span>
+                        <span><a id="assignment_workplace" href="/work_place/` + pk + `"><span class="h4">` + trabajos[i]['fields'].titulo+`</span><small>` + docs + ` - ` + trabajos[i]['fields'].area + `</small></a></span>
                         <span style="float: right;" class="badge badge-primary">$ ` + trabajos[i]['fields'].precio + `</span>
                         <small class="form-text text-muted text-truncate" style='margin: 0px;'>` + trabajos[i]['fields'].descripcion + `<br></small>
                     </li>

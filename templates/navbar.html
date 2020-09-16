@@ -24,19 +24,19 @@
                             {{ user.username }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="{% url 'user_profile' %}">Profile</a>
-                            <a class="dropdown-item" href="{% url 'user_assignments' %}">Assignments</a>
+                            <a class="dropdown-item" href="{% url 'user_profile' %}"><i class="icon-user mr-3 align-middle"></i>Profile</a>
+                            <a class="dropdown-item" href="{% url 'user_assignments' %}"><i class="icon-book-open mr-3 align-middle"></i>Assignments</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'signout' %}">Sign Out</a>
+                            <a class="dropdown-item" href="{% url 'signout' %}"><i class="icon-logout mr-3 align-middle"></i>Sign Out</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{% url 'customer_support' %}">Customer Support</a>
-                            <a class="dropdown-item" href="{% url 'privacy_policy' %}">Privacy Policy</a>
+                            <a class="dropdown-item" href="{% url 'terms&conditions' %}">Terms & Conditions</a>
                         </div>
                     </div>
                 </div>
             {% else %}
                 <div class="float-right">
-                    <a class="btn-sm btn-outline-primary ml-2 rounded px-3" href="{% url 'signin' %}">Sign In</a>
+                    <a class="btn-sm btn-outline-primary ml-2 rounded px-3" href="{% url 'signin' %}"><strong>Sign In</strong></a>
                     <a class="btn-sm btn-primary ml-1 rounded px-3" href="{% url 'register' %}">Register</a>
                 </div>
             {% endif %}
