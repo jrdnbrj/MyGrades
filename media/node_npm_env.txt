@@ -1,6 +1,0 @@
-sudo apt-get update
-sudo apt install nodejs
-sudo apt install npm
-https://github.com/MontoyaAndres/react-native-first-app
-
-chmod -R 777 .

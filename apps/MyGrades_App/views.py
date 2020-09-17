@@ -142,7 +142,9 @@ def post_assignment_payment(request, trabajo):
 #___________________________WORK PLACE_____________________________
 
 @login_required
-def work_place(request): return render(request, 'work_place/work_place.html', {})
+def work_place(request): 
+    validate_time(Trabajo.objects.all())
+    return render(request, 'work_place/work_place.html', {})
 
 def wp_ajax(request):
     if request.is_ajax and request.method == "POST":
@@ -410,7 +412,7 @@ def open_close(request, id):
 @login_required
 def throw_assignment(request, id):
     trabajo = Trabajo.objects.get(id=id)
-    if str(trabajo.publicador) != str(request.user) or not (trabajo.estado == 'accepted' or trabajo.estado == 'deleted'): 
+    if str(trabajo.trabajador) != str(request.user) or not (trabajo.estado == 'accepted' or trabajo.estado == 'deleted'): 
         raise Http404()
 
     if request.method == 'POST': 
@@ -423,7 +425,7 @@ def throw_assignment(request, id):
 @login_required
 def take_assignment(request, id):
     trabajo = Trabajo.objects.get(id=id)
-    if str(trabajo.publicador) != str(request.user) or trabajo.estado != 'rejected': 
+    if str(trabajo.trabajador) != str(request.user) or trabajo.estado != 'rejected': 
         raise Http404()
 
     if request.method == 'POST': trabajo.estado = 'taken'; trabajo.save()
@@ -522,10 +524,6 @@ def send_assignment(request, id):
 @login_required
 def return_assignment(request, id):
     trabajo = Trabajo.objects.get(id=id)
-    print(trabajo.estado)
-    print(trabajo.fifteen_minutes)
-    print(trabajo.estado == 'taken' and not trabajo.fifteen_minutes)
-    print()
     if str(trabajo.trabajador) != str(request.user) or not (trabajo.estado == 'taken' and not trabajo.fifteen_minutes()): 
         raise Http404()
 

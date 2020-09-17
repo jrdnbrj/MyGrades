@@ -64,7 +64,7 @@ class Trabajo(models.Model):
     archivos = models.ManyToManyField(Archivo, blank=True, related_name='archivos')
     trabajador = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL, related_name='trabajador')
     archivos_trabajador = models.ManyToManyField(Archivo, blank=True, related_name='archivos_trabajador')
-    precio = models.DecimalField(decimal_places = 2, max_digits = 5, default=0.0)
+    precio = models.DecimalField(decimal_places = 2, max_digits = 6, default=0.0)
     fecha_editado = models.DateTimeField(auto_now=True, auto_now_add=False)
 
     def __str__(self):
@@ -101,7 +101,7 @@ class Order(models.Model):
     fecha_editado = models.DateTimeField(auto_now=True, auto_now_add=False)
 
     def __str__(self):
-        return self.trabajo.titulo
+        return str(self.trabajo)
 
 class CustomerSupport(models.Model):
     id = models.AutoField(primary_key=True)

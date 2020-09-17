@@ -25,18 +25,19 @@ POST ASSIGNMENT.-
 // Desactivar poder cambiar el precio cuando ya se ha pagado
 // Que un usuario no pueda coger un trabajo que publico el mismo
 Al ingresar codigo html en descripcion se renderiza en html en post assignment, workplace, view assignments
+Validar subida de archivos con parentesis y caracteres
 
 WORKPLACE.-
 // Mensaje si no existenn resultados
 // Eliminar paginacion si solo hay una pantalla
 // Ver usuario al abrir un Assignment, poder acceder a su informacion publica
 // Arreglar diseño después de escoger un trabajo Wokrplace2v
-Pagarle unicamente cuando el publicador haya aceptado la entrega
+// Pagarle unicamente cuando el publicador haya aceptado la entrega
 Que pasa si el publicador no aceptó la entrega despues de haber iniciado sesion 
     despues de haberse entregado? Deberia contantarme para preguntarle si la tarea fue correcta, 
     y decirle al trabajador que si no recibio el pago en el dia indicado, que nos escriba
 Retornar trabajo en workplace 3 y 4
-Iconos de archivos si hay archivos
+// Iconos de archivos si hay archivos
 
 LANDING PAGE.-
 // Iconos del inicio
@@ -44,8 +45,8 @@ LANDING PAGE.-
 // Texto de reseñas
 Diseño Contact
 Contenido Contact
-Diseño Privacy Policy
-Contenido Privacy Policy
+// Diseño Privacy Policy
+// Contenido Privacy Policy
 
 NAVBAR.-
 // Arreglar Navbar responsive
@@ -72,9 +73,9 @@ PERFIL.-
 // mensaje de confirmacion de informacion guardada, alert
 // Perfil con informacion publica
 // Al editar usuario tambien se debe editar el user de django auth
-verificar si deben estar los estados en View Assignments Public
+// verificar si deben estar los estados en View Assignments Public
 // Guardar informacion de pago
-Mostrar metodo de pago en perfil
+// Mostrar metodo de pago en perfil
 
 REGISTER and SIGNIN.-
 -- Agregar Register with Google and Facebook
@@ -100,32 +101,32 @@ Eliminar linea subrayada en enlaces, el color se queda
 // Validaciones archivos send assignments
 // Validacion de entrega send assignments
 // A veces no se previsualiza nada al hacer una entrega pero si se sube el archivo
-Pasado las 3 horas poder volver a publicar
+// Pasado las 3 horas poder volver a publicar
 // Poder ver trabajos eliminados en Taken
-Poder eliminar un taken assignments en los primeros 15 minutos
-* Que pasa si publique un trabajo y nadie lo tomo y ya se temrino el tiempo? Y el dinero? Devulucion de dinero automatica, mensaje indicando que debe esperar que se le deposite
-* Que pasa si publique un trabajo, alguien lo tomo, lo hizo mal y lo rechace pero ya no quiero que alguien mas lo haga y lo borre?
+// Poder eliminar un taken assignments en los primeros 15 minutos
+-- Que pasa si publique un trabajo y nadie lo tomo y ya se temrino el tiempo? Y el dinero? Devulucion de dinero automatica, mensaje indicando que debe esperar que se le deposite
+-- Que pasa si publique un trabajo, alguien lo tomo, lo hizo mal y lo rechace pero ya no quiero que alguien mas lo haga y lo borre?
 // Agregar estado aceptado
 // Agregar opcion de poder aceptar o rechazar la entrega del deber
-Iconos de archivos si hay archivos
-Que no aparezca la hora si el tiempo es 0
-Desactivar la opcion de cambiar a rejected despues de que el tiempo es 0
+// Iconos de archivos si hay archivos
+// Que no aparezca la hora si el tiempo es 0
+// Desactivar la opcion de cambiar a rejected despues de que el tiempo es 0
 // Tener que decir pasar a taken para poder volver a entregar, tambien puede no hacerlo y pasaria a posted, modal en Titulos
-Analizar estados si el tiempo finaliza
+// Analizar estados si el tiempo finaliza
 
 CUSTOMER SUPPORT.-
 // Agregar texto explicativo
 Acceder a politica de privacidad
 
 SERVIDOR.-
-Arreglar hora del servidor, adelantado por 5 horas en local y digital ocean
+// Arreglar hora del servidor, adelantado por 5 horas en local y digital ocean
 // Middleware para seguridad de assignments, archivos e inf de otros usuarios
 // Verificar urls correctas y seguras
 Verificar SEO
 Migrar a postgres (investigar la mejor BDD)
 -- Validar tamaño maximo de archivos a 10MB
 Validar maximo de 5 archivos por trabajo
--- Actualizar trabajos si la fecha terminó
+// Actualizar trabajos si la fecha terminó
 -- Ventana de error 404 personalizada
 -- Ventana de errores que no sean 404 personalizada
 // Corregir error de id despues de publicar y tomar un trabajo
@@ -142,8 +143,8 @@ Analizar la posibilidad de enviar mails con herramientas github
 // Pantalla formulario de soporte
 // Tamaños de letras de toda las paginas, principalmente las pantallas despues de tomar o publicar un trabajo
 -- Verificar diseño responsive en toda la aplicacion
-Calificacion al trabajador por parte de publicador (tal vez siguiente sprint)
-Agregar iconos donde se pueda agregar de https://simplelineicons.github.io/
+++ Calificacion al trabajador por parte de publicador (tal vez siguiente sprint)
+// Agregar iconos donde se pueda agregar de https://simplelineicons.github.io/
 Pruebas grupales con el grupo
 Pruebas grupales con personas externas
 Facilitar visualizacion (admin) {
@@ -158,4 +159,3 @@ Facilitar visualizacion (admin) {
 ++ Optimizar subida de archivos
 ++ Optimizar busqueda y carga del usuario de foto de perfil, usar framework
 ++ Validar tipo archivo y tamaño de foto de perfil 
-

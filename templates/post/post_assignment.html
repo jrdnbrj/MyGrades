@@ -2,7 +2,6 @@
 {% block title %} {{ title }} Post Assignment {% endblock %}
 {% block content %}
 {% load static %}
-<body>
     <section class="call-to-action text-white text-center" style="background:url('{% static 'images/WorkPlace-2.jpg'%}') no-repeat center center;background-size:cover;">
         <div class="overlay"></div>
     </section>
@@ -58,11 +57,10 @@
                 <br>
                 <h4 class="text-left">Assignment Description</h4>
                 <small class="form-text text-muted">Describe in detail your assignment, include requirements, complexity, format and related topics.</small>
-                <textarea class="row form-control" style="height:221px" maxlength="5000" name="descripcion" id="description" placeholder="Type the assignment description..." required>{% if form.errors %}{{ form.descripcion.value }}{% else %}{{ trabajo.descripcion }}{% endif %}</textarea>
+                <textarea class="row form-control" style="height:241px" maxlength="10000" name="descripcion" id="description" placeholder="Type the assignment description..." required>{% if form.errors %}{{ form.descripcion.value }}{% else %}{{ trabajo.descripcion }}{% endif %}</textarea>
                 {% for error in form.descripcion.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
-                <div class="clearfix"></div>
             </div>
             <div class="col-md-6">
                 <div class="Push-20" style="height: 14.5px;"></div>
@@ -76,28 +74,21 @@
                 {% endfor %}
                 </br>
                 <h4 class="text-left">Related Documents</h4>
-                <small class="form-text text-muted">Upload any assignment related documents (rubrics, forms, questionnaires, documents to be filld and any main format documents). Maximum size per file: 10 MB </small>
-                <div class="form-group files">
-                    <input type="file" multiple onchange="readURL(this);" class="custom-file-input" style="cursor: pointer" name="archivos" id="archivos"
-                        value="{{ files }}">
+                <small class="form-text text-muted">Upload any assignment related documents (rubrics, forms, questionnaires, documents to be filld and any main format documents). Maximum size per file: 10 MB.</small>
+                <div class="form-group files border border-black rounded m-3">
+                    <input type="file" multiple onchange="readURL(this);" class="custom-file-input form-control" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="You can check the uploaded files at the bottom of the page" style="cursor: pointer" name="archivos" id="archivos" value="{{ files }}">
                 </div>
                 {% if trabajo and trabajo.estado != 'hidden' %}
                     <h4 class="text-left">Assignment Price</h4>
                     <small class="form-text text-muted">Choose a price that you are willing to pay for this Assignment.</small>
-                    <div class="row input-group mr-0" rel="tooltip" data-toggle="tooltip" data-placement="top" title="Once the payment is made it is not possible to change the price. Do you want to change it anyway? Write us on the Customer Support.">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">$</div>
-                        </div>
-                        <input class="form-control col" type="text" name="precio" id="price" value="{{ trabajo.precio }}" disabled>
+                    <div class="row" rel="tooltip" data-toggle="tooltip" data-placement="top" title="Once the payment is made it is not possible to change the price. Do you want to change it anyway? Write us on the Customer Support.">
+                        <input class="col form-control" type="text" name="precio" id="price" value="{{ trabajo.precio }}" disabled>
                     </div>
                 {% else %}
                     <h4 class="text-left">Assignment Price</h4>
                     <small class="form-text text-muted">Choose a price that you are willing to pay for this Assignment.</small>
-                    <div class="row input-group mr-0">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">$</div>
-                        </div>
-                        <input class="form-control col" type="text" name="precio" id="price" placeholder="24.20" maxlength="6" value="{% if form.errors %}{{ form.precio.value }}{% elif trabajo.precio %}{{ trabajo.precio }}{% endif %}" required>
+                    <div class="row">
+                        <input class="col form-control" type="text" name="precio" id="price" placeholder="24.20" maxlength="6" value="{% if form.errors %}{{ form.precio.value }}{% elif trabajo.precio %}{{ trabajo.precio }}{% endif %}" required>
                     </div>
                     {% for error in form.precio.errors %}
                         <small class="text-danger">{{ error }}</small>
@@ -118,17 +109,14 @@
                     <h2 id="price_badge"><span class="badge badge-pill badge-primary float-right mr-3" id="price_badge_2"></span></h2>
                     <h4 class="text-left" id="title_area"></h4>
                     <small class="form-text text-muted ml-3" id="date2"></small>
-                    {% comment %} <div class="Push-20"></div> {% endcomment %}
-                    <h4 class="text-left mt-4 ml-3" id="description_title">Assignment Description</h4>
+                    <h4 class="text-left mt-4" id="description_title">Assignment Description</h4>
                     <p class="form-control-plaintext mb-4 text-justify" id="description2"></p>
-                    {% comment %} <div class="Push-20" style="height: 8.8px;"></div> {% endcomment %}
                     <h4 class="text-left mt-3" id="archivos_title">Related Documents List</h4>
-                    <div id="archivos2"></div>
                     <section id="archivo_validation_edit">
                         {% if trabajo.archivos.all %}<h4 class="text-left mt-3">Related Documents List</h4>{% endif %}
                         {% for archivo in trabajo.archivos.all %}
                             <div id="file_text_2">
-                                <span class="m-3">+&nbsp<a href="{% url 'media/' archivo %}">{{ archivo }}</a></span>
+                                <span class="m-2 mb-4">+&nbsp<a href="{% url 'media/' archivo %}">{{ archivo }}</a></span>
                                 <input type="hidden" name="files_from_validation" value="{{ archivo.pk }}"></br>
                             </div>
                         {% endfor %}
@@ -136,7 +124,7 @@
                     <section id="archivo_validation">
                         {% if files %}<h4 class="text-left mt-3">Related Documents List</h4>{% endif %}
                         {% for file in files %}
-                            <span class="m-3">+&nbsp<a href="{% url 'media/' file %}">{{ file.nombre }}</a></span>
+                            <span class="m-2 mb-4">+&nbsp<a href="{% url 'media/' file %}">{{ file.nombre }}</a></span>
                             <input type="hidden" name="files_from_validation" value="{{ file.pk }}"></br>
                         {% endfor %}
                     </section>
@@ -146,13 +134,10 @@
         </div>
     </div>
 </form>
-<div class="Push-20" style="height: 14.4px;"></div>
 
 <section class="call-to-action text-white text-center" style="background:url({% static 'images/Desk-1.jpg' %}) no-repeat center center;background-size:cover;">
     <div class="overlay"></div>
 </section>
-
-</body>
 
 {% endblock %}
 
@@ -170,14 +155,18 @@
         files = input.files
         console.log(files)
         
-        if(files){
+        if(files.length > 0){
             $('#frame_div').html("");
             $('#frame_div').show();
+            $('#frame_div').addClass('mb-4');
+            $('#preview_title').show()
             for(var i = 0; i < files.length; i++){
                 console.log(files[i].size + ' ' + files[i].name)
                 if (files[i].size > 10000000) {
                     $('#frame_div').append(`
-                        <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">This file size exceeds the maximum allowed. Will be not upload.</span><br>
+                        <section class="row">
+                            <p class="m-2">+&nbsp` + files[i].name + `</p><p style="color:red;" class="m-2">This file size exceeds the maximum allowed. Will be not upload.</p>
+                        </section>
                     `);
                 } else {
                     //console.log(files[i].name)
@@ -185,7 +174,7 @@
                         (function(file) {
                             var reader = new FileReader();
                             console.log(file.name)
-                            $('#frame_div').append(`<span class="m-3">+&nbsp` + file.name + `</span><br>`);
+                            $('#frame_div').append(`<section class="row"><p class="m-2">+&nbsp` + file.name + `</p></section>`);
                             reader.onload = function (r) {
                                 console.log(r)
                                 $('#frame_div').append(
@@ -198,11 +187,17 @@
                         })(files[i]);
                     }else{
                         $('#frame_div').append(`
-                            <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">Unable to display a file preview.</span><br>
+                            <section class="row">
+                                <p class="m-2">+&nbsp` + files[i].name + `</p><p style="color:blue;" class="m-2">Unable to display a file preview.</p>
+                            </section>
                         `);
                     }
                 }
             }
+        } else {
+            $('#frame_div').html("");
+            $('#frame_div').removeClass('mb-4');
+            $('#preview_title').hide()
         }
     }
 
@@ -260,8 +255,9 @@
             $('#archivos_title').show();
             $('#archivo_validation').html('');
             $('#archivo_validation_edit').html('');
-            
-        } else $('#archivos_title').hide();
+        } else {
+            $('#archivos_title').hide()
+        };
 
         precio = Number(precio).toFixed(2)
         if (precio != 'NaN' && precio != 0) {

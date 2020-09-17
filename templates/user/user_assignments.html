@@ -464,7 +464,7 @@
                 for(var i = 0; i < files.length; i++){
                     if (files[i].size > 10000000) {
                         $('#frame_div-'+id).append(`
-                            <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">This file size exceeds the maximum allowed. Will be not upload. <small>Max: 10MB</small></span><br>
+                            <span class="m-3">+&nbsp` + files[i].name + `</span><small style="color:red;">This file size exceeds the maximum allowed. Will be not upload. <small>Max: 10MB</small></small><br>
                         `);
                     } else {
                         if (/\.(jpe?g|png|gif|pdf|md|txt|py|html|css|js|ts|php)$/i.test(files[i].name) ) {
@@ -484,7 +484,7 @@
                             })(files[i]);
                         }else{
                             $('#frame_div-'+id).append(`
-                                <span class="m-3">+&nbsp` + files[i].name + `</span><span style="color:red;">Unable to display a file preview.</span><br>
+                                <span class="m-3">+&nbsp` + files[i].name + `</span><small class="text-info">Unable to display a file preview.</small><br>
                             `);
                         }
                     }
