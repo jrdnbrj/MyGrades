@@ -67,7 +67,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         </div>
                                         <div class="modal-body text-justify">
-                                            <p>Are you sure to close "<strong>{{ trabajo.titulo }}</strong>"? This action will make the Assignment disappear from the Work Place, you can make it reappear.</p>
+                                            <p>Are you sure to close "<strong>{{ trabajo.titulo }}</strong>"? This action will make the Assignment disappear from the Work Place and no one can take it, you can make it reappear.</p>
                                         </div>
                                         <div class="modal-footer">
                                             <form method="POST" action="{% url 'open_close' trabajo.id %}" class="col">{% csrf_token %}
@@ -120,7 +120,7 @@
                                     >
                                         <a data-toggle="collapse" class="align-top" id="assignment_workplace" aria-expanded="false" aria-controls="accordion-1 .item-{{ trabajo.id }}" href="#accordion-1 .item-{{ trabajo.id }}">{{ trabajo.titulo }}</a>
                                     </h5>
-                                    {% if trabajo.fecha_expiracion|timesince != " 0 minutes " %}
+                                    {% if trabajo.on_time or trabajo.estado == 'taken' %}
                                         <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
                                     {% endif %}
                                     <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
@@ -150,7 +150,7 @@
                                                 </small><br>
                                             </section>
                                             <section class="mr-3">
-                                                {% if trabajo.estado == 'sent' or trabajo.estado == 'accepted' or trabajo.estado == 'rejected' %}
+                                                {% if trabajo.estado == 'sent' or trabajo.estado == 'accepted' and trabajo.on_time or trabajo.estado == 'rejected' %}
                                                     <button class="btn btn-sm btn-success border rounded" title="Accept or Reject Assignment" data-toggle="modal" data-target="#accept-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
                                                         <i class="icon-check"></i>
                                                     </button>
@@ -160,7 +160,7 @@
                                                         <i class="icon-paypal"></i>
                                                     </button>
                                                 {% endif %}
-                                                {% if trabajo.estado != 'sent' and trabajo.estado != 'accepted' %}
+                                                {% if trabajo.estado != 'sent' and trabajo.estado != 'accepted' and trabajo.estado != 'thrown' %}
                                                     <button class="btn btn-sm btn-warning border rounded" title="Edit Assignment" onclick="location.href='{% url 'edit_post_assignment' trabajo.id %}'" data-toggle="tooltip" rel="tooltip" data-placement="bottom">
                                                         <i class="icon-note text-white"></i></button>
                                                 {% endif %}
@@ -169,7 +169,7 @@
                                                         <i class="icon-minus"></i>
                                                     </button>
                                                 {% endif %}
-                                                {% if trabajo.estado == 'closed' %}
+                                                {% if trabajo.estado == 'closed' or trabajo.estado == 'rejected' and trabajo.three_hours %}
                                                     <button class="btn btn-sm btn-info border rounded" title="Post Assignment" data-toggle="modal" data-target="#open-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
                                                         <i class="icon-plus"></i>
                                                     </button>
@@ -299,6 +299,25 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="modal fade" id="return-{{ trabajo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Return Assignment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body text-justify">
+                                            <p>Did you take this Assignment by mistake? Relax, you have 15 minutes of grace to think it over, after that time you will have to fulfill the previously accepted commitment.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form method="POST" action="{% url 'return_assignment' trabajo.id %}" class="col">{% csrf_token %}
+                                                <button type="submit" class="btn btn-danger">I don't want to do this Assignment</button>
+                                            </form>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="card">
                                 <div class="card-header row py-2" style="margin: 0" role="tab">
                                     <h5 class="col" data-toggle="modal" 
@@ -308,8 +327,13 @@
                                             <strong>{{ trabajo.titulo }}</strong><br>
                                         </a>
                                     </h5>
-                                    {% if trabajo.estado != 'closed' %}
+                                    {% if trabajo.on_time or trabajo.estado == 'taken' %}
                                         <small class="align-middle d-flex align-items-center mr-1">{{ trabajo.fecha_expiracion|timeuntil }} left</small>
+                                    {% endif %}
+                                    {% if trabajo.estado == 'taken' and not trabajo.fifteen_minutes %}
+                                        <button class="btn btn-sm btn-info border rounded" title="Return Assignment" data-toggle="modal" data-target="#return-{{ trabajo.id }}" rel="tooltip" data-placement="bottom">
+                                            <i class="icon-minus"></i>
+                                        </button>
                                     {% endif %}
                                     <button type="button" class="btn-sm btn-secondary rounded border d-flex align-items-center ml-1" disabled>
                                         Status<span class="badge 

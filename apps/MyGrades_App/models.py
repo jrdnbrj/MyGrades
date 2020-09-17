@@ -1,6 +1,7 @@
 from django.db import models
 
 import json
+from datetime import datetime, timedelta
 
 
 class Usuario(models.Model):
@@ -68,6 +69,18 @@ class Trabajo(models.Model):
 
     def __str__(self):
         return self.titulo
+    
+    def on_time(self):
+        if self.fecha_expiracion <= datetime.now(): return False
+        else: return True
+
+    def three_hours(self):
+        if self.fecha_editado <= (datetime.now() - timedelta(hours=3)): return True
+        else: return False
+
+    def fifteen_minutes(self):
+        if self.fecha_asignacion_trabajador <= (datetime.now() - timedelta(minutes=15)): return True
+        else: return False
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)

@@ -10,7 +10,7 @@ from django.core import serializers
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment, LiveEnvironment
 from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersGetRequest, OrdersCaptureRequest
 
-import datetime
+from datetime import datetime
 from django.utils import timezone
 import sys
 import json
@@ -20,7 +20,7 @@ from .models import *
 
 
 def landing_page(request): 
-    print(datetime.datetime.now())
+    print(datetime.now())
     print(timezone.now())
     # print(timezone.localtime(timezone.now()))
     return render(request, 'home/landing_page.html', {})
@@ -188,7 +188,7 @@ def work_place_3(request, id): #conditions
     if request.method == 'POST':
         trabajo.trabajador = Usuario.objects.get(username = request.user)
         trabajo.estado = 'taken'
-        trabajo.fecha_asignacion_trabajador = datetime.datetime.now()
+        trabajo.fecha_asignacion_trabajador = datetime.now()
         trabajo.save()
         return redirect('work_place_4', id=id)
 
@@ -344,13 +344,15 @@ def edit_password(request):
 
     return redirect('user_profile_2', status='edited')
 
-def verify_assignments(assignments):
-    date_time = utc.localize(datetime.datetime.now())
-    
+def validate_time(assignments):
     for assignment in assignments:
-        if assignment.fecha_expiracion < date_time:
-            assignment.estado = 'closed'
-    return assigments
+        if assignment.estado == 'posted':
+            if assignment.fecha_expiracion <= datetime.now():
+                assignment.estado = 'closed'
+                assignment.trabajador = None
+                assignment.save()
+
+    return assignments
 
 @login_required
 def user_assignments(request):
@@ -359,8 +361,8 @@ def user_assignments(request):
     taken_assignments = Trabajo.objects.filter(trabajador__username=request.user).exclude(estado='thrown').exclude(estado='eliminated')
 
     context = {
-        'posted_assignments': posted_assignments.order_by('-fecha_publicacion'),
-        'taken_assignments': taken_assignments.order_by('-fecha_publicacion'),
+        'posted_assignments': validate_time(posted_assignments).order_by('-fecha_publicacion'),
+        'taken_assignments': validate_time(taken_assignments).order_by('-fecha_publicacion'),
     }
     return render(request, 'user/user_assignments.html', context)
 
@@ -380,7 +382,8 @@ def delete_assignment(request, id):
 @login_required
 def accept_reject(request, id):
     trabajo = Trabajo.objects.get(id=id)
-    if str(trabajo.publicador) != str(request.user) or not (trabajo.estado == 'sent' or trabajo.estado == 'accepted' or trabajo.estado == 'rejected'): 
+    if str(trabajo.publicador) != str(request.user) or \
+        not (trabajo.estado == 'sent' or (trabajo.estado == 'accepted' and trabajo.on_time()) or trabajo.estado == 'rejected'): 
         raise Http404()
     
     if request.method == 'POST':
@@ -393,7 +396,8 @@ def accept_reject(request, id):
 @login_required
 def open_close(request, id):
     trabajo = Trabajo.objects.get(id=id)
-    if str(trabajo.publicador) != str(request.user) or not (trabajo.estado == 'posted' or trabajo.estado == 'closed'): 
+    if str(trabajo.publicador) != str(request.user) or \
+        not (trabajo.estado == 'posted' or trabajo.estado == 'closed' or (trabajo.estado == 'rejected' and trabajo.on_time())): 
         raise Http404()
     
     if request.method == 'POST':
@@ -431,7 +435,7 @@ def edit_post_assignment(request, id):
     context = { 'title': 'Edit' }
 
     trabajo = Trabajo.objects.get(id = id)
-    if str(trabajo.publicador) != str(request.user) or trabajo.estado == 'sent' or trabajo.estado == 'accepted': 
+    if str(trabajo.publicador) != str(request.user) or trabajo.estado == 'sent' or trabajo.estado == 'accepted' or trabajo.estado == 'thown': 
         raise Http404()
     
     if request.method == 'POST':
@@ -465,7 +469,7 @@ def edit_post_assignment(request, id):
         else:
             print(form.errors)
             context['form'] = form
-            print(request.POST)
+            context['trabajo'] = trabajo
 
             if 'files_from_validation' in request.POST:
                 files = [ Archivo.objects.get(id=file) for file in request.POST.getlist('files_from_validation') ]
@@ -510,11 +514,27 @@ def send_assignment(request, id):
 
         if request.FILES:
             trabajo.estado = 'sent'
-            trabajo.fecha_entrega = datetime.datetime.now()
+            trabajo.fecha_entrega = datetime.now()
             trabajo.save()
 
     return redirect('user_assignments')
 
+@login_required
+def return_assignment(request, id):
+    trabajo = Trabajo.objects.get(id=id)
+    print(trabajo.estado)
+    print(trabajo.fifteen_minutes)
+    print(trabajo.estado == 'taken' and not trabajo.fifteen_minutes)
+    print()
+    if str(trabajo.trabajador) != str(request.user) or not (trabajo.estado == 'taken' and not trabajo.fifteen_minutes()): 
+        raise Http404()
+
+    if request.method == 'POST':
+        trabajo.estado = 'posted'
+        trabajo.trabajador = None
+        trabajo.save()
+
+    return redirect('user_assignments')
 
 #___________________________CUSTOMER SUPPORT_____________________________
 
