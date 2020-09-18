@@ -5,14 +5,14 @@
 <section class="page_404">
     <div class="container h-100 d-flex">
         <div class="my-auto align-middle">
-            <div class="">
-                <span class="h1 text-justify font-weight-bold" style="color: white">Ups! It seems that the page you are trying to visit does not exist or you do not have permission to see it.</span>
-                <p class="my-3 font-weight-bold font-italic" style="color: white">Got something to say to us? Do not hesitate to do it <a href="{% url 'customer_support' %}">here</a>.</p>
+            <span class="h1 text-justify font-weight-bold" style="color: white">Ups! It seems that the page you are trying to visit does not exist or you do not have permission to see it.</span>
+            <p class="my-3 font-weight-bold font-italic" style="color: white">Got something to say to us? Do not hesitate to do it <a href="{% url 'customer_support' %}">here</a>.</p>
+            {% if user.is_authenticated %}
                 <p class="lead my-5">
                     <a class="btn btn-primary btn-lg" href="{% url 'post_assignment' %}" role="button">Post Assignment</a>
-                    <a class="btn btn-primary btn-lg" href="{% url 'post_assignment' %}" role="button">Work Place</a>
+                    <a class="btn btn-primary btn-lg" href="{% url 'work_place' %}" role="button">Work Place</a>
                 </p>
-            </div>
+            {% endif %}
         </div>
     </div>
 </section>

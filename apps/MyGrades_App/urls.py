@@ -15,8 +15,8 @@ urlpatterns = [
     path('signout', signout, name='signout'),
 
     #just for test
-    path('404/', handler404), 
-    path('500/', handler500),
+    # path('404/', handler404), 
+    # path('500/', handler500),
 
     path('assignments/', user_assignments, name='user_assignments'),
     path('post_assignment/', post_assignment, name='post_assignment'),

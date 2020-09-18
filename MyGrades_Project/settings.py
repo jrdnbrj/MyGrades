@@ -36,9 +36,9 @@ MEDIA_URL = '/media/'
 SECRET_KEY = '(w+b%a@=lubxw5ksd_$fk#vz36=2ojzgc(+zpt6jz%ul(z_gbd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['64.227.48.115', 'mygrades.works', 'www.mygrades.works', 'localhost', 'ec439a71647d.ngrok.io']
+ALLOWED_HOSTS = ['64.227.48.115', 'mygrades.works', 'www.mygrades.works', 'localhost']
 
 # Application definition
 

@@ -147,8 +147,10 @@ def work_place(request):
 def wp_ajax(request):
     if request.is_ajax and request.method == "POST":
         print(request.POST['title'], request.POST['area'], request.POST['date_from'], request.POST['date_to'])
-
-        trabajos = Trabajo.objects.filter(estado='posted')
+        
+        trabajos = validate_time(Trabajo.objects.all())
+        trabajos = trabajos.filter(estado='posted')
+        
         if request.POST['title']:
             trabajos = trabajos.filter(Q(titulo__icontains=request.POST['title']) | Q(descripcion__icontains=request.POST['title']))
         if request.POST['area']:
@@ -159,7 +161,6 @@ def wp_ajax(request):
             trabajos = trabajos.exclude(fecha_publicacion__gt=request.POST['date_to'])
         trabajos = trabajos.order_by('-fecha_editado')
 
-        # len_trabajos = len(trabajos)
         page = request.POST['page']
         trabajos = Paginator(trabajos, 10)
         pags = {
