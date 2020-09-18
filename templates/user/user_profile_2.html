@@ -272,8 +272,6 @@
     }
 
     function paymentType() {
-        console.log('1')
-        console.log($('#tipo_pago').val())
         if ($('#tipo_pago').val() == 'PayPal') {
             $('#institucion').prop('disabled', true)
             $('#tipo_cuenta').prop('disabled', true)

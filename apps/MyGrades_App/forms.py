@@ -190,7 +190,7 @@ class EditPasswordForm(forms.ModelForm):
 
 class PostAssignmentForm(forms.Form):
 
-    titulo = forms.CharField(min_length=1, max_length=50)
+    titulo = forms.CharField(min_length=1, max_length=65)
     area = forms.CharField(min_length=1, max_length=50)
     descripcion = forms.CharField(min_length=0, max_length=10000)
     fecha_expiracion = forms.DateTimeField(
@@ -205,7 +205,7 @@ class PostAssignmentForm(forms.Form):
         super(PostAssignmentForm, self).__init__(*args, **kwargs)
 
         if self.status == 'hidden':
-            self.fields['precio'] = forms.DecimalField(max_digits=5, decimal_places=3, min_value=3.00)
+            self.fields['precio'] = forms.DecimalField(max_digits=8, decimal_places=4, min_value=3.00)
 
     def clean_titulo(self):
         titulo = self.cleaned_data['titulo']

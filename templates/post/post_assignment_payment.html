@@ -1,7 +1,27 @@
 {% extends 'base.html' %}
-{% block title %} Post Assignment {% endblock %}
+{% block title %} Assignment Payment {% endblock %}
 {% block content %}
 {% load static %}
+
+<button type="button" data-toggle="modal" data-target="#exampleModal" id="modal" style="display: none"></button>
+
+<div class="modal fade show" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="spinner-border text-primary mx-4" role="status"></div>
+        <h5 class="modal-title" id="exampleModalLabel">Assignment Payment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>We are processing the payment, please wait...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <section class="call-to-action text-white text-center" style="background:url('{% static 'images/WorkPlace-2.jpg'%}') no-repeat center center;background-size:cover;">
     <div class="overlay"></div>
 </section>
@@ -20,7 +40,6 @@
             </section>
             <form method="POST" action="{% url 'post_assignment_payment' trabajo.id %}">{% csrf_token %}
                 <div class="form-group"><div id="paypal-button-container"></div></div>
-                {% comment %} <div class="form-group"><button class="btn-lg btn-outline-primary rounded border-primary btn-block col-5 mx-auto" type="submit">Ready</button></div> {% endcomment %}
             </form>
         </div>
         <div class="row mx-auto my-4 d-flex flex-row-reverse">
@@ -74,16 +93,23 @@
             
             onError: function(err) {
                 alert('It seems that there was an error with the transaction, please try again or contact us on the Customer Support.')
+                console.log('ERROR!!!')
                 console.log(err)
+                return err
             },
 
             onCancel: function (data) {
                 alert('You have canceled the transaction. Not sure what you are doing? Get in touch with us on the Customer Support.')
+                console.log('CANCEL!!!')
                 console.log(data)
             },
 
             onApprove: function(data, actions) {
+                console.log('data1')
                 console.log(data)
+                console.log('data2')
+                $('#modal').trigger('click');
+                console.log('PROCCESING')
                 return fetch('/paypal/' + data.orderID + '/capture/' + {{ trabajo.id }}, {
                     method: 'POST',
                     headers: {

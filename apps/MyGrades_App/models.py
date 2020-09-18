@@ -52,7 +52,7 @@ class Archivo(models.Model):
 
 class Trabajo(models.Model):
     id = models.AutoField(primary_key=True)
-    titulo = models.CharField(max_length=60)
+    titulo = models.CharField(max_length=65)
     area = models.CharField(max_length=50)
     publicador = models.ForeignKey(Usuario, null=True, on_delete=models.SET_NULL, related_name='publicador')
     fecha_publicacion = models.DateTimeField(auto_now_add=True, editable=True)
@@ -64,7 +64,7 @@ class Trabajo(models.Model):
     archivos = models.ManyToManyField(Archivo, blank=True, related_name='archivos')
     trabajador = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL, related_name='trabajador')
     archivos_trabajador = models.ManyToManyField(Archivo, blank=True, related_name='archivos_trabajador')
-    precio = models.DecimalField(decimal_places = 2, max_digits = 6, default=0.0)
+    precio = models.DecimalField(decimal_places = 2, max_digits = 7)
     fecha_editado = models.DateTimeField(auto_now=True, auto_now_add=False)
 
     def __str__(self):
@@ -88,7 +88,7 @@ class Order(models.Model):
     trabajo = models.ForeignKey(Trabajo, null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(Usuario, null=True, on_delete=models.SET_NULL)
     estado = models.CharField(max_length=150)
-    precio_total = models.DecimalField(decimal_places = 2, max_digits = 5)
+    precio_total = models.DecimalField(decimal_places = 2, max_digits = 7)
     nombre = models.CharField(max_length=150)
     apellido = models.CharField(max_length=150)
     full_name = models.CharField(max_length=250)

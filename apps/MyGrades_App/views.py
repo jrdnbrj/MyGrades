@@ -10,6 +10,7 @@ from django.core import serializers
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment, LiveEnvironment
 from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersGetRequest, OrdersCaptureRequest
 
+from decimal import Decimal
 from datetime import datetime
 import sys
 import json
@@ -615,32 +616,37 @@ def paypal_capture(request, order_id, trabajo_id):
         order_amount = order['purchase_units'][0]['payments']['captures'][0]['amount']['value']
         print('ORDER:', order)
 
-        if float(order_amount) == float(trabajo.precio):
-            new_order = Order(
-                orderID = order['id'],
-                trabajo = trabajo,
-                user = trabajo.publicador,
-                estado = order['status'],
-                precio_total = order['purchase_units'][0]['payments']['captures'][0]['amount']['value'],
-                nombre = order['payer']['name']['given_name'],
-                apellido = order['payer']['name']['surname'],
-                full_name = order['purchase_units'][0]['shipping']['name']['full_name'],
-                capture_status = order['purchase_units'][0]['payments']['captures'][0]['status'],
-                capture_id = order['purchase_units'][0]['payments']['captures'][0]['id'],
-                payer_id = order['payer']['payer_id'],
-                create_time = order['purchase_units'][0]['payments']['captures'][0]['create_time'],
-                email = order['payer']['email_address'],
-                direccion = order['purchase_units'][0]['shipping']['address']['address_line_1'] + ', ' + order['purchase_units'][0]['shipping']['address']['country_code']
-            )
-            new_order.save()
+        if Decimal(order_amount) == Decimal(trabajo.precio):
+            try:
+                new_order = Order(
+                    orderID = order['id'],
+                    trabajo = trabajo,
+                    user = trabajo.publicador,
+                    estado = order['status'],
+                    precio_total = Decimal(order['purchase_units'][0]['payments']['captures'][0]['amount']['value']),
+                    nombre = order['payer']['name']['given_name'],
+                    apellido = order['payer']['name']['surname'],
+                    full_name = order['purchase_units'][0]['shipping']['name']['full_name'],
+                    capture_status = order['purchase_units'][0]['payments']['captures'][0]['status'],
+                    capture_id = order['purchase_units'][0]['payments']['captures'][0]['id'],
+                    payer_id = order['payer']['payer_id'],
+                    create_time = order['purchase_units'][0]['payments']['captures'][0]['create_time'],
+                    email = order['payer']['email_address'],
+                    direccion = order['purchase_units'][0]['shipping']['address']['address_line_1'] + ', ' + order['purchase_units'][0]['shipping']['address']['country_code']
+                )
+                new_order.save()
 
-            if new_order.estado == 'COMPLETED':
-                trabajo.estado = 'posted'
-                trabajo.save()
-            return JsonResponse(order)
+                if new_order.estado == 'COMPLETED':
+                    trabajo.estado = 'posted'
+                    trabajo.save()
+                return JsonResponse(order)
+            except:
+                return JsonResponse({ 
+                    'details': "It seems that there was an error with the transaction. It is possible that the charge has been debited from your payment account, if you had any problems please contact us on the Customer Support." 
+                })
         else:
             print('EL PRECIO PAGADO NO ES EL MISMO QUE EL DEL TRABAJO!!! PILAS WEY')
-            print(float(order_amount), float(trabajo.precio))
+            print(Decimal(order_amount), Decimal(trabajo.precio))
 
     return JsonResponse({ 
         'details': "It seems that there was an error with the transaction. It is possible that the charge has been debited from your payment account, if you had any problems please contact us on the Customer Support." 
@@ -648,12 +654,15 @@ def paypal_capture(request, order_id, trabajo_id):
 
 class PayPalClient:
     def __init__(self):
-        # self.client_id = "AWLMBI3BwXhtXFpMZw-BnZLMvw3NjS_52qMjdQPx-e7Oe7Q7_x33nyg4EXcMHVu9ZhdNw_0CNfpgOR2M"
-        # self.client_secret = "EIAR_G5gIaS2A2ZDWATudaRzTooP_kkP8PTN4GP11v8RgQfhSiIEiRJNK-k-oESr2lf4cixIp6Tuudci"
-        self.client_id = "AUfE4lMYpalZDXKaXrU-OBU3EpQkEqK8TlpiYplZ3mdJAjtaeSkrt1iktz0GFlMgdPKviucsr5F8BD0G"
-        self.client_secret = "EBGppM5pfBWp-VsvUWeV72-vQUNbvReUimfmPmYfzsqoWM8QpR-gUSTVHythyaXv8B--2ghja28Gu2xb"
+        # Sandbox
+        self.client_id = "AWLMBI3BwXhtXFpMZw-BnZLMvw3NjS_52qMjdQPx-e7Oe7Q7_x33nyg4EXcMHVu9ZhdNw_0CNfpgOR2M"
+        self.client_secret = "EIAR_G5gIaS2A2ZDWATudaRzTooP_kkP8PTN4GP11v8RgQfhSiIEiRJNK-k-oESr2lf4cixIp6Tuudci"
+        # Live
+        # self.client_id = "AUfE4lMYpalZDXKaXrU-OBU3EpQkEqK8TlpiYplZ3mdJAjtaeSkrt1iktz0GFlMgdPKviucsr5F8BD0G"
+        # self.client_secret = "EBGppM5pfBWp-VsvUWeV72-vQUNbvReUimfmPmYfzsqoWM8QpR-gUSTVHythyaXv8B--2ghja28Gu2xb"
 
-        self.environment = LiveEnvironment(client_id=self.client_id, client_secret=self.client_secret)
+        self.environment = SandboxEnvironment(client_id=self.client_id, client_secret=self.client_secret)
+        # self.environment = LiveEnvironment(client_id=self.client_id, client_secret=self.client_secret)
         self.client = PayPalHttpClient(self.environment)
 
 class CreateOrder(PayPalClient):

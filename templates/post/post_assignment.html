@@ -50,7 +50,7 @@
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
                 <small class="form-text text-muted" style="margin-top: 10px;">Write assignment title.</small>
-                <input class="row form-control" name="titulo" maxlength="60" type="text" placeholder="Type the assignment title..." id="title" value="{% if form.errors %}{{ form.titulo.value }}{% elif trabajo.titulo %}{{ trabajo.titulo }}{% endif %}" required>
+                <input class="row form-control" name="titulo" maxlength="65" type="text" placeholder="Type the assignment title..." id="title" value="{% if form.errors %}{{ form.titulo.value }}{% elif trabajo.titulo %}{{ trabajo.titulo }}{% endif %}" required>
                 {% for error in form.titulo.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
