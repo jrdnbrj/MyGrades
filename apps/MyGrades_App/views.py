@@ -579,6 +579,8 @@ def customer_support(request):
 
 #___________________________PAYPAL_____________________________
 
+def payment_test(request): return render(request, 'payment_test.html')
+
 @login_required
 def paypal_create(request, id):
     print('Verificando ando...')
@@ -656,14 +658,14 @@ def paypal_capture(request, order_id, trabajo_id):
 class PayPalClient:
     def __init__(self):
         # Sandbox
-        self.client_id = "AWLMBI3BwXhtXFpMZw-BnZLMvw3NjS_52qMjdQPx-e7Oe7Q7_x33nyg4EXcMHVu9ZhdNw_0CNfpgOR2M"
-        self.client_secret = "EIAR_G5gIaS2A2ZDWATudaRzTooP_kkP8PTN4GP11v8RgQfhSiIEiRJNK-k-oESr2lf4cixIp6Tuudci"
+        # self.client_id = "AWLMBI3BwXhtXFpMZw-BnZLMvw3NjS_52qMjdQPx-e7Oe7Q7_x33nyg4EXcMHVu9ZhdNw_0CNfpgOR2M"
+        # self.client_secret = "EIAR_G5gIaS2A2ZDWATudaRzTooP_kkP8PTN4GP11v8RgQfhSiIEiRJNK-k-oESr2lf4cixIp6Tuudci"
         # Live
-        # self.client_id = "AUfE4lMYpalZDXKaXrU-OBU3EpQkEqK8TlpiYplZ3mdJAjtaeSkrt1iktz0GFlMgdPKviucsr5F8BD0G"
-        # self.client_secret = "EBGppM5pfBWp-VsvUWeV72-vQUNbvReUimfmPmYfzsqoWM8QpR-gUSTVHythyaXv8B--2ghja28Gu2xb"
+        self.client_id = "AUfE4lMYpalZDXKaXrU-OBU3EpQkEqK8TlpiYplZ3mdJAjtaeSkrt1iktz0GFlMgdPKviucsr5F8BD0G"
+        self.client_secret = "EBGppM5pfBWp-VsvUWeV72-vQUNbvReUimfmPmYfzsqoWM8QpR-gUSTVHythyaXv8B--2ghja28Gu2xb"
 
-        self.environment = SandboxEnvironment(client_id=self.client_id, client_secret=self.client_secret)
-        # self.environment = LiveEnvironment(client_id=self.client_id, client_secret=self.client_secret)
+        # self.environment = SandboxEnvironment(client_id=self.client_id, client_secret=self.client_secret)
+        self.environment = LiveEnvironment(client_id=self.client_id, client_secret=self.client_secret)
         self.client = PayPalHttpClient(self.environment)
 
 class CreateOrder(PayPalClient):

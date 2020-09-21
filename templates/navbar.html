@@ -9,11 +9,14 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto ml-5">
                 {% if user.is_authenticated %}
-                    <li class="nav-item border-right">
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'post_assignment' %}">Post Assignment</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item mx-4">
                         <a class="nav-link" href="{% url 'work_place' %}">Work Place</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user_assignments' %}">Your Assignments</a>
                     </li>
                 {% endif %}
             </ul>
@@ -25,8 +28,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{% url 'user_profile' %}"><i class="icon-user mr-3 align-middle"></i>Profile</a>
-                            <a class="dropdown-item" href="{% url 'user_assignments' %}"><i class="icon-book-open mr-3 align-middle"></i>Assignments</a>
-                            <div class="dropdown-divider"></div>
+                            <!--<a class="dropdown-item" href="{% url 'user_assignments' %}"><i class="icon-book-open mr-3 align-middle"></i>Assignments</a>-->
                             <a class="dropdown-item" href="{% url 'signout' %}"><i class="icon-logout mr-3 align-middle"></i>Sign Out</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{% url 'customer_support' %}">Customer Support</a>

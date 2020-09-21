@@ -107,9 +107,6 @@
                                         <div class="modal-body text-justify">
                                             <p>The Assignment has been sent, please check if it is as you requested and mark it as accepted, otherwise, mark it as rejected.</p>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -240,10 +237,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         </div>
                                         <div class="modal-body text-justify">
-                                            <p>You can edit the delivery if you consider it necessary. Once the publisher marks the Assignment as accepted you will receive the payment, if this rejects it, you can do it again, otherwise, 3 hours after being in a <kbd>rejected</kbd> status the publisher may repost it.</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                            <p>You can edit the Assignment if you consider it necessary. Once the publisher marks the Assignment as accepted you will receive the payment. If the Assignment is rejected, you can do it again as long as the deadline has not come yet and if after 3 hours of being rejected the Assignment has not been reuploades, the publisher may post it again.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -256,10 +250,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         </div>
                                         <div class="modal-body text-justify">
-                                            <p><strong>Congratulations!</strong> The publisher has mentioned that your submission is correct, we make payments on Thursdays of each week, if you have not received it yet <a href="{% url 'customer_support' %}" target="_blank">write us</a>, remember that you have to tell us how you want to receive your money in the Payment Method in your <a href="{% url 'user_profile' %}" target="_blank">profile.</a></p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                            <p><strong>Congratulations!</strong> The publisher has accepted your submission. We make our payments weekly every Thursday, if you have not received it yet <a href="{% url 'customer_support' %}" target="_blank">contact us</a>, remember that you have to tell us how you want to receive your payment in the <a href="{% url 'user_profile' %}">Payment Method</a> in your <a href="{% url 'user_profile' %}" target="_blank">profile.</a></p>
                                         </div>
                                     </div>
                                 </div>

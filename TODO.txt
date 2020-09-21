@@ -145,6 +145,7 @@ Analizar la posibilidad de enviar mails con herramientas github
 -- Verificar diseño responsive en toda la aplicacion
 ++ Calificacion al trabajador por parte de publicador (tal vez siguiente sprint)
 // Agregar iconos donde se pueda agregar de https://simplelineicons.github.io/
+terminos y condiciones Site en minuscula, site
 Pruebas grupales con el grupo
 Pruebas grupales con personas externas
 Facilitar visualizacion (admin) {

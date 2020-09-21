@@ -42,6 +42,41 @@ ALLOWED_HOSTS = ['64.227.48.115', 'mygrades.works', 'www.mygrades.works', 'local
 
 # Application definition
 
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'filters': {
+#         'require_debug_false': {
+#             '()': 'django.utils.log.RequireDebugFalse'
+#         }
+#     },
+#     'handlers': {
+#         'mail_admins': {
+#             'level': 'ERROR',
+#             'filters': ['require_debug_false'],
+#             'class': 'django.utils.log.AdminEmailHandler'
+#         },
+#         'mygradeslog': {
+#             'level':'DEBUG',
+#             'class':'logging.handlers.RotatingFileHandler',
+#             'filename': os.path.join(DJANGO_ROOT, 'mygrades.log'),
+#             'maxBytes': 1024*1024*150, # 15MB
+#             'backupCount': 10,
+#         },
+#     },
+#     'loggers': {
+#         'django.request': {
+#             'handlers': ['mail_admins'],
+#             'level': 'ERROR',
+#             'propagate': True,
+#         },
+#         'mygrades_log': {
+#             'handlers': ['mygradeslog',],
+#             'level': 'DEBUG',
+#         },
+#     }
+# }
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

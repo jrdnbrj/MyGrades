@@ -65,9 +65,10 @@
             <div class="col-md-6">
                 <div class="Push-20" style="height: 14.5px;"></div>
                 <h4 class="text-left">Dead Line</h4>
+                <small>{% if form.errors %}{{ form.fecha_expiracion.value }}{% elif trabajo %}{{ trabajo.fecha_expiracion|date:"c"|slice:":16" }}{% endif %}</small>
                 <div class="row">
                     <input class="col form-control" type="datetime-local" id="date" name="fecha_expiracion" required
-                        value="{% if form.errors %}{{ form.fecha_expiracion.value }}{% elif trabajo %}{{ trabajo.fecha_expiracion|date:"c" }}{% endif %}">
+                        value="{% if form.errors %}{{ form.fecha_expiracion.value }}{% elif trabajo %}{{ trabajo.fecha_expiracion|date:"c"|slice:":16" }}{% endif %}">
                 </div>
                 {% for error in form.fecha_expiracion.errors %}
                     <small class="text-danger">{{ error }}</small>
