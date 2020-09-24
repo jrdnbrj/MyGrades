@@ -79,37 +79,23 @@
                         'X-CSRFToken': csrfToken,
                     }
                 }).then(function(res) {
-                    console.log('1 createOrder')
-                    console.log(res)
                     return res.json();
                 }).then(function(data) {
-                    console.log(data)
-                    console.log('2 cerateOrder')
-                    return data.id; // Use the same key name for order ID on the client and server
+                    return data.id;
                 });
-                
-
             },
             
-            onError: function(err) {
+            onError: function() {
                 alert('It seems that there was an error with the transaction, please try again or contact us on the Customer Support.')
-                console.log('ERROR!!!')
-                console.log(err)
-                return err
             },
 
-            onCancel: function (data) {
+            onCancel: function () {
                 alert('You have canceled the transaction. Not sure what you are doing? Get in touch with us on the Customer Support.')
-                console.log('CANCEL!!!')
-                console.log(data)
             },
 
             onApprove: function(data, actions) {
-                console.log('data1')
                 console.log(data)
-                console.log('data2')
                 $('#modal').trigger('click');
-                console.log('PROCCESING')
                 return fetch('/paypal/' + data.orderID + '/capture/' + {{ trabajo.id }}, {
                     method: 'POST',
                     headers: {
@@ -117,20 +103,15 @@
                         'X-CSRFToken': csrfToken,
                     }
                 }).then(function(res) {
-                    console.log('3. aprrove')
-                    console.log(res)
                     return res.json();
                 }).then(function(orderData) {
-                    console.log('4. then')
-                    console.log(orderData)
                     const errorDetail = orderData.details
-                    console.log(errorDetail)
                     if (errorDetail) {
                         if (errorDetail.issue === 'INSTRUMENT_DECLINED') return actions.restart()
                         const msg = errorDetail;
+                        location.reload()
                         return alert(msg);
                     }
-                    console.log('Transaction completed by ' + orderData.payer.name.given_name)
                     location.reload()
                 })
             }

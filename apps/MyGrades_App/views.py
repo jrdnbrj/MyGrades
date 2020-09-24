@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http40
 from django.core import serializers
 
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment, LiveEnvironment
-from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersGetRequest, OrdersCaptureRequest
+from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersGetRequest, OrdersAuthorizeRequest, OrdersCaptureRequest
 
 from decimal import Decimal
 from datetime import datetime
@@ -24,6 +24,8 @@ def landing_page(request):
     return render(request, 'home/landing_page.html', {})
 
 def register(request):
+    print(request.user)
+    if request.user.is_authenticated: return redirect('work_place')
 
     try:
         context = {'email': request.GET['email']}
@@ -677,7 +679,7 @@ class CreateOrder(PayPalClient):
         response = self.client.execute(request)
 
         return response
-    
+
 class GetOrder(PayPalClient):
   
   def get_order(self, order_id):

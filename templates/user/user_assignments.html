@@ -10,7 +10,7 @@
 <div class="container">
     <div class="col-lg mx-auto my-3">
         <ul class="nav nav-tabs panel-heading">
-            <li class="nav-item col"><a class="nav-link active h4 text-center m-0" role="tab" data-toggle="tab" href="#tab-1" title="HOLA"><strong>Posted Assignments</strong></a></li>
+            <li class="nav-item col"><a class="nav-link active h4 text-center m-0" role="tab" data-toggle="tab" href="#tab-1"><strong>Posted Assignments</strong></a></li>
             <li class="nav-item col"><a class="nav-link h4 text-center m-0" role="tab" data-toggle="tab" href="#tab-2"><strong>Taken Assignments</strong></a></li>
         </ul>
         <div class="tab-content">
@@ -47,7 +47,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         </div>
                                         <div class="modal-body text-justify">
-                                            <p>Only accept if the Assignment was submitted as you requested, if you reject it, we will notify the worker that he can send the Assignment again (you can change the description to indicate the changes to make), if agrees to do it, the assignment will be in a <kbd>taken</kbd> status again. If not, after 3 hours of being in a <kbd>rejected</kbd> status you can repost it.</p>
+                                            <p>Accept the assignment only if it's done as you requested. If you reject it, we will notify the user that he can send the assignment again (you can change the description of the assignment to indicate the necesary corrections) and, if he agrees to do it, the assignment will be again as <kbd>taken</kbd>. If not, after 3 hours of being rejected you can post it again.</p>
                                         </div>
                                         <div class="modal-footer">
                                             <form method="POST" action="{% url 'accept_reject' trabajo.id %}" class="col">{% csrf_token %}
@@ -105,7 +105,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         </div>
                                         <div class="modal-body text-justify">
-                                            <p>The Assignment has been sent, please check if it is as you requested and mark it as accepted, otherwise, mark it as rejected.</p>
+                                            <p>The Assignment has been sent, please make sure that it is done the way you requested and mark it as accepted, otherwise, mark it as rejected.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -237,7 +237,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         </div>
                                         <div class="modal-body text-justify">
-                                            <p>You can edit the Assignment if you consider it necessary. Once the publisher marks the Assignment as accepted you will receive the payment. If the Assignment is rejected, you can do it again as long as the deadline has not come yet and if after 3 hours of being rejected the Assignment has not been reuploades, the publisher may post it again.</p>
+                                            <p>You can edit the Assignment if you consider it necessary. Once the publisher marks the Assignment as accepted you will receive the payment. If the Assignment is rejected, you can do it again as long as the deadline has not come yet and if after 3 hours of being <kbd>rejected</kbd> the Assignment has not been reuploaded, the publisher may post it again.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -250,7 +250,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         </div>
                                         <div class="modal-body text-justify">
-                                            <p><strong>Congratulations!</strong> The publisher has accepted your submission. We make our payments weekly every Thursday, if you have not received it yet <a href="{% url 'customer_support' %}" target="_blank">contact us</a>, remember that you have to tell us how you want to receive your payment in the <a href="{% url 'user_profile' %}">Payment Method</a> in your <a href="{% url 'user_profile' %}" target="_blank">profile.</a></p>
+                                            <p><strong>Congratulations!</strong> The publisher has accepted your submission. We make our payments weekly every Thursday, if you have not received it yet <a href="{% url 'customer_support' %}" target="_blank">contact us</a>, remember that you have to tell us how you want to receive your payment on "Payment Method" in your <a href="{% url 'user_profile' %}" target="_blank">profile.</a></p>
                                         </div>
                                     </div>
                                 </div>
@@ -282,7 +282,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         </div>
                                         <div class="modal-body text-justify">
-                                            <p>Are you sure to delete "<strong>{{ trabajo.titulo }}</strong>" forever? This action cannot be undone.</p>
+                                            <p>Are you sure you want to delete "<strong>{{ trabajo.titulo }}</strong>" forever? This action cannot be undone.</p>
                                         </div>
                                         <div class="modal-footer">
                                             <form method="POST" action="{% url 'throw_assignment' trabajo.id %}" class="col">{% csrf_token %}
