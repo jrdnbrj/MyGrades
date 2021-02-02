@@ -5,11 +5,16 @@ from .models import *
 
 def download_csv(modeladmin, request, queryset):
     import csv
-    f = open('homework.csv', 'wb')
-    writer = csv.writer(f)
+    from django.http import HttpResponse
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment;' 'filename=homework.csv'
+    # f = open('homework.csv', 'wb')
+    writer = csv.writer(response)
     writer.writerow(["username", "username", "password", "celular", "key_words", "info_about"])
     for s in queryset:
         writer.writerow([s.username, s.username, s.password, s.celular, s.key_words, s.info_about])
+    
+    return response
 
 class UsuarioAdmin(admin.ModelAdmin):
     list_display = ('username', 'mail')
