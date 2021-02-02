@@ -3,8 +3,17 @@ from .models import *
 
 # Register your models here.
 
+def download_csv(modeladmin, request, queryset):
+    import csv
+    f = open('homework.csv', 'wb')
+    writer = csv.writer(f)
+    writer.writerow(["username", "username", "password", "celular", "key_words", "info_about"])
+    for s in queryset:
+        writer.writerow([s.username, s.username, s.password, s.celular, s.key_words, s.info_about])
+
 class UsuarioAdmin(admin.ModelAdmin):
     list_display = ('username', 'mail')
+    actions = [download_csv]
 
 class CuentaBancariaAdmin(admin.ModelAdmin):
     list_display = ('usuario', 'tipo_pago', 'institucion', 'paypal_email')
