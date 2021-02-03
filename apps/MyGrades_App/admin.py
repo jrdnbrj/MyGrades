@@ -9,6 +9,7 @@ def download_csv(modeladmin, request, queryset):
     response = HttpResponse(content_type='text/csv; charset=utf-8')
     response['Content-Disposition'] = 'attachment;' 'filename=homework.csv'
     # f = open('homework.csv', 'wb')
+    response.write(u'\ufeff'.encode('utf8'))
     writer = csv.writer(response)
     writer.writerow(["username", "mail", "password", "celular", "key_words", "info_about"])
     for s in queryset:
