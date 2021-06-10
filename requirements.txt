@@ -4,7 +4,7 @@ certifi==2020.6.20
 cffi==1.14.2
 chardet==3.0.4
 cryptography==3.2
-Django==3.1
+Django==3.1.12
 idna==2.10
 paypal-checkout-serversdk==1.0.1
 paypalhttp==1.0.0
